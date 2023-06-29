@@ -73,39 +73,36 @@ Route::group(// Comment out this when running tests
            Route::name('privacy')->get('/privacy', [MenuController::class, 'privacy']);
            Route::name('schedule.info')->get('/schedule/info', [HomeController::class, 'showInfo']);
 
-
 // Calls routes ///////////////////////////////////////////////////////////////
            Route::name('calls.')->group(function () {
-              // Show application welcome view  
-              Route::name('home')->get('/sdCalls/home', [CallsController::class, 'index']);
-              // Show application welcome view for guests, or authenticated but not verified (Prompt for login or registration)
-              Route::name('guest')->get('sdCalls', [HomeController::class, 'callsGuest']);
+              Route::name('home')->get('/callsHome', [HomeController::class, 'callsHome']);
+              Route::middleware(['verified'])->group(function () {
+                 // Show application welcome view  
+                 Route::name('index')->get('/sdCalls/home', [CallsController::class, 'index']);
+              });
            });
-
 // Schedule routes ///////////////////////////////////////////////////////////////
            Route::name('schedule.')->group(function () {
               // Show application home/welcome view  
-            Route::name('home')->get('/home', [HomeController::class, 'schemaHome']);
+              Route::name('home')->get('/schemaHome', [HomeController::class, 'schemaHome']);
 
-            Route::middleware(['verified'])->group(function () {
-              Route::controller(SchemaController::class)->group(function () {
+              Route::middleware(['verified'])->group(function () {
+                 Route::controller(SchemaController::class)->group(function () {
                     // Show one schema
-                  Route::name('index')->get('/schedule/show/{scheduleId}/{showHistory?}', 'index');
-                  // Show welcome for users with multiple schemas
-                  Route::name('welcome')->get('/welcome', 'welcome');
-                  //Show edit view for one user for  attendance update
-                  Route::name('showEdit')->get('/schedule/edit/{schedule}', 'showViewEdit');
-                  // Show user's schedules
-                 // Route::name('showMySchedules')->get('/schedule/showSchedules', 'showMySchedules');
-                  Route::name('showMySchedules')->get('/admin/schedule/showSchedules', 'showMySchedules');
+                    Route::name('index')->get('/schedule/show/{scheduleId}/{showHistory?}', 'index');
+                    // Show welcome for users with multiple schemas
+                    Route::name('welcome')->get('/welcome', 'welcome');
+                    //Show edit view for one user for  attendance update
+                    Route::name('showEdit')->get('/schedule/edit/{schedule}', 'showViewEdit');
+                    // Show user's schedules
+                    // Route::name('showMySchedules')->get('/schedule/showSchedules', 'showMySchedules');
+                    Route::name('showMySchedules')->get('/admin/schedule/showSchedules', 'showMySchedules');
 
+                    // Register or unregister for schemas
+                    Route::name('register')->post('/schedule/register', 'registerForSchemas');
 
-                   // Register or unregister for schemas
-                  Route::name('register')->post('/schedule/register', 'registerForSchemas');
+                    Route::name('release_2_2')->get('/schedule/release_2_2', 'showReleaseNotes_2_2');
 
-                  Route::name('release_2_2')->get('/schedule/release_2_2', 'showReleaseNotes_2_2');
-
-                    
                     // Update attendance (for one user)
                     Route::name('updateAttendance')->post('/schedule/updateAttendance', 'updateAttendance');
 
@@ -114,8 +111,7 @@ Route::group(// Comment out this when running tests
                        Route::name('showRegisterSchedule')->get('/admin/registerNewWchedule', 'showRegisterSchedule');
                        Route::name('registerNewSchedule')->post('/admin/registerNewSchedule', 'registerNewSchedule');
                        Route::name('updateSchedule')->post('/admin/updateSchedule', 'updateSchedule');
-
-                     });
+                    });
 
                     // Routes requiring admin authority on schedules /////////////////////////
                     Route::middleware(['isScheduleAdmin'])->group(function () {
@@ -127,8 +123,8 @@ Route::group(// Comment out this when running tests
                        // Show update/remove members view
                        Route::name('showNotConnectedMembers')->get('/admin/notConnectedmembers/{scheduleId}', 'showViewNotConnectedMembers');
                        Route::name('showViewAdminRegisterMember')->get('/admin/registerMember/{scheduleId}', 'showViewAdminRegisterMember');
-                       
-                        // Update "name in schema" or number and add member to a schedule
+
+                       // Update "name in schema" or number and add member to a schedule
                        Route::name('connectMember')->post('/admin/connectMember', 'connectMember');
 
                        // Update admin status or remove member from a schedule
