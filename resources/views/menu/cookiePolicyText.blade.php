@@ -1,0 +1,2 @@
+@lang('According to the EU General Data Protection Regulation (GDPR), we must inform that we use cookies on this website. We use cookies only to keep track of your login so that we show correct data for you, and to know when we must ask you to accept cookies next time (which we must do regularly).')
+<br>@lang('The cookie accept interval on this website is set to') {!! config('app.cookieLifetime') !!}  {{__('days')}}.

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ "$#" -ne 2 ]; then
+    echo 'Illegal number of parameters. Usage: gitCommit "commitComment"  branch (dev, demo or master)'
+else
+  VFILE="resources/views/version.blade.php"
+  TFILE="resources/views/versionTime.blade.php"
+  MAJOR="1"
+  MINOR="0"
+  PATCH="0"
+  echo $MAJOR.$MINOR.$PATCH  >  $VFILE
+  echo $(date "+%Y-%m-%d %H:%M")>  $TFILE
+  git status
+  git add  -A
+  git commit -m "$1"
+  git push origin "$2"
+fi

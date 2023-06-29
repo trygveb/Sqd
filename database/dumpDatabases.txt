@@ -1,0 +1,3 @@
+mysqldump -u trygve -p  -R schedule > schedule.sql
+mysqldump -u trygve -p  -R sdCalls > sdCalls.sql
+mysqldump -u trygve -p  -R sqd > sqd.sql

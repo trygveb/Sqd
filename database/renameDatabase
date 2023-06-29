@@ -1,0 +1,3 @@
+mysqldump -u trygve -p -R sdCalls > sdCalls.sql
+mysqladmin -u trygve -p create sdCallsOld
+php artisan db:wipe --database sdCalls
