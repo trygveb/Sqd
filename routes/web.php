@@ -75,10 +75,10 @@ Route::group(// Comment out this when running tests
 
 // Calls routes ///////////////////////////////////////////////////////////////
            Route::name('calls.')->group(function () {
-              Route::name('home')->get('/callsHome', [HomeController::class, 'callsHome']);
+              //Route::name('home')->get('/callsHome', [CallsController::class, 'callsHome']);
               Route::middleware(['verified'])->group(function () {
                  // Show application welcome view  
-                 Route::name('index')->get('/sdCalls/home', [CallsController::class, 'index']);
+                 Route::name('home')->get('/sdCalls/home', [CallsController::class, 'index']);
               });
            });
 // Schedule routes ///////////////////////////////////////////////////////////////

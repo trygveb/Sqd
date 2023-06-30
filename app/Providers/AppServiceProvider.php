@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use App\Models\User;
-
+use App\Classes\Utility;
 
 class AppServiceProvider extends ServiceProvider {
 
@@ -24,6 +24,7 @@ class AppServiceProvider extends ServiceProvider {
     * @return void
     */
    public function boot() {
+      Utility::startLogg();
       Blade::if('isAdmin', function (User $user) {
          return ($user->authority > 0);
       });

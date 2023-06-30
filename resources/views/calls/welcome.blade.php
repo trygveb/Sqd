@@ -1,4 +1,4 @@
-@extends('sdCalls.layout')
+@extends('calls.layout')
 
 @section('content')
 <div class="container">
@@ -8,9 +8,9 @@
     
    @guest
       <br>
-      <a style="pointer-events: none" class="nav-link" href="{{ route('showLoginForm',['application' =>'sdCalls']) }}">{{ __('Login') }}</a>
+      <a  class="nav-link" href="{{ route('showLoginForm',['application' =>'sdCalls']) }}">{{ __('Login') }}</a>
       {{ __('or') }}
-      <a style="pointer-events: none" class="nav-link" href="{{ route('showRegisterForm',['application' =>'sdCalls']) }}">{{ __('Register') }}</a>       
+      <a class="nav-link" href="{{ route('showRegisterForm',['application' =>'sdCalls']) }}">{{ __('Register') }}</a>       
    @endguest
    @auth
    @if (! Auth::user()->hasVerifiedEmail())

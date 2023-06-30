@@ -1,43 +1,47 @@
 <?php
 
 namespace App\Classes;
+
 use Illuminate\Support\Facades\Auth;
 use App\Models\Schedule\V_MemberSchedule;
+use Illuminate\Support\Facades\Storage;
 
 class Utility {
+
    /**
     * 
     * @param type $scheduleId
     * @return int =1 if user is ScheduleAdmin for the given schedule, else zero.
     */
-    public static function getAdminForSchedule($scheduleId) {
-        $adminForSchedule=0;
-        if (Auth::check()) {
-            $adminForSchedule = V_MemberSchedule::where('schedule_id', $scheduleId)
-                ->where('user_id', Auth::user()->id)
-                ->pluck('admin')
-                ->first();
-        }
-        return $adminForSchedule;
-     }
-   private static function logfile() {
-      return "x.log";
+   public static function getAdminForSchedule($scheduleId) {
+      $adminForSchedule = 0;
+      if (Auth::check()) {
+         $adminForSchedule = V_MemberSchedule::where('schedule_id', $scheduleId)
+                 ->where('user_id', Auth::user()->id)
+                 ->pluck('admin')
+                 ->first();
+      }
+      return $adminForSchedule;
    }
-   
+
+   private static function logfile() {
+      return "sdCalls.log";
+   }
+
    public static function startLogg() {
-      // Truncate log file
-        Storage::put(self::logFile(), '');
-        self::Logg('startLogg', 'start logging');
-        return true;
+      if (env('APPEND_LOG')) {
+         Storage::append(self::logFile(), '');
+      } else {
+         // Truncate log file
+         Storage::put(self::logFile(), '');
+      }
+      self::Logg('startLogg', 'start logging');
+      return true;
    }
 
    private static function logLevel() {
       return 1;
    }
-
- 
-
-
 
    public static function Logg($caller, $message, $print = false) {
       $timeStamp = Utility::LoggTimeFormat();
@@ -138,5 +142,4 @@ class Utility {
       return $result;
    }
 
-  
 }

@@ -30,7 +30,7 @@ class HomeController extends BaseController {
       $names['routeRoot']='calls';
      
 
-      return view('sdCalls.welcome')->with('names', $names);
+      return view('calls.welcome')->with('names', $names);
    }
 
    /**

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Hash;
 use Session;
-use App\Models\Schedule\Schedule;
+use App\Classes\Utility;
 use App\Models\User;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\Auth;
@@ -50,6 +50,7 @@ class CustomAuthController extends BaseController {
          }
          
          //return redirect()->intended('/home')->withSuccess('Signed in');
+         Utility::logg('customLogin: routeRoot=', $this->names()['routeRoot']);
          return redirect(route($this->names()['routeRoot'].'.home'));
       }
 

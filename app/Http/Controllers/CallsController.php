@@ -10,8 +10,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 
-class CallsController extends Controller {
-
+class CallsController extends BaseController {
+   
+   public function __construct() {
+      $this->middleware('auth');
+   }
    public function index() {
       if (Auth::check()) {
          $user = User::find(auth()->id());
@@ -24,6 +27,7 @@ class CallsController extends Controller {
       $programList = SdCallsUtility::GetProgramList();
       $maxRepeats = 25;
       $calls = SdCallsUtility::GetCalls($program_id);
-      return view('sdCalls.form1', compact('user', 'languageList', 'voiceTypeList', 'programList', 'calls', 'maxRepeats'));
+      $names=$this->names();
+      return view('calls.form1', compact('user', 'names', 'languageList', 'voiceTypeList', 'programList', 'calls', 'maxRepeats'));
    }
 }
