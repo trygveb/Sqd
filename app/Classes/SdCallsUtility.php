@@ -96,10 +96,10 @@ class SdCallsUtility {
    }
     public static function createPathName($fileName) {
         if (env('APP_ENV')=='local') {
-            $cmd= sprintf('cp /home/vagrant/Calls/storage/app/public/%s /home/vagrant/Calls/public/test',$fileName);
-            Utility::logg('SdCallsUtility->createMp3File',$cmd);
+            $cmd= sprintf('cp /home/vagrant/sqd/storage/app/public/%s /home/vagrant/sqd/public/test',$fileName);
+            Utility::logg('SdCallsUtility->createPathName',$cmd);
             $result = Process::run($cmd)->throw();;
-            Utility::logg('SdCallsUtility->createMp3File',$result->output());
+            Utility::logg('SdCallsUtility->createPathName',$result->output());
             $path= sprintf('test/%s', $fileName);
         } else {
            $path= sprintf('storage/%s', $fileName);
@@ -157,11 +157,13 @@ class SdCallsUtility {
    }
 
    public static function GetCalls($programId) {
+//      Utility::Logg("GetCalls, programId=", $programId);
       if ($programId == 0) {
          $vCallDefs = VCallDef::all();
       } else {
          $vCallDefs = VCallDef::where('program_id', $programId)->get();
       }
+     
 //      $collection = new Collection();
 //      foreach ($vCallDefs as $vCallDef) {
 //         $collection->push($vCallDef->call_name . ' from ' . $vCallDef->start_formation_name);

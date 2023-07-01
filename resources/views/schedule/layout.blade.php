@@ -1,5 +1,8 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+    <!--Layout used when user is not logged in-->
+
 @yield('title')
 <x-html-head title="SdSchema" />
 <body>

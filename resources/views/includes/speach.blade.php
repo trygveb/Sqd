@@ -45,7 +45,7 @@
         <tr id="mp3Row" style="display: none;">
             <td colspan="2" style="background-color: coral;">
 
-                <audio id="player" src="{{asset('storage/dummy.mp3')}}" controls style="pointer-events:none" >
+                <audio id="player"  controls style="pointer-events:none" >
                     <source id="audioSource"  type="audio/mpeg">
                 </audio>
             </td>

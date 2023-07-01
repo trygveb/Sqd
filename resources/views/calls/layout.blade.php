@@ -7,6 +7,8 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <x-html-head title="sdCalls" />
 
+<!--Layout used when user is not logged in-->
+
 <body>
     <div id="app">
         
