@@ -16,6 +16,7 @@ class CallsController extends BaseController {
       $this->middleware('auth');
    }
    public function index() {
+      Utility::Logg('CallsController', 'method index called');
       if (Auth::check()) {
          $user = User::find(auth()->id());
          $program_id=$user->program_id;

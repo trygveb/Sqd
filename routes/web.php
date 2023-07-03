@@ -75,9 +75,10 @@ Route::group(// Comment out this when running tests
 
 // Calls routes ///////////////////////////////////////////////////////////////
            Route::name('calls.')->group(function () {
+              Route::name('home')->get('/callsHome', [HomeController::class, 'callsHome']);
               Route::middleware(['verified'])->group(function () {
                  // Show application welcome view  
-                 Route::name('home')->get('/sdCalls/home', [CallsController::class, 'index']);
+                 Route::name('form1')->get('/calls', [CallsController::class, 'index']);
                  Route::post('/getCallList', [CallsController::class, 'getCallList'])->name('getCallList');   
                  Route::post('/getCallText', [CallsController::class, 'getCallText'])->name('getCallText');   
                  Route::post('/getVoiceList', [CallsController::class, 'getVoiceList'])->name('getVoiceList');   

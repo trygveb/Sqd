@@ -24,7 +24,6 @@
             <div class="card-header">SdCalls information</div>
                 <div class="card-body">
                     SdCalls is an application under development.<br>
-                    Currently theres is nothing to see here.<br>
                     Welcome back later!
                 </div>
          </div>

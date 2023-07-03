@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Schedule\V_MemberSchedule;
 use App\Http\Controllers\BaseController;
-
+use App\Classes\Utility;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Auth;
 
 //use Illuminate\Support\Facades\App;
@@ -25,12 +26,11 @@ class HomeController extends BaseController {
     * @return view
     */
    public function callsHome() {
-      $names= $this->names();
-      $names['application']='SdCalls';
       $names['routeRoot']='calls';
-     
-
-      return view('calls.welcome')->with('names', $names);
+      $names['application']='SdCalls';
+      Config::set('names', $names);
+      Utility::Logg('HomeController', sprintf('callsHome called names=%s', print_r($this->names())));
+      return view('calls.welcome')->with('names', $this->names());
    }
 
    /**
@@ -38,7 +38,7 @@ class HomeController extends BaseController {
     * @return view
     */
    public function home() {
-//      dd('Homecontroller:home 1');
+      Utility::Logg('HomeController', 'home called');      
       if ($this->names()['application']==='SdSchema') {
          return $this->schemaHome();
       } elseif ($this->names()['application']==='SdCalls') {
@@ -71,12 +71,14 @@ class HomeController extends BaseController {
     * @return view
     */
    public function schemaHome() {
+      $names['routeRoot']='schedule';
+      $names['application']='SdSchema';
+      Config::set('names', $names);      
+      Utility::Logg('HomeController', 'schemaHome called');
+
       $sub=$this->getSub();
   
       $urlRoot= sprintf('https://schema.%s%s', $sub,config('app.topDomain'));
-      $names= $this->names();
-      $names['application']='SdSchema';
-      $names['routeRoot']='schedule';
 //      dd('Homecontroller:schemaHome '.$urlRoot);
       //$application=$this->getApplication();
       if (Auth::check()) {
@@ -95,12 +97,12 @@ class HomeController extends BaseController {
          } else {
             return view('auth.verify-email-notice')
                ->with('emailVerified','NO')
-               ->with('names', $names);
+               ->with('names', $this->names());
          }
       }
       return view('schedule.welcome')
               ->with('mySchedulesCount' , 0)
-              ->with('names', $names);
+              ->with('names', $this->names());
 
 //      abort(403, 'Unauthorized action.');
    }

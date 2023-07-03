@@ -168,6 +168,8 @@ class CustomAuthController extends BaseController {
    }
 
    public function showLoginForm() {
+      Utility::Logg('CustomAuthController', sprintf('showLoginForm called, names=%s',
+              print_r($this->names(), true)));
       return view('auth.login', ['names' => $this->names()]);
    }
 
