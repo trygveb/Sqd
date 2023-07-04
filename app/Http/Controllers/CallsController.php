@@ -75,7 +75,6 @@ class CallsController extends BaseController {
       Utility::Logg('CallsController->createMp3File', 'Called');
       $callText = $request->callText;
      //$path = $request->path;
-      //Utility::Logg('CallsController->createMp3File','path='.$path);
       $voiceParams = [
           "languageCode" => $request->language,
           "name" => $request->voice_name,
@@ -83,6 +82,7 @@ class CallsController extends BaseController {
       ];
      // Utility::Logg('CallsController->createMp3File', print_r($voiceParams, true));
       $fileName=$request->path;
+      Utility::Logg('CallsController->createMp3File','fileName='.$fileName);
       
       $path=SdCallsUtility::createMp3File($fileName, $callText, $voiceParams);
      

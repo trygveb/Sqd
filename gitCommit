@@ -5,7 +5,7 @@ if [ "$#" -ne 3 ]; then
 else
     if [ $3 = all ]; then
         echo $(date "+%Y-%m-%d %H:%M")>  resources/views/versionTime.blade.php
-        echo $(date "+%Y-%m-%d %H:%M")>  resources/views/sdCalls/versionTime.blade.php
+        echo $(date "+%Y-%m-%d %H:%M")>  resources/views/calls/versionTime.blade.php
         echo $(date "+%Y-%m-%d %H:%M")>  resources/views/schedule/versionTime.blade.php
     elif [ $3 != none ]; then
             echo $(date "+%Y-%m-%d %H:%M")>  resources/views/$3/versionTime.blade.php

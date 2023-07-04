@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Storage;
 //use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Http\Request;
+use App\Classes\Utility;
 
 class SdCallsUtility {
 
@@ -61,6 +62,7 @@ class SdCallsUtility {
     */
    public static function createMp3File($fileName, $txt, $voiceParams) {
 //      try {
+      Utility::Logg('SdCallsUtility->createMp3File', 'Called');
          $textToSpeechClient = new TextToSpeechClient();
 
          $input = new SynthesisInput();
