@@ -15,7 +15,7 @@ class CallsController extends BaseController {
    public function __construct() {
       $this->middleware('auth');
    }
-   public function index() {
+   public function showForm1() {
       Utility::Logg('CallsController', 'method index called');
       if (Auth::check()) {
          $user = User::find(auth()->id());

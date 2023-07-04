@@ -24,7 +24,9 @@
             <div class="card-header">SdCalls information</div>
                 <div class="card-body">
                     SdCalls is an application under development.<br>
-                    Welcome back later!
+   @auth
+      <a href="{{route('calls.form1')}}">{{__('Goto Form 1')}}!</a>
+   @endauth
                 </div>
          </div>
       </div>
