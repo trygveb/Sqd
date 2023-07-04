@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Schedule\V_MemberSchedule;
 use App\Http\Controllers\BaseController;
 use App\Classes\Utility;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Auth;
 
 //use Illuminate\Support\Facades\App;
@@ -26,10 +25,8 @@ class HomeController extends BaseController {
     * @return view
     */
    public function callsHome() {
-      $names['routeRoot']='calls';
-      $names['application']='SdCalls';
-      Config::set('names', $names);
-      Utility::Logg('HomeController', sprintf('callsHome called names=%s', print_r($this->names())));
+      $this->setNames('calls');
+      Utility::Logg('HomeController', sprintf('callsHome called names=%s', print_r($this->names(), true)));
       return view('calls.welcome')->with('names', $this->names());
    }
 
@@ -39,14 +36,8 @@ class HomeController extends BaseController {
     */
    public function home() {
       Utility::Logg('HomeController', 'home called');      
-      if ($this->names()['application']==='SdSchema') {
-         return $this->schemaHome();
-      } elseif ($this->names()['application']==='SdCalls') {
-         return $this->callsHome();
-      }
-//      dd('Homecontroller:home 2');
+      $this->setNames('');
       return view('welcome')->with('names', $this->names());
-//      return view('errors.403');
    }
    
    /**
@@ -71,9 +62,7 @@ class HomeController extends BaseController {
     * @return view
     */
    public function schemaHome() {
-      $names['routeRoot']='schedule';
-      $names['application']='SdSchema';
-      Config::set('names', $names);      
+      $this->setNames('schedule');
       Utility::Logg('HomeController', 'schemaHome called');
 
       $sub=$this->getSub();
