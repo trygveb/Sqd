@@ -24,11 +24,11 @@ return new class extends Migration
             $table->decimal('voice_pitch', 4, 1)->default(0);
             $table->decimal('speaking_rate', 4)->default(1);
             $table->decimal('volume_gain_db', 4, 1)->default(0);
-            $table->unsignedBigInteger('program_id')->default(1);
+            $table->unsignedBigInteger('program_id')->default(3);
             $table->boolean('include_start_formation')->default(true);
             $table->boolean('include_end_formation')->default(true);
             $table->boolean('include_formations_in_repeats')->default(false);
-            $table->unsignedBigInteger('definition_id')->nullable()->index('users_FK');
+            $table->unsignedBigInteger('definition_id')->default(1)->index('users_FK');
             $table->unsignedTinyInteger('repeats')->default(2);
         });
     }
