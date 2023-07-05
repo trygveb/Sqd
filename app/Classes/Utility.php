@@ -29,7 +29,7 @@ class Utility {
    }
 
    public static function startLogg() {
-      if (env('APPEND_LOG')) {
+      if (env('APP_APPEND_LOG')) {
          Storage::append(self::logFile(), '');
       } else {
          // Truncate log file
@@ -40,7 +40,7 @@ class Utility {
    }
 
    private static function logLevel() {
-      return 1;
+      return env('APP_LOG_LEVEL');
    }
 
    public static function Logg($caller, $message, $print = false) {
@@ -50,9 +50,6 @@ class Utility {
       }
       if (self::logLevel() > 0) {
          Storage::append(self::logFile(), sprintf("%s %s: %s\n", $timeStamp, $caller, $message));
-         //$myfile = fopen(self::logFile(), 'a');
-//         fwrite($myfile, sprintf("%s %s: %s\n", $timeStamp, $caller, $message));
-//         fclose($myfile);
       }
    }
 

@@ -35,7 +35,7 @@
             @yield('content')
         </main>
    </div>
-   <x-footer subApp="sdCalls" />
+   <x-footer routeRoot="calls" />
 
    @yield('scripts')
    <!-- Scripts -->

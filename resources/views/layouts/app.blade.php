@@ -32,7 +32,7 @@
             @yield('content')
         </main>
     </div>
-   <x-footer subApp="{{$names['application']}}" />
+   <x-footer routeRoot="{{$names['routeRoot']}}" />
     @yield('scripts')
     <!-- Scripts -->
 <script>

@@ -6,15 +6,15 @@ use Illuminate\View\Component;
 
 class Footer extends Component
 {
-   public $subApp;
+   public $routeRoot;
    
    /**
     * Create a new component instance
     * @param type $subApp         (sqd.se, sdCalls, schedule)
     */
-    public function __construct($subApp)
+    public function __construct($routeRoot)
     {
-        $this->subApp= $subApp;
+        $this->routeRoot= $routeRoot;
     }
 
     /**

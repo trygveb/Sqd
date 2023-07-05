@@ -78,7 +78,7 @@ Route::group(// Comment out this when running tests
               Route::name('home')->get('/callsHome', [HomeController::class, 'callsHome']);
               Route::middleware(['verified'])->group(function () {
                  // Show application welcome view  
-                 Route::name('form1')->get('/calls', [CallsController::class, 'showForm1']);
+                 Route::name('form1')->get('/form1', [CallsController::class, 'showForm1']);
                  Route::post('/getCallList', [CallsController::class, 'getCallList'])->name('getCallList');   
                  Route::post('/getCallText', [CallsController::class, 'getCallText'])->name('getCallText');   
                  Route::post('/getVoiceList', [CallsController::class, 'getVoiceList'])->name('getVoiceList');   
@@ -89,7 +89,7 @@ Route::group(// Comment out this when running tests
 // Schedule routes ///////////////////////////////////////////////////////////////
            Route::name('schedule.')->group(function () {
               // Show application home/welcome view  
-              Route::name('home')->get('/schemaHome', [HomeController::class, 'schemaHome']);
+              Route::name('home')->get('/home', [HomeController::class, 'schemaHome']);
 
               Route::middleware(['verified'])->group(function () {
                  Route::controller(SchemaController::class)->group(function () {
