@@ -2,9 +2,9 @@
      <legend>Call</legend>
 
 
-     <div class="form-group">
+     <div class="form-group"  style="max-width:100px;">
          <label for="program_id">Program:</label>
-         <select class="form-control" name="program_id" id="program_id" onchange="GetCallList()">
+         <select class="form-control" name="program_id" id="program_id" onchange="GetCallList()" style="max-width:300px;">
              @foreach($programList as $key => $program)
              <option value="{{ $key }}" {{ old('program_id', $user->program_id) == $key ? 'selected' : '' }}>
                  {{ $program }}
@@ -14,15 +14,17 @@
      </div>
 
 
-     <div class="form-group">
+     <div class="form-group"  style="max-width:400px;">
          <label for="definition_id">Call:</label>
-         <select class="form-control" name="definition_id" id="definition_id">
+          <button style="float: right;" onclick="window.location='{{ URL::route('calls.newCall'); }}'">New call</button>
+         <select class="form-control" name="definition_id" id="definition_id" >
              @foreach($calls as $call)
              <option value="{{ $call->definition_id }}" {{ old('call', $user->call) == $call->definition_id ? 'selected' : '' }}>
                  {{ $call->call_name }} from {{ $call->start_formation_name }}
              </option>
              @endforeach
          </select>
+        
      </div>
 
      <br>

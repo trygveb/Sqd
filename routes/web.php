@@ -84,7 +84,10 @@ Route::group(// Comment out this when running tests
                  Route::post('/getVoiceList', [CallsController::class, 'getVoiceList'])->name('getVoiceList');   
                  Route::post('/createMp3File', [CallsController::class, 'createMp3File'])->name('createMp3File');   
                  Route::post('/calls/save', [CallsController::class, 'save'])->name('saveSettings');   
-              });
+                 
+                 Route::name('newCall')->get('/newCall', [CallsController::class, 'showNewCall']);
+                 Route::name('saveNewCallName')->post('/saveNewCallName', [CallsController::class, 'saveNewCallName']);
+                 });
            });
 // Schedule routes ///////////////////////////////////////////////////////////////
            Route::name('schedule.')->group(function () {

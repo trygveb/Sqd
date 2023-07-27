@@ -15,50 +15,7 @@ class CallsController extends BaseController {
    public function __construct() {
       $this->middleware('auth');
    }
-   public function showForm1() {
-      Utility::Logg('CallsController', 'method index called');
-      if (Auth::check()) {
-         $user = User::find(auth()->id());
-         $program_id=$user->program_id;
-      } else {
-
-      }
-      $languageList = SdCallsUtility::GetLanguageList();
-      $voiceTypeList = SdCallsUtility::GetVoiceTypeList();
-      $programList = SdCallsUtility::GetProgramList();
-      $maxRepeats = 25;
-      $calls = SdCallsUtility::GetCalls($program_id);
-       Utility::Logg("CallsController:index, calls", print_r($calls, true));
-       Utility::Logg("CallsController:index, languageList", print_r($languageList, true));
-       Utility::Logg("CallsController:index, voiceTypeList", print_r($voiceTypeList, true));
-       Utility::Logg("CallsController:index, programList", print_r($programList, true));
-      $names=$this->names();
-      return view('calls.form1', compact('user', 'names', 'languageList', 'voiceTypeList', 'programList', 'calls', 'maxRepeats'));
-   }
    
-   public function saveUser(Request $request) {
-      $user = User::find(auth()->id());
-      $user->language = $request->input('language');
-      $user->voice_type = $request->input('voice_type');
-      $user->voice_gender = $request->input('voice_gender');
-      $user->voice_pitch = floatval($request->input('voice_pitch'));
-      $user->speaking_rate = floatval($request->input('speaking_rate'));
-      $user->volume_gain_db = floatval($request->input('volume_gain'));
-      $user->voice_name = $request->input('voice_name');
-      $user->program_id = $request->input('program_id');
-      $user->include_start_formation = $request->input('include_start_formation') == 'true' ? 1 : 0;
-      $user->include_end_formation = $request->input('include_end_formation') == 'true' ? 1 : 0;
-      $user->definition_id = $request->input('definition_id');
-      $user->repeats = floatval($request->input('repeats'));
-      $user->include_formations_in_repeats = $request->input('include_formations_in_repeats') == 'true' ? 1 : 0;
-      try {
-         $user->save();
-      } catch (Exception $e) {
-         Utility::Logg('saveUser Exception=', $e->getMessage());
-      }
-
-      return redirect()->back()->with('success', 'Settings saved successfully.');
-   }
 
    public function getVoiceList(Request $request) {
       $voiceNames = SdCallsUtility::GetVoiceList($request->language, $request->voice_gender, $request->voice_type);
@@ -123,5 +80,63 @@ class CallsController extends BaseController {
 //      $createMp3FileAction->execute($definitionId, $callText[1]);
       return response()->json(array('callText' => $callText, 'from' => $from, 'endsIn' => $endsIn, 'path' => $path), 200);
    }
+   public function saveNewCallName(Request $request) {
+      Utility::Logg('CallsController', 'method saveNewCallName called');
+      return redirect()->back()->with('success', 'New Call  name saved successfully.');
+
+   }
+   public function saveUser(Request $request) {
+      $user = User::find(auth()->id());
+      $user->language = $request->input('language');
+      $user->voice_type = $request->input('voice_type');
+      $user->voice_gender = $request->input('voice_gender');
+      $user->voice_pitch = floatval($request->input('voice_pitch'));
+      $user->speaking_rate = floatval($request->input('speaking_rate'));
+      $user->volume_gain_db = floatval($request->input('volume_gain'));
+      $user->voice_name = $request->input('voice_name');
+      $user->program_id = $request->input('program_id');
+      $user->include_start_formation = $request->input('include_start_formation') == 'true' ? 1 : 0;
+      $user->include_end_formation = $request->input('include_end_formation') == 'true' ? 1 : 0;
+      $user->definition_id = $request->input('definition_id');
+      $user->repeats = floatval($request->input('repeats'));
+      $user->include_formations_in_repeats = $request->input('include_formations_in_repeats') == 'true' ? 1 : 0;
+      try {
+         $user->save();
+      } catch (Exception $e) {
+         Utility::Logg('saveUser Exception=', $e->getMessage());
+      }
+
+      return redirect()->back()->with('success', 'Settings saved successfully.');
+   }
+
+   public function showForm1() {
+      Utility::Logg('CallsController', 'method showForm1 called');
+      if (Auth::check()) {
+         $user = User::find(auth()->id());
+         $program_id=$user->program_id;
+      } else {
+
+      }
+      $languageList = SdCallsUtility::GetLanguageList();
+      $voiceTypeList = SdCallsUtility::GetVoiceTypeList();
+      $programList = SdCallsUtility::GetProgramList();
+      $maxRepeats = 25;
+      $calls = SdCallsUtility::GetCalls($program_id);
+//       Utility::Logg("CallsController:index, calls", print_r($calls, true));
+//       Utility::Logg("CallsController:index, languageList", print_r($languageList, true));
+//       Utility::Logg("CallsController:index, voiceTypeList", print_r($voiceTypeList, true));
+//       Utility::Logg("CallsController:index, programList", print_r($programList, true));
+      $names=$this->names();
+      return view('calls.form1', compact('user', 'names', 'languageList', 'voiceTypeList', 'programList', 'calls', 'maxRepeats'));
+   }
    
+   public function showNewCall() {
+      Utility::Logg('CallsController', 'method showNewCall called');
+      if (Auth::check()) {
+         $user = User::find(auth()->id());
+      }
+      $names=$this->names();
+      $programList = SdCallsUtility::GetProgramList();
+      return view('calls.newCall',compact('user', 'names', 'programList'));
+   }
 }
