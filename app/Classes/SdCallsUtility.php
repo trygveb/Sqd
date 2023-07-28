@@ -4,8 +4,11 @@ namespace App\Classes;
 
 use App\Models\Calls\Definition;
 use App\Models\Calls\DefinitionFragment;
+use App\Models\Calls\Formation;
 use App\Models\Calls\Fragment;
+use App\Models\Calls\Program;
 use App\Models\Calls\VCallDef;
+use App\Models\Calls\SdCall;
 use Google\Cloud\TextToSpeech\V1\TextToSpeechClient;
 use Google\Cloud\TextToSpeech\V1\VoiceSelectionParams;
 use Google\Cloud\TextToSpeech\V1\AudioConfig;
@@ -159,27 +162,31 @@ class SdCallsUtility {
    }
 
    public static function GetCalls($programId) {
-//      Utility::Logg("GetCalls, programId=", $programId);
       if ($programId == 0) {
          $vCallDefs = VCallDef::all();
       } else {
          $vCallDefs = VCallDef::where('program_id', $programId)->get();
       }
-     
-//      $collection = new Collection();
-//      foreach ($vCallDefs as $vCallDef) {
-//         $collection->push($vCallDef->call_name . ' from ' . $vCallDef->start_formation_name);
-//      }
       return $vCallDefs->unique('definition_id');
    }
-
+   public static function GetCallNames() {
+      $calls = SdCall::all();
+      return $calls;
+   }
+   
+   public static function GetFormationList() {
+      $list = Formation::all()->pluck('name', 'id')->unique();
+      $list[0] = '';
+      return $list;
+   }
    public static function GetLanguageList() {
       $list = ['en-US', 'en-AU', 'en-GB'];
       return $list;
    }
 
    public static function GetProgramList() {
-      $list = VCallDef::all()->pluck('program_name', 'program_id')->unique();
+      //$list = VCallDef::all()->pluck('program_name', 'program_id')->unique();
+      $list = Program::all()->pluck('name', 'id')->unique();
       $list[0] = 'All';
       return $list;
    }

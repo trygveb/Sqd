@@ -73,7 +73,7 @@ input {
     color:#ca7300;
     margin:5px;
 }
-form fieldset {
+fieldset {
     width:auto;
     max-width:650px;
     /*display:inline;*/

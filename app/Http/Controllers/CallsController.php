@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Classes\Utility;
 use App\Models\User;
 use App\Models\Calls\Definition;
+
 use App\Classes\SdCallsUtility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -81,7 +82,8 @@ class CallsController extends BaseController {
       return response()->json(array('callText' => $callText, 'from' => $from, 'endsIn' => $endsIn, 'path' => $path), 200);
    }
    public function saveNewCallName(Request $request) {
-      Utility::Logg('CallsController', 'method saveNewCallName called');
+      $call_name = $request->call_name;
+      Utility::Logg('CallsController', 'method saveNewCallName called, call name='.$call_name);
       return redirect()->back()->with('success', 'New Call  name saved successfully.');
 
    }
@@ -135,8 +137,10 @@ class CallsController extends BaseController {
       if (Auth::check()) {
          $user = User::find(auth()->id());
       }
+      $formationList= SdCallsUtility::GetFormationList();
       $names=$this->names();
       $programList = SdCallsUtility::GetProgramList();
-      return view('calls.newCall',compact('user', 'names', 'programList'));
+      $calls=SdCallsUtility::GetCallNames();
+      return view('calls.newCall',compact('user', 'names', 'calls', 'programList', 'formationList'));
    }
 }
