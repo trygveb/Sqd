@@ -139,8 +139,9 @@ class CallsController extends BaseController {
       }
       $formationList= SdCallsUtility::GetFormationList();
       $names=$this->names();
+      $fragmentList = SdCallsUtility::GetFragmentList();
       $programList = SdCallsUtility::GetProgramList();
       $calls=SdCallsUtility::GetCallNames();
-      return view('calls.newCall',compact('user', 'names', 'calls', 'programList', 'formationList'));
+      return view('calls.newCall',compact('user', 'names', 'calls', 'programList', 'formationList', 'fragmentList'));
    }
 }

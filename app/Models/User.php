@@ -73,6 +73,9 @@ class User extends Authenticatable implements MustVerifyEmailContract, CanResetP
       return $memberSchedules;
    }
 
+   public function isCallsAdministrator() {
+      return ($this->authority >= 1);
+   }
    public function isScheduleAdministrator() {
       return ($this->authority >= 1);
    }

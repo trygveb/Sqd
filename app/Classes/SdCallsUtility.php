@@ -179,13 +179,16 @@ class SdCallsUtility {
       $list[0] = '';
       return $list;
    }
+   public static function GetFragmentList() {
+      $list = Fragment::all()->pluck('text', 'id')->unique();
+      return $list;
+   }
    public static function GetLanguageList() {
       $list = ['en-US', 'en-AU', 'en-GB'];
       return $list;
    }
 
    public static function GetProgramList() {
-      //$list = VCallDef::all()->pluck('program_name', 'program_id')->unique();
       $list = Program::all()->pluck('name', 'id')->unique();
       $list[0] = 'All';
       return $list;

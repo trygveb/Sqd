@@ -3,7 +3,9 @@
  @include('includes.program') 
      <div class="form-group"  style="max-width:400px;">
          <label for="definition_id">Call:</label>
+         @if ($user->isCallsAdministrator())
           <button style="float: right;" onclick="window.location='{{ URL::route('calls.newCall'); }}'">New call</button>
+         @endif
          <select class="form-control" name="definition_id" id="definition_id" >
              @foreach($calls as $call)
              <option value="{{ $call->definition_id }}" {{ old('call', $user->call) == $call->definition_id ? 'selected' : '' }}>

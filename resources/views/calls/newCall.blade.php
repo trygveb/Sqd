@@ -35,6 +35,8 @@
  @include('includes.program')
  @include('includes.startFormation')
  @include('includes.endFormation')
+ <x-fragment seqNo="1" :fragmentList=$fragmentList/>
+ <x-fragment seqNo="2" :fragmentList=$fragmentList/>
             </form>
             </fieldset>
          </fieldset>
