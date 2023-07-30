@@ -85,8 +85,9 @@ Route::group(// Comment out this when running tests
                  Route::post('/createMp3File', [CallsController::class, 'createMp3File'])->name('createMp3File');   
                  Route::post('/calls/save', [CallsController::class, 'save'])->name('saveSettings');   
                  
+                 Route::name('editCall')->get('/editCall', [CallsController::class, 'showEditCall']);
                  Route::name('newCall')->get('/newCall', [CallsController::class, 'showNewCall']);
-                 Route::name('saveNewCallName')->post('/saveNewCallName', [CallsController::class, 'saveNewCallName']);
+                 Route::name('saveCall')->post('/saveCall', [CallsController::class, 'saveCall']);
                  });
            });
 // Schedule routes ///////////////////////////////////////////////////////////////

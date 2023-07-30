@@ -81,11 +81,10 @@ class CallsController extends BaseController {
 //      $createMp3FileAction->execute($definitionId, $callText[1]);
       return response()->json(array('callText' => $callText, 'from' => $from, 'endsIn' => $endsIn, 'path' => $path), 200);
    }
-   public function saveNewCallName(Request $request) {
+   public function saveCall(Request $request) {
       $call_name = $request->call_name;
       Utility::Logg('CallsController', 'method saveNewCallName called, call name='.$call_name);
       return redirect()->back()->with('success', 'New Call  name saved successfully.');
-
    }
    public function saveUser(Request $request) {
       $user = User::find(auth()->id());
@@ -130,6 +129,18 @@ class CallsController extends BaseController {
 //       Utility::Logg("CallsController:index, programList", print_r($programList, true));
       $names=$this->names();
       return view('calls.form1', compact('user', 'names', 'languageList', 'voiceTypeList', 'programList', 'calls', 'maxRepeats'));
+   }
+   public function showEditCall() {
+      Utility::Logg('CallsController', 'method showEditCall called');
+      if (Auth::check()) {
+         $user = User::find(auth()->id());
+      }
+      $formationList= SdCallsUtility::GetFormationList();
+      $names=$this->names();
+      $fragmentList = SdCallsUtility::GetFragmentList();
+      $programList = SdCallsUtility::GetProgramList();
+      $calls=SdCallsUtility::GetCallNames();
+      return view('calls.editCall',compact('user', 'names', 'calls', 'programList', 'formationList', 'fragmentList'));
    }
    
    public function showNewCall() {

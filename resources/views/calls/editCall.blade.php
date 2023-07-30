@@ -5,16 +5,21 @@
    <div class="row justify-content-center">
       <div class="col-md-8" style="max-width:500px;">
          <fieldset>
-             <legend>New Call</legend>
+            <legend>Edit call</legend>
             <form method="POST" action="{{ route('calls.saveCall',['data' => 1])}}">
-
             @csrf
-               <div class="form-group">
-                  <label for="call_name">Call name:</label>
-                  <input class="form-control" name="call_name" id="call_name">
+            
+
+               <div class="form-group"  style="max-width:500px;">
+                  <label for="program_id">Call:</label>
+                  <select class="form-control" name="call_id" id="call_id" >
+                      @foreach($calls as $call)
+                      <option value="{{ $call->id }}"}}>
+                          {{ $call->name }}
+                      </option>
+                      @endforeach
+                  </select>
                </div>
-          
-              
 @include('includes.program')
 @include('includes.startFormation')
 @include('includes.endFormation')
@@ -24,11 +29,10 @@
                <x-fragment seqNo="4" :fragmentList=$fragmentList :visible=false />
                <x-fragment seqNo="5" :fragmentList=$fragmentList :visible=false />
                <x-fragment seqNo="6" :fragmentList=$fragmentList :visible=false />
-               <x-submit-button submitText="{{__('Add')}} {{__('call')}}" cancelText="{{ __('Cancel')}}" cancelUrl="{{route('calls.newCall', ['data' => 1])}}" />
-
+               <x-submit-button submitText="{{__('Save')}} {{__('call')}}" cancelText="{{ __('Cancel')}}" cancelUrl="{{route('calls.editCall', ['data' => 1])}}" />
+               
             </form>
-         
-         </fieldset>
+            </fieldset>
         </div>
     </div>
 </div>
