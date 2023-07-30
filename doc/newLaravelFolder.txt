@@ -1,0 +1,13 @@
+In :/var/www/sqd.se/test/: mkdir laravel.new
+cd laravel.new
+git init -b main
+git remote add origin https://github.com/trygveb/Sqd.git
+git pull origin test
+mkdir storage/framework
+mkdir storage/framework/sessions
+mkdir storage/framework/views
+mkdir storage/framework/cache
+composer install
+sudo find . -type d -exec chmod 775 {} \;
+sudo find . -type f -exec chmod 664 {} \;
+sudo chown –R trygve:www-data .
