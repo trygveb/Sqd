@@ -191,7 +191,6 @@ function editCall() {
 		type: 'GET',
 		success: function(response) {
 			$('body').html(response.html)
-         window.history.replaceState("object or string", "Title", "/editCall");
 		}
 	});
    

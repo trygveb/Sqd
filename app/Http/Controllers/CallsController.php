@@ -141,8 +141,6 @@ class CallsController extends BaseController {
       $programList = SdCallsUtility::GetProgramList();
       $calls=SdCallsUtility::GetCallNames();
       $returnHTML = view('calls.editCall_1', compact('user', 'names', 'calls', 'programList', 'formationList', 'fragmentList'))->render();
-      Utility::Logg('CallsController', 'returnHTML='.$returnHTML);
-      //return view($returnHTML);
       return response()->json(array('success' => true, 'html'=>$returnHTML));      
       //return view('calls.editCall',compact('user', 'names', 'calls', 'programList', 'formationList', 'fragmentList'));
    }
