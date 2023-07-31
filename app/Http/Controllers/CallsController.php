@@ -130,8 +130,8 @@ class CallsController extends BaseController {
       $names=$this->names();
       return view('calls.form1', compact('user', 'names', 'languageList', 'voiceTypeList', 'programList', 'calls', 'maxRepeats'));
    }
-   public function showEditCall() {
-      Utility::Logg('CallsController', 'method showEditCall called');
+   public function showEditCall($definitionId) {
+      Utility::Logg('CallsController', 'method showEditCall called, id='.$definitionId);
       if (Auth::check()) {
          $user = User::find(auth()->id());
       }
@@ -140,7 +140,11 @@ class CallsController extends BaseController {
       $fragmentList = SdCallsUtility::GetFragmentList();
       $programList = SdCallsUtility::GetProgramList();
       $calls=SdCallsUtility::GetCallNames();
-      return view('calls.editCall',compact('user', 'names', 'calls', 'programList', 'formationList', 'fragmentList'));
+      $returnHTML = view('calls.editCall_1', compact('user', 'names', 'calls', 'programList', 'formationList', 'fragmentList'))->render();
+      Utility::Logg('CallsController', 'returnHTML='.$returnHTML);
+      //return view($returnHTML);
+      return response()->json(array('success' => true, 'html'=>$returnHTML));      
+      //return view('calls.editCall',compact('user', 'names', 'calls', 'programList', 'formationList', 'fragmentList'));
    }
    
    public function showNewCall() {

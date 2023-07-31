@@ -175,7 +175,27 @@ function GetCallList() {
    });
 }
 
-
+function editCall() {
+   $.ajaxSetup({
+      headers: {
+         'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+      }
+   });
+   const definition_id= $('select[name="definition_id" ]').val(); 
+   
+   const url = `/editCall/${definition_id}`;
+   console.log(url);
+	$.ajax({
+      dataType: 'json',
+		url:url,
+		type: 'GET',
+		success: function(response) {
+			$('body').html(response.html)
+         window.history.replaceState("object or string", "Title", "/editCall");
+		}
+	});
+   
+}
 
 </script>
 @endsection

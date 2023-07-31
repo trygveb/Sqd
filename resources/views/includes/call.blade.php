@@ -3,9 +3,10 @@
  @include('includes.program') 
      <div class="form-group"  style="max-width:400px;">
          <label for="definition_id">Call:</label>
+        
          @if ($user->isCallsAdministrator())
           <button style="float: right;" onclick="window.location='{{ URL::route('calls.newCall'); }}'">New call</button>
-          <button style="float: right;" onclick="window.location='{{ URL::route('calls.editCall'); }}'">Edit call</button>
+          <button style="float: right;" onclick="editCall()" >Edit call</button>
          @endif
          <select class="form-control" name="definition_id" id="definition_id" >
              @foreach($calls as $call)
@@ -31,3 +32,4 @@
       <button class="btn btn-primary" onClick="getCallText()">Get Call text</button>
 
 </fieldset>
+
