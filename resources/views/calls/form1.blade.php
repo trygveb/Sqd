@@ -190,7 +190,9 @@ function editCall() {
 		url:url,
 		type: 'GET',
 		success: function(response) {
-			$('body').html(response.html)
+			$('body').html(response.html);
+         selectElement('call_id', response.call_id);
+         
 		}
 	});
    

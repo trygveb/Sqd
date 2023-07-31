@@ -131,17 +131,19 @@ class CallsController extends BaseController {
       return view('calls.form1', compact('user', 'names', 'languageList', 'voiceTypeList', 'programList', 'calls', 'maxRepeats'));
    }
    public function showEditCall($definitionId) {
-      Utility::Logg('CallsController', 'method showEditCall called, id='.$definitionId);
       if (Auth::check()) {
          $user = User::find(auth()->id());
       }
+      $definition= Definition::find($definitionId);
+      Utility::Logg('CallsController', 'method showEditCall called, id='.print_r($definition, true));
       $formationList= SdCallsUtility::GetFormationList();
       $names=$this->names();
       $fragmentList = SdCallsUtility::GetFragmentList();
       $programList = SdCallsUtility::GetProgramList();
       $calls=SdCallsUtility::GetCallNames();
-      $returnHTML = view('calls.editCall_1', compact('user', 'names', 'calls', 'programList', 'formationList', 'fragmentList'))->render();
-      return response()->json(array('success' => true, 'html'=>$returnHTML));      
+      $returnHTML = view('calls.editCall', 
+              compact('definition', 'user', 'names', 'calls', 'programList', 'formationList', 'fragmentList'))->render();
+      return response()->json(array('success' => true, 'html'=>$returnHTML, 'call_id'=>$definition->call_id));      
       //return view('calls.editCall',compact('user', 'names', 'calls', 'programList', 'formationList', 'fragmentList'));
    }
    
