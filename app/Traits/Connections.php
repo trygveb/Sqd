@@ -15,7 +15,7 @@ trait Connections {
       return env('DB_DATABASE_SCHEDULE', 'schedule');
    }
    public static function calls_connection() {
-      return env('DB_DATABASE_SCHEDULE', 'calls');
+      return env('DB_DATABASE_SD_CALLS', 'calls');
    }
 
 }

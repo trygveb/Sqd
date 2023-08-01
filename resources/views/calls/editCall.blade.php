@@ -6,7 +6,7 @@
       <div class="col-md-8" style="max-width:500px;">
          <fieldset>
             <legend>Edit call {{$definition->program_id}}-{{$definition->call_id}}-{{$definition->start_end_formation_id}}</legend>
-            <form method="POST" action="{{ route('calls.saveCall',['data' => 1])}}" >
+            <form method="POST" action="{{ route('calls.saveCall')}}" >
             @csrf
               <div class="form-group"  style="max-width:500px;">
                   <label for="program_id">Call:</label>
