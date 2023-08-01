@@ -191,8 +191,21 @@ function editCall() {
 		type: 'GET',
 		success: function(response) {
 			$('body').html(response.html);
+         console.log(response.fragments);
+         json= JSON.parse(response.fragments);
+         //[{"id":8,"definition_id":4,"fragment_id":8,"seq_no":1,"part_no":null},{"id":9,"definition_id":4,"fragment_id":9,"seq_no":2,"part_no":null}]
+         var i=1;
+         json.forEach(function(obj) {
+            console.log(obj.fragment_id);
+            document.getElementById('div_id_' + i).style.display='block';
+            selectElement('fragment_id_' + i, obj.fragment_id);
+            i++;
+         });
+
          selectElement('call_id', response.call_id);
-         
+         selectElement('program_id', response.program_id);
+         selectElement('start_formation_id', response.start_formation_id);
+         selectElement('end_formation_id', response.end_formation_id);
 		}
 	});
    

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Classes\Utility;
 use App\Models\User;
 use App\Models\Calls\Definition;
+use App\Models\Calls\StartEndFormation;
+use App\Models\Calls\DefinitionFragment;
 
 use App\Classes\SdCallsUtility;
 use Illuminate\Http\Request;
@@ -131,11 +133,14 @@ class CallsController extends BaseController {
       return view('calls.form1', compact('user', 'names', 'languageList', 'voiceTypeList', 'programList', 'calls', 'maxRepeats'));
    }
    public function showEditCall($definitionId) {
+      Utility::Logg('CallsController', 'method showEditCall called, definitionId='.$definitionId);
       if (Auth::check()) {
          $user = User::find(auth()->id());
       }
       $definition= Definition::find($definitionId);
-      Utility::Logg('CallsController', 'method showEditCall called, id='.print_r($definition, true));
+      $startEndFormation= StartEndFormation::find($definition->start_end_formation_id);
+      $definitionFragments= DefinitionFragment::where('definition_id',$definitionId)->get()->toArray();
+      Utility::Logg('CallsController', 'definitionFragments fetched, definitionFragments='.print_r($definitionFragments, true));
       $formationList= SdCallsUtility::GetFormationList();
       $names=$this->names();
       $fragmentList = SdCallsUtility::GetFragmentList();
@@ -143,7 +148,15 @@ class CallsController extends BaseController {
       $calls=SdCallsUtility::GetCallNames();
       $returnHTML = view('calls.editCall', 
               compact('definition', 'user', 'names', 'calls', 'programList', 'formationList', 'fragmentList'))->render();
-      return response()->json(array('success' => true, 'html'=>$returnHTML, 'call_id'=>$definition->call_id));      
+      return response()->json(array(
+          'success' => true,
+          'html' => $returnHTML,
+          'call_id' => $definition->call_id,
+          'program_id' => $definition->program_id,
+          'start_formation_id' => $startEndFormation->start_formation_id,
+          'end_formation_id' => $startEndFormation->end_formation_id,
+          'fragments' => json_encode($definitionFragments)
+              ));      
       //return view('calls.editCall',compact('user', 'names', 'calls', 'programList', 'formationList', 'fragmentList'));
    }
    
