@@ -83,9 +83,21 @@ class CallsController extends BaseController {
    }
 
    public function saveCall(Request $request) {
-      $call_name = $request->call_name;
-      Utility::Logg('CallsController', 'method saveNewCallName called, call name=' . $call_name);
-      return redirect()->back()->with('success', 'New Call  name saved successfully.');
+      $callName = $request->call_name_1;
+      $callId= $request->call_id_1;
+      Utility::Logg('CallsController', 'method saveCall call id='.$callId.', call name=' . $callName);
+      $programId= $request->program_id;
+      Utility::Logg('CallsController', 'method saveCall program id='.$programId);
+      $startFormationId= $request->start_formation_id;
+      $endFormationId= $request->end_formation_id;
+      Utility::Logg('CallsController', 'method saveCall startFormation id='.$startFormationId);
+      Utility::Logg('CallsController', 'method saveCall endFormation id='.$endFormationId);
+      for ($seqNo=1; $seqNo<=6; $seqNo++) {
+         $selectName= sprintf('fragment_id_%d', $seqNo);
+         $fragmentId= $request->$selectName;
+         Utility::Logg('CallsController', 'method saveCall fragment id='.$fragmentId);
+      }
+      return redirect()->back()->with('success', 'Call  saved successfully.');
    }
 
    public function saveUser(Request $request) {
@@ -113,7 +125,7 @@ class CallsController extends BaseController {
    }
 
    public function showForm1() {
-      Utility::Logg('CallsController', 'method showForm1 called');
+//      Utility::Logg('CallsController', 'method showForm1 called');
       if (Auth::check()) {
          $user = User::find(auth()->id());
          $program_id = $user->program_id;
@@ -134,28 +146,33 @@ class CallsController extends BaseController {
    }
 
    public function showEditCall($definitionId) {
-      Utility::Logg('CallsController', 'method showEditCall, definitionId=' . $definitionId);
+//      Utility::Logg('CallsController', 'method showEditCall, definitionId=' . $definitionId);
       if (Auth::check()) {
          $user = User::find(auth()->id());
       }
       $definition = Definition::find($definitionId);
       $startEndFormation = StartEndFormation::find($definition->start_end_formation_id);
       $definitionFragments = DefinitionFragment::where('definition_id', $definitionId)->get()->toArray();
-      Utility::Logg('CallsController', 'definitionFragments fetched, definitionFragments=' . print_r($definitionFragments, true));
+      
+      if length($definitionFragments) < 6
+         add fragments with id=0
+              
+//      Utility::Logg('CallsController', 'definitionFragments fetched, definitionFragments=' . print_r($definitionFragments, true));
       $formationList = SdCallsUtility::GetFormationList();
       $names = $this->names();
       $fragmentList = SdCallsUtility::GetFragmentList();
       $programList = SdCallsUtility::GetProgramList();
       //$calls = SdCallsUtility::GetCallNames();
-      $callName = SdCall::find($definition->call_id)->name;
+      $callId= $definition->call_id;
+      $callName = SdCall::find($callId)->name;
 //      Utility::Logg('CallsController', 'method showEditCall, callName=' . $callName);
       $returnHTML = view('calls.editCall',
-              compact('definition', 'user', 'names', 'callName', 'programList', 'formationList', 'fragmentList'))->render();
+              compact('definition', 'user', 'names', 'callName', 'callId', 'programList', 'formationList', 'fragmentList'))->render();
 //      Utility::Logg('CallsController', 'method showEditCall, $returnHTML=' . $returnHTML);
       return response()->json(array(
                   'success' => true,
                   'html' => $returnHTML,
-                  'call_id' => $definition->call_id,
+                  'call_id' => $callId,
                   'program_id' => $definition->program_id,
                   'start_formation_id' => $startEndFormation->start_formation_id,
                   'end_formation_id' => $startEndFormation->end_formation_id,

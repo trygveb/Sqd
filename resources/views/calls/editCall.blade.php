@@ -11,6 +11,7 @@
               <div class="form-group">
                   <label for="call_name_1">Call name:</label>
                   <input type="text" maxlength=120 size=40 name="call_name_1" id="call_name_1" required value="{{$callName}}">
+                  <input type="hidden" maxlength=12 size=8 name="call_id_1" id="call_id_1" required value="{{$callId}}">
                </div>
 @include('includes.program')
 @include('includes.startFormation')
