@@ -5,18 +5,12 @@
    <div class="row justify-content-center">
       <div class="col-md-8" style="max-width:500px;">
          <fieldset>
-            <legend>Edit call {{$definition->program_id}}-{{$definition->call_id}}-{{$definition->start_end_formation_id}}</legend>
+            <legend>Edit call</legend>
             <form method="POST" action="{{ route('calls.saveCall')}}" >
             @csrf
-              <div class="form-group"  style="max-width:500px;">
-                  <label for="program_id">Call:</label>
-                  <select class="form-control" name="call_id" id="call_id" >
-                      @foreach($calls as $call)
-                      <option value="{{ $call->id }}"}}>
-                          {{ $call->name }}
-                      </option>
-                      @endforeach
-                  </select>
+              <div class="form-group">
+                  <label for="call_name_1">Call name:</label>
+                  <input type="text" maxlength=120 size=40 name="call_name_1" id="call_name_1" required value="{{$callName}}">
                </div>
 @include('includes.program')
 @include('includes.startFormation')

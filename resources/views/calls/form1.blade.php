@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8" style="max-width:450px;">
+        <div class="col-md-8" style="max-width:900px;">
             <!--<form method="GET" action="">-->
                  @csrf
                 <fieldset>
@@ -44,8 +44,6 @@ function createMp3Text() {
 }
 function createMp3File() {
    console.log('createMp3File');
-//   console.log($("#callText").html());
-//   console.log('path='+$("#path").html());
    $.ajaxSetup({
       headers: {
          'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
@@ -191,18 +189,25 @@ function editCall() {
 		type: 'GET',
 		success: function(response) {
 			$('body').html(response.html);
-         console.log(response.fragments);
+         //console.log(response.fragments);
          json= JSON.parse(response.fragments);
          //[{"id":8,"definition_id":4,"fragment_id":8,"seq_no":1,"part_no":null},{"id":9,"definition_id":4,"fragment_id":9,"seq_no":2,"part_no":null}]
          var i=1;
          json.forEach(function(obj) {
-            console.log(obj.fragment_id);
+            //console.log(obj.fragment_type_id);
             document.getElementById('div_id_' + i).style.display='block';
             selectElement('fragment_id_' + i, obj.fragment_id);
+            if ({{$fragmentTypeParanthesisId}}==obj.fragment_type_id) {
+               //console.log('Parantehsis');
+               var element= document.getElementById('fragment_id_' + i);
+               var selectedText = element.options[element.selectedIndex].text; 
+               element.options[element.selectedIndex].text= '('+selectedText+')'
+            }
             i++;
          });
 
-         selectElement('call_id', response.call_id);
+         //selectElement('call_id', response.call_id);
+         //document.getElementById('call_name_1').value= response.call_name;
          selectElement('program_id', response.program_id);
          selectElement('start_formation_id', response.start_formation_id);
          selectElement('end_formation_id', response.end_formation_id);

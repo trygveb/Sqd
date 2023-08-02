@@ -1,7 +1,7 @@
 <fieldset>
      <legend>Call</legend>
  @include('includes.program') 
-     <div class="form-group"  style="max-width:400px;">
+     <div class="form-group">
          <label for="definition_id">Call:</label>
         
          @if ($user->isCallsAdministrator())
@@ -19,13 +19,13 @@
      </div>
 
      <br>
-      <p id="startFormation" style="width:400px;height:50px;background-color: #333;">
+      <p id="startFormation" style="height:50px;background-color: #333;">
        <br><br>
        <div  style="margin-left:auto; margin-right:auto; height: 100px; overflow-y: scroll;">
-      <p id="callText" style="width:400px;height:100px;background-color: #333;">
+      <p id="callText" style="height:100px;background-color: #333;">
        </div>
        <br><br>
-      <p id="endFormation" style="width:400px;height:50px;background-color: #333;">
+      <p id="endFormation" style="height:50px;background-color: #333;">
       </p>
 
       <p id="file_name"></p>

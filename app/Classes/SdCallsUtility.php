@@ -47,8 +47,8 @@ class SdCallsUtility {
             }
          }
          $fragment = Fragment::find($fragmentId);
-         if ($fragment->type_id == 2) {
-            $txt .= ' (' . $fragment->text . ')';
+         if ($definitionFragment->fragment_type_id == 2) {
+            $txt .= '  (' . $fragment->text . ')';
          } else {
             $txt .= ' ' . $fragment->text;
          }

@@ -5,20 +5,18 @@ namespace App\Http\Controllers;
 use App\Classes\Utility;
 use App\Models\User;
 use App\Models\Calls\Definition;
+use App\Models\Calls\SdCall;
 use App\Models\Calls\StartEndFormation;
 use App\Models\Calls\DefinitionFragment;
-
 use App\Classes\SdCallsUtility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
 class CallsController extends BaseController {
-   
+
    public function __construct() {
       $this->middleware('auth');
    }
-   
 
    public function getVoiceList(Request $request) {
       $voiceNames = SdCallsUtility::GetVoiceList($request->language, $request->voice_gender, $request->voice_type);
@@ -34,18 +32,18 @@ class CallsController extends BaseController {
    public function createMp3File(Request $request) {
       Utility::Logg('CallsController->createMp3File', 'Called');
       $callText = $request->callText;
-     //$path = $request->path;
+      //$path = $request->path;
       $voiceParams = [
           "languageCode" => $request->language,
           "name" => $request->voice_name,
           "speakingRate" => $request->speaking_rate
       ];
-     // Utility::Logg('CallsController->createMp3File', print_r($voiceParams, true));
-      $fileName=$request->path;
-      Utility::Logg('CallsController->createMp3File','fileName='.$fileName);
-      
-      $path=SdCallsUtility::createMp3File($fileName, $callText, $voiceParams);
-     
+      // Utility::Logg('CallsController->createMp3File', print_r($voiceParams, true));
+      $fileName = $request->path;
+      Utility::Logg('CallsController->createMp3File', 'fileName=' . $fileName);
+
+      $path = SdCallsUtility::createMp3File($fileName, $callText, $voiceParams);
+
       return response()->json(array('path' => asset($path)), 200);
    }
 
@@ -83,11 +81,13 @@ class CallsController extends BaseController {
 //      $createMp3FileAction->execute($definitionId, $callText[1]);
       return response()->json(array('callText' => $callText, 'from' => $from, 'endsIn' => $endsIn, 'path' => $path), 200);
    }
+
    public function saveCall(Request $request) {
       $call_name = $request->call_name;
-      Utility::Logg('CallsController', 'method saveNewCallName called, call name='.$call_name);
+      Utility::Logg('CallsController', 'method saveNewCallName called, call name=' . $call_name);
       return redirect()->back()->with('success', 'New Call  name saved successfully.');
    }
+
    public function saveUser(Request $request) {
       $user = User::find(auth()->id());
       $user->language = $request->input('language');
@@ -116,9 +116,9 @@ class CallsController extends BaseController {
       Utility::Logg('CallsController', 'method showForm1 called');
       if (Auth::check()) {
          $user = User::find(auth()->id());
-         $program_id=$user->program_id;
+         $program_id = $user->program_id;
       } else {
-
+         
       }
       $languageList = SdCallsUtility::GetLanguageList();
       $voiceTypeList = SdCallsUtility::GetVoiceTypeList();
@@ -129,47 +129,51 @@ class CallsController extends BaseController {
 //       Utility::Logg("CallsController:index, languageList", print_r($languageList, true));
 //       Utility::Logg("CallsController:index, voiceTypeList", print_r($voiceTypeList, true));
 //       Utility::Logg("CallsController:index, programList", print_r($programList, true));
-      $names=$this->names();
+      $names = $this->names();
       return view('calls.form1', compact('user', 'names', 'languageList', 'voiceTypeList', 'programList', 'calls', 'maxRepeats'));
    }
+
    public function showEditCall($definitionId) {
-      Utility::Logg('CallsController', 'method showEditCall called, definitionId='.$definitionId);
+      Utility::Logg('CallsController', 'method showEditCall, definitionId=' . $definitionId);
       if (Auth::check()) {
          $user = User::find(auth()->id());
       }
-      $definition= Definition::find($definitionId);
-      $startEndFormation= StartEndFormation::find($definition->start_end_formation_id);
-      $definitionFragments= DefinitionFragment::where('definition_id',$definitionId)->get()->toArray();
-      Utility::Logg('CallsController', 'definitionFragments fetched, definitionFragments='.print_r($definitionFragments, true));
-      $formationList= SdCallsUtility::GetFormationList();
-      $names=$this->names();
+      $definition = Definition::find($definitionId);
+      $startEndFormation = StartEndFormation::find($definition->start_end_formation_id);
+      $definitionFragments = DefinitionFragment::where('definition_id', $definitionId)->get()->toArray();
+      Utility::Logg('CallsController', 'definitionFragments fetched, definitionFragments=' . print_r($definitionFragments, true));
+      $formationList = SdCallsUtility::GetFormationList();
+      $names = $this->names();
       $fragmentList = SdCallsUtility::GetFragmentList();
       $programList = SdCallsUtility::GetProgramList();
-      $calls=SdCallsUtility::GetCallNames();
-      $returnHTML = view('calls.editCall', 
-              compact('definition', 'user', 'names', 'calls', 'programList', 'formationList', 'fragmentList'))->render();
+      //$calls = SdCallsUtility::GetCallNames();
+      $callName = SdCall::find($definition->call_id)->name;
+//      Utility::Logg('CallsController', 'method showEditCall, callName=' . $callName);
+      $returnHTML = view('calls.editCall',
+              compact('definition', 'user', 'names', 'callName', 'programList', 'formationList', 'fragmentList'))->render();
+//      Utility::Logg('CallsController', 'method showEditCall, $returnHTML=' . $returnHTML);
       return response()->json(array(
-          'success' => true,
-          'html' => $returnHTML,
-          'call_id' => $definition->call_id,
-          'program_id' => $definition->program_id,
-          'start_formation_id' => $startEndFormation->start_formation_id,
-          'end_formation_id' => $startEndFormation->end_formation_id,
-          'fragments' => json_encode($definitionFragments)
-              ));      
-      //return view('calls.editCall',compact('user', 'names', 'calls', 'programList', 'formationList', 'fragmentList'));
+                  'success' => true,
+                  'html' => $returnHTML,
+                  'call_id' => $definition->call_id,
+                  'program_id' => $definition->program_id,
+                  'start_formation_id' => $startEndFormation->start_formation_id,
+                  'end_formation_id' => $startEndFormation->end_formation_id,
+                  'fragments' => json_encode($definitionFragments)
+      ));
    }
-   
+
    public function showNewCall() {
       Utility::Logg('CallsController', 'method showNewCall called');
       if (Auth::check()) {
          $user = User::find(auth()->id());
       }
-      $formationList= SdCallsUtility::GetFormationList();
-      $names=$this->names();
+      $formationList = SdCallsUtility::GetFormationList();
+      $names = $this->names();
       $fragmentList = SdCallsUtility::GetFragmentList();
       $programList = SdCallsUtility::GetProgramList();
-      $calls=SdCallsUtility::GetCallNames();
-      return view('calls.newCall',compact('user', 'names', 'calls', 'programList', 'formationList', 'fragmentList'));
+      $calls = SdCallsUtility::GetCallNames();
+      return view('calls.newCall', compact('user', 'names', 'calls', 'programList', 'formationList', 'fragmentList'));
    }
+
 }
