@@ -55,7 +55,7 @@ class Definition extends Model {
 
    public function fragments() {
       return $this->belongsToMany(Fragment::class, 'definition_fragments')
-                      ->withPivot('id', 'seq_no', 'fragment_id', 'part_no');
+                      ->withPivot('id', 'seq_no', 'fragment_id', 'fragment_type_id', 'part_no');
    }
 
    public function getAllFragmentTextsAttribute() {

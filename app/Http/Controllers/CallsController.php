@@ -106,13 +106,19 @@ class CallsController extends BaseController {
          $startEndFormation= $this->getStartEndFormation($startFormationId, $endFormationId);
          $definition->start_end_formation_id = $startEndFormation->id;
          $definition->save();
+         $fragments= $definition->fragments;
+//          Utility::Logg('CallsController', 'method saveCall, fragments count='.$fragments->count());
+         foreach ($fragments as $fragment) {
+            Utility::Logg('CallsController', 'method saveCall, fragment definition_id='.$fragment->pivot->definition_id);
+            Utility::Logg('CallsController', 'method saveCall, fragment seq_no='.$fragment->pivot->seq_no);
+         }
          for ($seqNo = 1; $seqNo <= 6; $seqNo++) {
             $selectName = sprintf('fragment_id_%d', $seqNo);
             $fragmentId = $request->$selectName;
             if ($fragmentId > 0) {
                
             }
-            Utility::Logg('CallsController', 'method saveCall fragment id=' . $fragmentId);
+            //Utility::Logg('CallsController', 'method saveCall fragment id=' . $fragmentId);
          }
       } catch (\Illuminate\Database\QueryException $ex) {
          DB::rollback();
