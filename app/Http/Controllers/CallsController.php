@@ -11,6 +11,7 @@ use App\Models\Calls\DefinitionFragment;
 use App\Classes\SdCallsUtility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CallsController extends BaseController {
 
@@ -84,20 +85,60 @@ class CallsController extends BaseController {
 
    public function saveCall(Request $request) {
       $callName = $request->call_name_1;
-      $callId= $request->call_id_1;
-      Utility::Logg('CallsController', 'method saveCall call id='.$callId.', call name=' . $callName);
-      $programId= $request->program_id;
-      Utility::Logg('CallsController', 'method saveCall program id='.$programId);
-      $startFormationId= $request->start_formation_id;
-      $endFormationId= $request->end_formation_id;
-      Utility::Logg('CallsController', 'method saveCall startFormation id='.$startFormationId);
-      Utility::Logg('CallsController', 'method saveCall endFormation id='.$endFormationId);
-      for ($seqNo=1; $seqNo<=6; $seqNo++) {
-         $selectName= sprintf('fragment_id_%d', $seqNo);
-         $fragmentId= $request->$selectName;
-         Utility::Logg('CallsController', 'method saveCall fragment id='.$fragmentId);
+      $callId = $request->call_id_1;
+      $definitionId = $request->definition_id;
+//      Utility::Logg('CallsController', 'method saveCall call id='.$callId.', call name=' . $callName);
+      $programId = $request->program_id;
+//      Utility::Logg('CallsController', 'method saveCall program id='.$programId);
+      $startFormationId = $request->start_formation_id;
+      $endFormationId = $request->end_formation_id;
+
+//      Utility::Logg('CallsController', 'method saveCall startFormation id='.$startFormationId);
+//      Utility::Logg('CallsController', 'method saveCall endFormation id='.$endFormationId);
+      DB::beginTransaction();
+      try {
+         $sdCall = SdCall::find($callId);
+         $sdCall->name = $callName;
+         $sdCall->save();
+         $definition = Definition::find($definitionId);
+         $definition->program_id = $programId;
+         $definition->call_id = $callId;
+         $startEndFormation= $this->getStartEndFormation($startFormationId, $endFormationId);
+         $definition->start_end_formation_id = $startEndFormation->id;
+         $definition->save();
+         for ($seqNo = 1; $seqNo <= 6; $seqNo++) {
+            $selectName = sprintf('fragment_id_%d', $seqNo);
+            $fragmentId = $request->$selectName;
+            if ($fragmentId > 0) {
+               
+            }
+            Utility::Logg('CallsController', 'method saveCall fragment id=' . $fragmentId);
+         }
+      } catch (\Illuminate\Database\QueryException $ex) {
+         DB::rollback();
+         Utility::Logg('CallsController', 'Database error=' . $ex->getMessage());
+         return redirect()->back()->with('error', 'A database error occurred, please contact support.');
       }
+      DB::commit();
       return redirect()->back()->with('success', 'Call  saved successfully.');
+   }
+
+   private function getStartEndFormation($startFormationId, $endFormationId) {
+      // Try to find existing StartEndFormation
+      // if not found, create a new
+
+      StartEndFormation::where('start_formation_id', $startFormationId)
+              ->where('end_formation_id', $endFormationId)
+              ->firstOr(function ()  use($startFormationId, $endFormationId) {
+                  $startEndFormation = new StartEndFormation();
+                  $startEndFormation->start_formation_id = $startFormationId;
+                  $startEndFormation->end_formation_id = $endFormationId;
+                  $startEndFormation->save();
+      });
+      $startEndFormation = StartEndFormation::where('start_formation_id', $startFormationId)
+              ->where('end_formation_id', $endFormationId)
+              ->first();
+      return $startEndFormation;
    }
 
    public function saveUser(Request $request) {
@@ -136,13 +177,13 @@ class CallsController extends BaseController {
       $voiceTypeList = SdCallsUtility::GetVoiceTypeList();
       $programList = SdCallsUtility::GetProgramList();
       $maxRepeats = 25;
-      $calls = SdCallsUtility::GetCalls($program_id);
+      $vCallDefs = SdCallsUtility::GetCalls($program_id);
 //       Utility::Logg("CallsController:index, calls", print_r($calls, true));
 //       Utility::Logg("CallsController:index, languageList", print_r($languageList, true));
 //       Utility::Logg("CallsController:index, voiceTypeList", print_r($voiceTypeList, true));
 //       Utility::Logg("CallsController:index, programList", print_r($programList, true));
       $names = $this->names();
-      return view('calls.form1', compact('user', 'names', 'languageList', 'voiceTypeList', 'programList', 'calls', 'maxRepeats'));
+      return view('calls.form1', compact('user', 'names', 'languageList', 'voiceTypeList', 'programList', 'vCallDefs', 'maxRepeats'));
    }
 
    public function showEditCall($definitionId) {
@@ -153,22 +194,17 @@ class CallsController extends BaseController {
       $definition = Definition::find($definitionId);
       $startEndFormation = StartEndFormation::find($definition->start_end_formation_id);
       $definitionFragments = DefinitionFragment::where('definition_id', $definitionId)->get()->toArray();
-      
-      if length($definitionFragments) < 6
-         add fragments with id=0
-              
 //      Utility::Logg('CallsController', 'definitionFragments fetched, definitionFragments=' . print_r($definitionFragments, true));
       $formationList = SdCallsUtility::GetFormationList();
       $names = $this->names();
       $fragmentList = SdCallsUtility::GetFragmentList();
       $programList = SdCallsUtility::GetProgramList();
       //$calls = SdCallsUtility::GetCallNames();
-      $callId= $definition->call_id;
+      $callId = $definition->call_id;
       $callName = SdCall::find($callId)->name;
 //      Utility::Logg('CallsController', 'method showEditCall, callName=' . $callName);
       $returnHTML = view('calls.editCall',
               compact('definition', 'user', 'names', 'callName', 'callId', 'programList', 'formationList', 'fragmentList'))->render();
-//      Utility::Logg('CallsController', 'method showEditCall, $returnHTML=' . $returnHTML);
       return response()->json(array(
                   'success' => true,
                   'html' => $returnHTML,

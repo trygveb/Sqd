@@ -9,9 +9,9 @@
           <button style="float: right;" onclick="editCall()" >Edit call</button>
          @endif
          <select class="form-control" name="definition_id" id="definition_id" >
-             @foreach($calls as $call)
-             <option value="{{ $call->definition_id }}" {{ old('call', $user->call) == $call->definition_id ? 'selected' : '' }}>
-                 {{ $call->call_name }} from {{ $call->start_formation_name }}
+             @foreach($vCallDefs as $vCallDef)
+             <option value="{{ $vCallDef->definition_id }}" {{ old('call', $user->call) == $vCallDef->definition_id ? 'selected' : '' }}>
+                 {{ $vCallDef->call_name }} from {{ $vCallDef->start_formation_name }}
              </option>
              @endforeach
          </select>

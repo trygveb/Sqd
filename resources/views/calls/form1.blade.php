@@ -7,6 +7,7 @@
             <!--<form method="GET" action="">-->
                  @csrf
                 <fieldset>
+ @include('includes.reportError')             
  @include('includes.call')                   
 
                <div class="form-group form-check">

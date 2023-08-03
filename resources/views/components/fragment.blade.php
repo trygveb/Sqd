@@ -8,6 +8,10 @@
       <button id="{{$buttonName}}" style="float:right;" onclick="plusClicked({{$seqNo}});return false;">+</button>
    @endif
    <select class="form-control" name="{{$selectName}}" id="{{$selectName}}" >
+      <option value="0">
+           
+      </option>
+
        @foreach($fragmentList as $key => $fragmentText)
        <option value="{{ $key }}">
            {{ $fragmentText }}

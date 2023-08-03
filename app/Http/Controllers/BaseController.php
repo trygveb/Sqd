@@ -15,7 +15,7 @@ class BaseController extends Controller {
          $this->setNames();
       }
       $names = session('names');
-      Utility::Logg('BaseController->names()', sprintf('names=%s', print_r($names, true)));
+//      Utility::Logg('BaseController->names()', sprintf('names=%s', print_r($names, true)));
       if ($names['application'] === '' || $names['routeRoot'] === '') {
          return $this->setNames();
       } else {
