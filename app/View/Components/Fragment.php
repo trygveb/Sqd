@@ -8,6 +8,7 @@ class Fragment extends Component
 {
    public $seqNo;
    public $buttonName;
+   public $checkbox1Name;
    public $divName;
    public $selectName;
    public $fragmentList;
@@ -22,6 +23,7 @@ class Fragment extends Component
         $this->seqNo= $seqNo;
         $this->fragmentList= $fragmentList;
         $this->buttonName= sprintf('button_id_%d', $seqNo);
+        $this->checkbox1Name= sprintf('checkbox1_id_%d', $seqNo);
         $this->divName= sprintf('div_id_%d', $seqNo);
         $this->selectName= sprintf('fragment_id_%d', $seqNo);
         $this->visible= $visible;

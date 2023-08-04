@@ -4,6 +4,8 @@
 <div id="{{$divName}}" class="form-group"  style="display: none;">
 @endif
    <label for="{{$selectName}}">Call text fragment {{$seqNo}}:</label>
+   <input type="checkbox" id="{{$checkbox1Name}}" name="{{$checkbox1Name}}" style="margin-left:20px;">
+   <label for="{{$checkbox1Name}}">Secondary</label>
    @if ($seqNo<6)
       <button id="{{$buttonName}}" style="float:right;" onclick="plusClicked({{$seqNo}});return false;">+</button>
    @endif

@@ -200,9 +200,11 @@ function editCall() {
             selectElement('fragment_id_' + i, obj.fragment_id);
             if ({{$fragmentTypeParanthesisId}}==obj.fragment_type_id) {
                //console.log('Parantehsis');
-               var element= document.getElementById('fragment_id_' + i);
-               var selectedText = element.options[element.selectedIndex].text; 
-               element.options[element.selectedIndex].text= '('+selectedText+')'
+               checkboxElement=document.getElementById('checkbox1_id_' + i);
+               checkboxElement.checked = true;
+               var fragmentElement= document.getElementById('fragment_id_' + i);
+               var selectedText = fragmentElement.options[fragmentElement.selectedIndex].text; 
+               fragmentElement.options[fragmentElement.selectedIndex].text= '('+selectedText+')'
             }
             i++;
          });

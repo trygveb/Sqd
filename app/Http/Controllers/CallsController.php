@@ -103,22 +103,22 @@ class CallsController extends BaseController {
          $definition = Definition::find($definitionId);
          $definition->program_id = $programId;
          $definition->call_id = $callId;
-         $startEndFormation= $this->getStartEndFormation($startFormationId, $endFormationId);
+         $startEndFormation = $this->getStartEndFormation($startFormationId, $endFormationId);
          $definition->start_end_formation_id = $startEndFormation->id;
          $definition->save();
-         $fragments= $definition->fragments;
+         $fragments = $definition->fragments;
 //          Utility::Logg('CallsController', 'method saveCall, fragments count='.$fragments->count());
          foreach ($fragments as $fragment) {
-            Utility::Logg('CallsController', 'method saveCall, fragment definition_id='.$fragment->pivot->definition_id);
-            Utility::Logg('CallsController', 'method saveCall, fragment seq_no='.$fragment->pivot->seq_no);
+//            Utility::Logg('CallsController', 'method saveCall, fragment definition_id='.$fragment->pivot->definition_id);
+//            Utility::Logg('CallsController', 'method saveCall, fragment seq_no='.$fragment->pivot->seq_no);
+//            Utility::Logg('CallsController', 'method saveCall, destroy definition_fragments with id=' . $fragment->pivot->id);
+            DefinitionFragment::destroy($fragment->pivot->id);
          }
          for ($seqNo = 1; $seqNo <= 6; $seqNo++) {
-            $selectName = sprintf('fragment_id_%d', $seqNo);
-            $fragmentId = $request->$selectName;
-            if ($fragmentId > 0) {
-               
+            $definitionFragment = $this->getDefinitionFragment($request, $definitionId, $seqNo);
+            if ($definitionFragment->seq_no > 0) {
+               $definitionFragment->save();
             }
-            //Utility::Logg('CallsController', 'method saveCall fragment id=' . $fragmentId);
          }
       } catch (\Illuminate\Database\QueryException $ex) {
          DB::rollback();
@@ -129,18 +129,38 @@ class CallsController extends BaseController {
       return redirect()->back()->with('success', 'Call  saved successfully.');
    }
 
+   private function getDefinitionFragment($request, $definitionId, $seqNo) {
+      $selectName = sprintf('fragment_id_%d', $seqNo);
+      $fragmentId = $request->$selectName;
+      $checkbox1Name = sprintf('checkbox1_id_%d', $seqNo);
+      $secondary = $request->$checkbox1Name;
+      $definitionFragment = new DefinitionFragment();
+      $definitionFragment->fragment_type_id= 1;
+      $definitionFragment->seq_no = 0;   // Do not save $definitionFragment with seq_no=0
+      if ($fragmentId > 0) {
+         $definitionFragment->definition_id = $definitionId;
+         $definitionFragment->fragment_id = $fragmentId;
+         $definitionFragment->seq_no = $seqNo;
+//               Utility::Logg('CallsController', 'method saveCall,insert DefinitionFragment: '.print_r($definitionFragment, true));
+      }
+      if ($secondary == 'on') {
+         $definitionFragment->fragment_type_id = 2;
+      } 
+      return $definitionFragment;
+   }
+
    private function getStartEndFormation($startFormationId, $endFormationId) {
       // Try to find existing StartEndFormation
       // if not found, create a new
 
       StartEndFormation::where('start_formation_id', $startFormationId)
               ->where('end_formation_id', $endFormationId)
-              ->firstOr(function ()  use($startFormationId, $endFormationId) {
-                  $startEndFormation = new StartEndFormation();
-                  $startEndFormation->start_formation_id = $startFormationId;
-                  $startEndFormation->end_formation_id = $endFormationId;
-                  $startEndFormation->save();
-      });
+              ->firstOr(function () use ($startFormationId, $endFormationId) {
+                 $startEndFormation = new StartEndFormation();
+                 $startEndFormation->start_formation_id = $startFormationId;
+                 $startEndFormation->end_formation_id = $endFormationId;
+                 $startEndFormation->save();
+              });
       $startEndFormation = StartEndFormation::where('start_formation_id', $startFormationId)
               ->where('end_formation_id', $endFormationId)
               ->first();
