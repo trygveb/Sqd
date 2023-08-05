@@ -142,37 +142,6 @@ function GetVoiceList() {
       }
    });
 }
-function GetCallList() {
-   $("#definition_id").empty();
-   $.ajaxSetup({
-      headers: {
-         'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-      }
-   });
-   programId=$('#program_id').find(":selected").val();
-   var formData = {
-         _token: '<?php echo csrf_token() ?>',
-         program_id:programId
-     };
-
-   $.ajax({
-      type:'POST',
-      url:'/getCallList',
-      data:formData,
-      success:function(data) {
-         var arr = Object.values(data);
-         // Populate listbox definition_id
-         select_elem= document.getElementById("definition_id");
-         arr.forEach((element, index) => {
-//           console.log(element);
-           let option_elem = document.createElement('option');
-           option_elem.value = element.definition_id;
-           option_elem.textContent = element.call_name + ', ' + element.program_name + ', from ' + element.start_formation_name;
-           select_elem.appendChild(option_elem);
-         }); 
-      }      
-   });
-}
 
 function editCall() {
    $.ajaxSetup({
@@ -182,13 +151,14 @@ function editCall() {
    });
    const definition_id= $('select[name="definition_id" ]').val(); 
    
-   const url = `/editCall/${definition_id}`;
+   const url = `/editCall/${definition_id}/edit`;
    console.log(url);
 	$.ajax({
       dataType: 'json',
 		url:url,
 		type: 'GET',
 		success: function(response) {
+         console.log('success');
 			$('body').html(response.html);
          //console.log(response.fragments);
          json= JSON.parse(response.fragments);
@@ -216,7 +186,7 @@ function editCall() {
          document.getElementById('minus_button_id_' + n).style.display='block';
          //selectElement('call_id', response.call_id);
          //document.getElementById('call_name_1').value= response.call_name;
-         selectElement('program_id', response.program_id);
+//         selectElement('program_id', response.program_id);
          selectElement('start_formation_id', response.start_formation_id);
          selectElement('end_formation_id', response.end_formation_id);
 		}

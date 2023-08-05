@@ -210,7 +210,13 @@ class CallsController extends BaseController {
       return view('calls.form1', compact('user', 'names', 'languageList', 'voiceTypeList', 'programList', 'vCallDefs', 'maxRepeats'));
    }
 
-   public function showEditCall($definitionId) {
+   /**
+    * 
+    * @param type $definitionId
+    * @param type $mode "edit" or "new"
+    * @return type
+    */
+   public function showEditCall($definitionId, $mode) {
 //      Utility::Logg('CallsController', 'method showEditCall, definitionId=' . $definitionId);
       if (Auth::check()) {
          $user = User::find(auth()->id());
@@ -230,9 +236,10 @@ class CallsController extends BaseController {
       //$calls = SdCallsUtility::GetCallNames();
       $callId = $definition->call_id;
       $callName = SdCall::find($callId)->name;
-//      Utility::Logg('CallsController', 'method showEditCall, callName=' . $callName);
+      
+//      Utility::Logg('CallsController', 'method showEditCall, callName=' . $callName . ', mode='.$mode);
       $returnHTML = view('calls.editCall',
-              compact('definition', 'user', 'names', 'callName', 'callId', 'programList', 'formationList', 'fragmentList'))->render();
+              compact('mode', 'definition', 'user', 'names', 'callName', 'callId', 'programList', 'formationList', 'fragmentList'))->render();
       return response()->json(array(
                   'success' => true,
                   'html' => $returnHTML,
