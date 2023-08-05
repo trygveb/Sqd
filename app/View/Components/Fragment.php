@@ -7,7 +7,8 @@ use Illuminate\View\Component;
 class Fragment extends Component
 {
    public $seqNo;
-   public $buttonName;
+   public $plusButtonName;
+   public $minusButtonName;
    public $checkbox1Name;
    public $divName;
    public $selectName;
@@ -22,7 +23,8 @@ class Fragment extends Component
     {
         $this->seqNo= $seqNo;
         $this->fragmentList= $fragmentList;
-        $this->buttonName= sprintf('button_id_%d', $seqNo);
+        $this->plusButtonName= sprintf('plus_button_id_%d', $seqNo);
+        $this->minusButtonName= sprintf('minus_button_id_%d', $seqNo);
         $this->checkbox1Name= sprintf('checkbox1_id_%d', $seqNo);
         $this->divName= sprintf('div_id_%d', $seqNo);
         $this->selectName= sprintf('fragment_id_%d', $seqNo);

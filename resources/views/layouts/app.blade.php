@@ -43,6 +43,22 @@
       let element = document.getElementById(id);
       element.value = valueToSelect;
    }
+   function minusClicked(seqNo) {
+      console.log('minusClicked '+seqNo);
+      var fragmentElement= document.getElementById('fragment_id_' + seqNo);
+      fragmentElement.value=0;
+      document.getElementById('div_id_' + (seqNo)).style.display='none';
+      document.getElementById('plus_button_id_' + (seqNo-1)).style.display='block';
+      document.getElementById('minus_button_id_' + (seqNo-1)).style.display='block';
+   }
+   function plusClicked(seqNo) {
+      console.log('plusClicked '+seqNo);
+      document.getElementById('div_id_' + (seqNo+1)).style.display='block';
+      document.getElementById('plus_button_id_' + (seqNo)).style.display='none';
+      document.getElementById('minus_button_id_' + (seqNo)).style.display='none';
+      document.getElementById('plus_button_id_' + (seqNo+1)).style.display='block';
+      document.getElementById('minus_button_id_' + (seqNo+1)).style.display='block';
+   }   
 </script>
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
@@ -52,6 +68,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <!--<script src="https://www.google.com/recaptcha/api.js"></script>-->
 
-<script src="{{asset('js/sqd.js')}}"></script>
+
 </body>
 </html>

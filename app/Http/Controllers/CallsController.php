@@ -109,14 +109,12 @@ class CallsController extends BaseController {
          $fragments = $definition->fragments;
 //          Utility::Logg('CallsController', 'method saveCall, fragments count='.$fragments->count());
          foreach ($fragments as $fragment) {
-//            Utility::Logg('CallsController', 'method saveCall, fragment definition_id='.$fragment->pivot->definition_id);
-//            Utility::Logg('CallsController', 'method saveCall, fragment seq_no='.$fragment->pivot->seq_no);
-//            Utility::Logg('CallsController', 'method saveCall, destroy definition_fragments with id=' . $fragment->pivot->id);
             DefinitionFragment::destroy($fragment->pivot->id);
          }
          for ($seqNo = 1; $seqNo <= 6; $seqNo++) {
             $definitionFragment = $this->getDefinitionFragment($request, $definitionId, $seqNo);
             if ($definitionFragment->seq_no > 0) {
+//               Utility::Logg('CallsController', 'method saveCall, save definitionFragment '.$seqNo);
                $definitionFragment->save();
             }
          }
@@ -219,7 +217,11 @@ class CallsController extends BaseController {
       }
       $definition = Definition::find($definitionId);
       $startEndFormation = StartEndFormation::find($definition->start_end_formation_id);
-      $definitionFragments = DefinitionFragment::where('definition_id', $definitionId)->get()->toArray();
+      $definitionFragments = DefinitionFragment::where('definition_id', $definitionId)
+         ->get()
+         ->sortBy('seq_no')
+         ->values()
+         ->toArray();
 //      Utility::Logg('CallsController', 'definitionFragments fetched, definitionFragments=' . print_r($definitionFragments, true));
       $formationList = SdCallsUtility::GetFormationList();
       $names = $this->names();

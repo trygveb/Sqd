@@ -33,10 +33,6 @@ function GetCallList() {
 // Called from includes.program when user changes program
 // Not used in this form
 }
-function plusClicked(seqNo) {
-   console.log('plusClicked '+seqNo);
-   document.getElementById('div_id_' + (seqNo+1)).style.display='block';
-   document.getElementById('button_id_' + (seqNo)).style.display='none';
-}
+
 </script>
 @endsection

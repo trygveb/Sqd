@@ -7,13 +7,12 @@
    <input type="checkbox" id="{{$checkbox1Name}}" name="{{$checkbox1Name}}" style="margin-left:20px;">
    <label for="{{$checkbox1Name}}">Secondary</label>
    @if ($seqNo<6)
-      <button id="{{$buttonName}}" style="float:right;" onclick="plusClicked({{$seqNo}});return false;">+</button>
+      <button id="{{$minusButtonName}}" style="float:right;display: none;" onclick="minusClicked({{$seqNo}});return false;">-</button>
+      <button id="{{$plusButtonName}}" style="float:right;display: none;" onclick="plusClicked({{$seqNo}});return false;">+</button>
    @endif
    <select class="form-control" name="{{$selectName}}" id="{{$selectName}}" >
       <option value="0">
-           
       </option>
-
        @foreach($fragmentList as $key => $fragmentText)
        <option value="{{ $key }}">
            {{ $fragmentText }}

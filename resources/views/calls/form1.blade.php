@@ -195,8 +195,10 @@ function editCall() {
          //[{"id":8,"definition_id":4,"fragment_id":8,"seq_no":1,"part_no":null},{"id":9,"definition_id":4,"fragment_id":9,"seq_no":2,"part_no":null}]
          var i=1;
          json.forEach(function(obj) {
-            //console.log(obj.fragment_type_id);
+            //console.log(obj.fragment_type_id
+            //Show the div containing the fragment listbox (hidden by default)
             document.getElementById('div_id_' + i).style.display='block';
+            // Select the list item in the listbox
             selectElement('fragment_id_' + i, obj.fragment_id);
             if ({{$fragmentTypeParanthesisId}}==obj.fragment_type_id) {
                //console.log('Parantehsis');
@@ -208,7 +210,10 @@ function editCall() {
             }
             i++;
          });
-
+         var n= i-1;
+         // Show plus and minus buttons on last fragment only
+         document.getElementById('plus_button_id_' + n).style.display='block';
+         document.getElementById('minus_button_id_' + n).style.display='block';
          //selectElement('call_id', response.call_id);
          //document.getElementById('call_name_1').value= response.call_name;
          selectElement('program_id', response.program_id);
