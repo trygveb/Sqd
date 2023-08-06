@@ -216,8 +216,7 @@ class CallsController extends BaseController {
     * @param type $mode "edit" or "new"
     * @return type
     */
-   public function showEditCall($definitionId, $mode) {
-//      Utility::Logg('CallsController', 'method showEditCall, definitionId=' . $definitionId);
+   public function showEditCall($definitionId) {
       if (Auth::check()) {
          $user = User::find(auth()->id());
       }
@@ -236,7 +235,7 @@ class CallsController extends BaseController {
       //$calls = SdCallsUtility::GetCallNames();
       $callId = $definition->call_id;
       $callName = SdCall::find($callId)->name;
-      
+      $mode='edit';
 //      Utility::Logg('CallsController', 'method showEditCall, callName=' . $callName . ', mode='.$mode);
       $returnHTML = view('calls.editCall',
               compact('mode', 'definition', 'user', 'names', 'callName', 'callId', 'programList', 'formationList', 'fragmentList'))->render();
@@ -261,7 +260,15 @@ class CallsController extends BaseController {
       $fragmentList = SdCallsUtility::GetFragmentList();
       $programList = SdCallsUtility::GetProgramList();
       $calls = SdCallsUtility::GetCallNames();
-      return view('calls.newCall', compact('user', 'names', 'calls', 'programList', 'formationList', 'fragmentList'));
+      $mode='new';
+      Utility::Logg('CallsController', 'method showNewCall called, creating returnHTML');
+      $returnHTML = view('calls.editCall',
+              compact('mode', 'user', 'names', 'programList', 'formationList', 'fragmentList'))->render();
+      Utility::Logg('CallsController', 'method showNewCall called, returnHTML created');
+      return response()->json(array(
+                  'success' => true,
+                  'html' => $returnHTML
+      ));
    }
 
 }

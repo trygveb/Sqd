@@ -5,8 +5,8 @@
          <label for="definition_id">Call:</label>
         
          @if ($user->isCallsAdministrator())
-          <button style="float: right;" onclick="window.location='{{ URL::route('calls.newCall'); }}'">New call</button>
-          <button style="float: right;" onclick="editCall()" >Edit call</button>
+          <button style="float: right;"  onclick="newCall()">New definition</button>
+          <button style="float: right;" onclick="editCall()" >Edit definition</button>
          @endif
          <select class="form-control" name="definition_id" id="definition_id" >
              @foreach($vCallDefs as $vCallDef)

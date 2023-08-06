@@ -151,7 +151,7 @@ function editCall() {
    });
    const definition_id= $('select[name="definition_id" ]').val(); 
    
-   const url = `/editCall/${definition_id}/edit`;
+   const url = `/editCall/${definition_id}`;
    console.log(url);
 	$.ajax({
       dataType: 'json',
@@ -184,11 +184,35 @@ function editCall() {
          // Show plus and minus buttons on last fragment only
          document.getElementById('plus_button_id_' + n).style.display='block';
          document.getElementById('minus_button_id_' + n).style.display='block';
-         //selectElement('call_id', response.call_id);
-         //document.getElementById('call_name_1').value= response.call_name;
-//         selectElement('program_id', response.program_id);
          selectElement('start_formation_id', response.start_formation_id);
          selectElement('end_formation_id', response.end_formation_id);
+		}
+	});
+   
+}
+function newCall() {
+   $.ajaxSetup({
+      headers: {
+         'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+      }
+   });
+   
+   
+   const url = `/newCall`;
+   console.log(url);
+	$.ajax({
+      dataType: 'json',
+		url:url,
+		type: 'GET',
+		success: function(response) {
+         console.log('success');
+			$('body').html(response.html);
+         //console.log(response.fragments);
+         // Show plus and minus buttons on last fragment only
+         document.getElementById('plus_button_id_1').style.display='block';
+         document.getElementById('minus_button_id_1').style.display='block';
+         selectElement('start_formation_id', 0);
+         selectElement('end_formation_id', 0);
 		}
 	});
    
