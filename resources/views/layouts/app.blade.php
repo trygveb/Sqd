@@ -59,6 +59,14 @@
       document.getElementById('plus_button_id_' + (seqNo+1)).style.display='block';
       document.getElementById('minus_button_id_' + (seqNo+1)).style.display='block';
    }
+   function editFormation() {
+      const url = `/editFormation`;
+      console.log(url);
+   }
+   function newFormation() {
+      const url = `/newFormation`;
+      console.log(url);
+   }
  function GetCallList() {
    $("#definition_id").empty();
    $.ajaxSetup({

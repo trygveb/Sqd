@@ -31,10 +31,6 @@
 @endsection
 @section('scripts')
 <script>
-function GetCallList() {
-// Called from includes.program when user changes program
-// Not used in this form
-}
 
 </script>
 @endsection

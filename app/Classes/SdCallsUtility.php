@@ -181,7 +181,8 @@ class SdCallsUtility {
    }
 
    public static function GetFragmentList() {
-      $list = Fragment::all()->pluck('text', 'id')->unique();
+     // $list = Fragment::all()->pluck('text', 'id')->unique();
+      $list = Fragment::orderBy('text')->get()->pluck('text','id' );
       return $list;
    }
 

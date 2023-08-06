@@ -86,23 +86,36 @@ class CallsController extends BaseController {
    public function saveCall(Request $request) {
       $callName = $request->call_name_1;
       $callId = $request->call_id_1;
-      $definitionId = $request->definition_id;
-//      Utility::Logg('CallsController', 'method saveCall call id='.$callId.', call name=' . $callName);
+      if ($callId > 0) {
+         $definitionId = $request->definition_id;
+      } else {
+         $definitionId = 0;  //new call defintion
+      }
+      Utility::Logg('CallsController', 'method saveCall call id='.$callId.', call name=' . $callName);
       $programId = $request->program_id;
 //      Utility::Logg('CallsController', 'method saveCall program id='.$programId);
       $startFormationId = $request->start_formation_id;
+      Utility::Logg('CallsController', 'method saveCall startFormation id='.$startFormationId);
       $endFormationId = $request->end_formation_id;
-
-//      Utility::Logg('CallsController', 'method saveCall startFormation id='.$startFormationId);
-//      Utility::Logg('CallsController', 'method saveCall endFormation id='.$endFormationId);
+      Utility::Logg('CallsController', 'method saveCall endFormation id='.$endFormationId);
       DB::beginTransaction();
       try {
-         $sdCall = SdCall::find($callId);
-         $sdCall->name = $callName;
-         $sdCall->save();
-         $definition = Definition::find($definitionId);
+         if ($callId > 0) {
+            $sdCall = SdCall::find($callId);
+            $sdCall->name = $callName;
+            $sdCall->save();
+         } else {
+            $sdCall = SdCall::firstOrCreate([
+                        'name' => $callName
+            ]);
+         }
+         if ($definitionId > 0) {
+            $definition = Definition::find($definitionId);
+         } else {
+            $definition= new Definition();
+         }
          $definition->program_id = $programId;
-         $definition->call_id = $callId;
+         $definition->call_id = $sdCall->id;
          $startEndFormation = $this->getStartEndFormation($startFormationId, $endFormationId);
          $definition->start_end_formation_id = $startEndFormation->id;
          $definition->save();
@@ -133,7 +146,7 @@ class CallsController extends BaseController {
       $checkbox1Name = sprintf('checkbox1_id_%d', $seqNo);
       $secondary = $request->$checkbox1Name;
       $definitionFragment = new DefinitionFragment();
-      $definitionFragment->fragment_type_id= 1;
+      $definitionFragment->fragment_type_id = 1;
       $definitionFragment->seq_no = 0;   // Do not save $definitionFragment with seq_no=0
       if ($fragmentId > 0) {
          $definitionFragment->definition_id = $definitionId;
@@ -143,7 +156,7 @@ class CallsController extends BaseController {
       }
       if ($secondary == 'on') {
          $definitionFragment->fragment_type_id = 2;
-      } 
+      }
       return $definitionFragment;
    }
 
@@ -202,10 +215,6 @@ class CallsController extends BaseController {
       $programList = SdCallsUtility::GetProgramList();
       $maxRepeats = 25;
       $vCallDefs = SdCallsUtility::GetCalls($program_id);
-//       Utility::Logg("CallsController:index, calls", print_r($calls, true));
-//       Utility::Logg("CallsController:index, languageList", print_r($languageList, true));
-//       Utility::Logg("CallsController:index, voiceTypeList", print_r($voiceTypeList, true));
-//       Utility::Logg("CallsController:index, programList", print_r($programList, true));
       $names = $this->names();
       return view('calls.form1', compact('user', 'names', 'languageList', 'voiceTypeList', 'programList', 'vCallDefs', 'maxRepeats'));
    }
@@ -223,10 +232,10 @@ class CallsController extends BaseController {
       $definition = Definition::find($definitionId);
       $startEndFormation = StartEndFormation::find($definition->start_end_formation_id);
       $definitionFragments = DefinitionFragment::where('definition_id', $definitionId)
-         ->get()
-         ->sortBy('seq_no')
-         ->values()
-         ->toArray();
+              ->get()
+              ->sortBy('seq_no')
+              ->values()
+              ->toArray();
 //      Utility::Logg('CallsController', 'definitionFragments fetched, definitionFragments=' . print_r($definitionFragments, true));
       $formationList = SdCallsUtility::GetFormationList();
       $names = $this->names();
@@ -235,7 +244,7 @@ class CallsController extends BaseController {
       //$calls = SdCallsUtility::GetCallNames();
       $callId = $definition->call_id;
       $callName = SdCall::find($callId)->name;
-      $mode='edit';
+      $mode = 'edit';
 //      Utility::Logg('CallsController', 'method showEditCall, callName=' . $callName . ', mode='.$mode);
       $returnHTML = view('calls.editCall',
               compact('mode', 'definition', 'user', 'names', 'callName', 'callId', 'programList', 'formationList', 'fragmentList'))->render();
@@ -259,12 +268,12 @@ class CallsController extends BaseController {
       $names = $this->names();
       $fragmentList = SdCallsUtility::GetFragmentList();
       $programList = SdCallsUtility::GetProgramList();
-      
-      $mode='new';
-      Utility::Logg('CallsController', 'method showNewCall called, creating returnHTML');
+
+      $mode = 'new';
+//      Utility::Logg('CallsController', 'method showNewCall called, creating returnHTML');
       $returnHTML = view('calls.editCall',
               compact('mode', 'user', 'names', 'programList', 'formationList', 'fragmentList'))->render();
-      Utility::Logg('CallsController', 'method showNewCall called, returnHTML created');
+//      Utility::Logg('CallsController', 'method showNewCall called, returnHTML created');
       return response()->json(array(
                   'success' => true,
                   'html' => $returnHTML
