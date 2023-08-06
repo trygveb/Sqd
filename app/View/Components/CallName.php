@@ -3,6 +3,7 @@
 namespace App\View\Components;
 
 use Illuminate\View\Component;
+use App\Classes\SdCallsUtility;
 
 class CallName extends Component
 {
@@ -10,6 +11,7 @@ class CallName extends Component
    public $callName;
    public $callId;
    public $definitionId;
+   public $callList;
    
    
    /**
@@ -22,6 +24,7 @@ class CallName extends Component
         $this->callName= $callName;
         $this->callId= $callId;
         $this->definitionId= $definitionId;
+        $this->callList = SdCallsUtility::GetCallNames();
     }
 
     /**

@@ -259,7 +259,7 @@ class CallsController extends BaseController {
       $names = $this->names();
       $fragmentList = SdCallsUtility::GetFragmentList();
       $programList = SdCallsUtility::GetProgramList();
-      $calls = SdCallsUtility::GetCallNames();
+      
       $mode='new';
       Utility::Logg('CallsController', 'method showNewCall called, creating returnHTML');
       $returnHTML = view('calls.editCall',

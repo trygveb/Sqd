@@ -170,8 +170,9 @@ class SdCallsUtility {
    }
 
    public static function GetCallNames() {
-      $calls = SdCall::all();
-      return $calls;
+//      $list = SdCall::all()->orderBy('name')->pluck('name', 'id');
+      $list = SdCall::orderBy('name')->get()->pluck('name','id' );
+      return $list;
    }
 
    public static function GetFormationList() {
