@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Classes\Utility;
 use App\Models\User;
 use App\Models\Calls\Definition;
+use App\Models\Calls\DefinitionFragment;
+use App\Models\Calls\Formation;
 use App\Models\Calls\SdCall;
 use App\Models\Calls\StartEndFormation;
-use App\Models\Calls\DefinitionFragment;
 use App\Classes\SdCallsUtility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -83,6 +84,44 @@ class CallsController extends BaseController {
       return response()->json(array('callText' => $callText, 'from' => $from, 'endsIn' => $endsIn, 'path' => $path), 200);
    }
 
+
+   private function getDefinitionFragment($request, $definitionId, $seqNo) {
+      $selectName = sprintf('fragment_id_%d', $seqNo);
+      $fragmentId = $request->$selectName;
+      $checkbox1Name = sprintf('checkbox1_id_%d', $seqNo);
+      $secondary = $request->$checkbox1Name;
+      $definitionFragment = new DefinitionFragment();
+      $definitionFragment->fragment_type_id = 1;
+      $definitionFragment->seq_no = 0;   // Do not save $definitionFragment with seq_no=0
+      if ($fragmentId > 0) {
+         $definitionFragment->definition_id = $definitionId;
+         $definitionFragment->fragment_id = $fragmentId;
+         $definitionFragment->seq_no = $seqNo;
+//               Utility::Logg('CallsController', 'method saveCall,insert DefinitionFragment: '.print_r($definitionFragment, true));
+      }
+      if ($secondary == 'on') {
+         $definitionFragment->fragment_type_id = 2;
+      }
+      return $definitionFragment;
+   }
+
+   private function getStartEndFormation($startFormationId, $endFormationId) {
+      // Try to find existing StartEndFormation
+      // if not found, create a new
+
+      StartEndFormation::where('start_formation_id', $startFormationId)
+              ->where('end_formation_id', $endFormationId)
+              ->firstOr(function () use ($startFormationId, $endFormationId) {
+                 $startEndFormation = new StartEndFormation();
+                 $startEndFormation->start_formation_id = $startFormationId;
+                 $startEndFormation->end_formation_id = $endFormationId;
+                 $startEndFormation->save();
+              });
+      $startEndFormation = StartEndFormation::where('start_formation_id', $startFormationId)
+              ->where('end_formation_id', $endFormationId)
+              ->first();
+      return $startEndFormation;
+   }
    public function saveCall(Request $request) {
       $callName = $request->call_name_1;
       $callId = $request->call_id_1;
@@ -139,43 +178,23 @@ class CallsController extends BaseController {
       DB::commit();
       return redirect()->back()->with('success', 'Call  saved successfully.');
    }
-
-   private function getDefinitionFragment($request, $definitionId, $seqNo) {
-      $selectName = sprintf('fragment_id_%d', $seqNo);
-      $fragmentId = $request->$selectName;
-      $checkbox1Name = sprintf('checkbox1_id_%d', $seqNo);
-      $secondary = $request->$checkbox1Name;
-      $definitionFragment = new DefinitionFragment();
-      $definitionFragment->fragment_type_id = 1;
-      $definitionFragment->seq_no = 0;   // Do not save $definitionFragment with seq_no=0
-      if ($fragmentId > 0) {
-         $definitionFragment->definition_id = $definitionId;
-         $definitionFragment->fragment_id = $fragmentId;
-         $definitionFragment->seq_no = $seqNo;
-//               Utility::Logg('CallsController', 'method saveCall,insert DefinitionFragment: '.print_r($definitionFragment, true));
+   
+   public function saveFormation(Request $request) {
+      Utility::Logg('CallsController', 'saveFormation called');
+      $formationName= $request->formation_name_1;
+      $formationId= $request->formation_id_1;
+      $formation= Formation::find($formationId);
+      $formation->name=$formationName;
+      DB::beginTransaction();
+      try {
+         $formation->save();
+      } catch (\Illuminate\Database\QueryException $ex) {
+         DB::rollback();
+         Utility::Logg('CallsController', 'Database error=' . $ex->getMessage());
+         return redirect()->back()->with('error', 'A database error occurred, please contact support.');
       }
-      if ($secondary == 'on') {
-         $definitionFragment->fragment_type_id = 2;
-      }
-      return $definitionFragment;
-   }
-
-   private function getStartEndFormation($startFormationId, $endFormationId) {
-      // Try to find existing StartEndFormation
-      // if not found, create a new
-
-      StartEndFormation::where('start_formation_id', $startFormationId)
-              ->where('end_formation_id', $endFormationId)
-              ->firstOr(function () use ($startFormationId, $endFormationId) {
-                 $startEndFormation = new StartEndFormation();
-                 $startEndFormation->start_formation_id = $startFormationId;
-                 $startEndFormation->end_formation_id = $endFormationId;
-                 $startEndFormation->save();
-              });
-      $startEndFormation = StartEndFormation::where('start_formation_id', $startFormationId)
-              ->where('end_formation_id', $endFormationId)
-              ->first();
-      return $startEndFormation;
+      DB::commit();
+      return redirect()->back()->with('success', 'Formation  saved successfully.');
    }
 
    public function saveUser(Request $request) {
@@ -222,7 +241,6 @@ class CallsController extends BaseController {
    /**
     * 
     * @param type $definitionId
-    * @param type $mode "edit" or "new"
     * @return type
     */
    public function showEditCall($definitionId) {
@@ -256,6 +274,24 @@ class CallsController extends BaseController {
                   'start_formation_id' => $startEndFormation->start_formation_id,
                   'end_formation_id' => $startEndFormation->end_formation_id,
                   'fragments' => json_encode($definitionFragments)
+      ));
+   }
+   
+   public function showEditFormation($formationId) {
+      if (Auth::check()) {
+         $user = User::find(auth()->id());
+      }
+      $formation= Formation::find($formationId);
+      $formationName=$formation->name;
+//      $formationList = SdCallsUtility::GetFormationList();
+      $names = $this->names();
+      $mode = 'edit';
+      Utility::Logg('CallsController', 'method showEditFormation, formationId=' . $formationId . ', mode='.$mode);
+      $returnHTML = view('calls.editFormation',
+              compact('mode', 'user', 'names','formationId', 'formationName'))->render();
+      return response()->json(array(
+                  'success' => true,
+                  'html' => $returnHTML
       ));
    }
 

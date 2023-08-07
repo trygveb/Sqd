@@ -59,9 +59,21 @@
       document.getElementById('plus_button_id_' + (seqNo+1)).style.display='block';
       document.getElementById('minus_button_id_' + (seqNo+1)).style.display='block';
    }
-   function editFormation() {
-      const url = `/editFormation`;
+   function editStartFormation() {
+      const formationId= document.getElementById('start_formation_id').value;
+      const url = `/editFormation/`+formationId;
       console.log(url);
+      $.ajax({
+         dataType: 'json',
+         url:url,
+         type: 'GET',
+         success: function(response) {
+            console.log('success');
+            $('body').html(response.html);
+   //         selectElement('start_formation_id', response.start_formation_id);
+         }
+   	});
+      
    }
    function newFormation() {
       const url = `/newFormation`;

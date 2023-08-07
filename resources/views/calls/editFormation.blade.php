@@ -6,11 +6,11 @@
       <div class="col-md-8" style="max-width:500px;">
          <fieldset>
             @if ($mode=='edit')
-            <legend>Edit formation</legend
+            <legend>Edit formation name</legend
             @else
             <legend>New formation</legend
             @endif
-            <form method="POST" action="{{ route('calls.saveFormation')}}" >
+            <form method="POST" action="{{route('calls.saveFormation')}}" >
             @csrf
             @if ($mode=='edit')
                <x-formation-name mode="edit" formationName="{{$formationName}}" formationId="{{$formationId}}" />

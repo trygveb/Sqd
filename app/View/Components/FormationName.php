@@ -22,7 +22,7 @@ class FormationName extends Component
         $this->mode= $mode;
         $this->formationName= $formationName;
         $this->formationId= $formationId;
-        $this->formationList = SdCallsUtility::GetFormationNames();
+        $this->formationList = SdCallsUtility::GetFormationList();
     }
 
     /**
