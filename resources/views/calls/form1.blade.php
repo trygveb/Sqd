@@ -87,7 +87,22 @@ function createFormData(ssml=false) {
      };
      return formData;   
 }
-
+   function editStartFormation() {
+      const formationId= document.getElementById('start_formation_id').value;
+      const url = `/editFormation/`+formationId;
+      console.log(url);
+      $.ajax({
+         dataType: 'json',
+         url:url,
+         type: 'GET',
+         success: function(response) {
+            console.log('editStartFormation success');
+            $('body').html(response.html);
+   //         selectElement('start_formation_id', response.start_formation_id);
+         }
+   	});
+      
+   }
 function getCallText(ssml=false) {
    $.ajaxSetup({
       headers: {
@@ -158,7 +173,7 @@ function editCall() {
 		url:url,
 		type: 'GET',
 		success: function(response) {
-         console.log('success');
+         console.log('editCall success');
 			$('body').html(response.html);
          //console.log(response.fragments);
          jsonFragments= JSON.parse(response.fragments);
@@ -190,6 +205,38 @@ function editCall() {
 	});
    
 }
+function GetCallList() {
+   $("#definition_id").empty();
+   $.ajaxSetup({
+      headers: {
+         'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+      }
+   });
+   programId=$('#program_id').find(":selected").val();
+   var formData = {
+         _token: '<?php echo csrf_token() ?>',
+         program_id:programId
+     };
+
+   $.ajax({
+      type:'POST',
+      url:'/getCallList',
+      data:formData,
+      success:function(data) {
+         var arr = Object.values(data);
+         // Populate listbox definition_id
+         select_elem= document.getElementById("definition_id");
+         arr.forEach((element, index) => {
+//           console.log(element);
+           let option_elem = document.createElement('option');
+           option_elem.value = element.definition_id;
+           option_elem.textContent = element.call_name + ', ' + element.program_name + ', from ' + element.start_formation_name;
+           select_elem.appendChild(option_elem);
+         }); 
+      }      
+   });
+}
+
 function newCall() {
    $.ajaxSetup({
       headers: {
@@ -218,6 +265,9 @@ function newCall() {
 	});
    
 }
-
+function selectElement(id, valueToSelect) {    
+   let element = document.getElementById(id);
+   element.value = valueToSelect;
+}
 </script>
 @endsection

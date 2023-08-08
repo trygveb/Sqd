@@ -39,10 +39,7 @@
    function policyClick() {
       alert('Clicked');
    }
-   function selectElement(id, valueToSelect) {    
-      let element = document.getElementById(id);
-      element.value = valueToSelect;
-   }
+
    function minusClicked(seqNo) {
       console.log('minusClicked '+seqNo);
       var fragmentElement= document.getElementById('fragment_id_' + seqNo);
@@ -59,57 +56,38 @@
       document.getElementById('plus_button_id_' + (seqNo+1)).style.display='block';
       document.getElementById('minus_button_id_' + (seqNo+1)).style.display='block';
    }
-   function editStartFormation() {
-      const formationId= document.getElementById('start_formation_id').value;
-      const url = `/editFormation/`+formationId;
-      console.log(url);
-      $.ajax({
-         dataType: 'json',
-         url:url,
-         type: 'GET',
-         success: function(response) {
-            console.log('success');
-            $('body').html(response.html);
-   //         selectElement('start_formation_id', response.start_formation_id);
-         }
-   	});
-      
-   }
-   function newFormation() {
-      const url = `/newFormation`;
-      console.log(url);
-   }
- function GetCallList() {
-   $("#definition_id").empty();
+
+   function SaveFormation() {
    $.ajaxSetup({
       headers: {
          'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
       }
    });
-   programId=$('#program_id').find(":selected").val();
+
    var formData = {
-         _token: '<?php echo csrf_token() ?>',
-         program_id:programId
+    _token: '<?php echo csrf_token() ?>',
+     formationName: document.getElementById('formation_name_1').value,
+     formationId: document.getElementById('formation_id_1').value
      };
 
    $.ajax({
       type:'POST',
-      url:'/getCallList',
+      url:'/saveFormation',
       data:formData,
       success:function(data) {
-         var arr = Object.values(data);
-         // Populate listbox definition_id
-         select_elem= document.getElementById("definition_id");
-         arr.forEach((element, index) => {
-//           console.log(element);
-           let option_elem = document.createElement('option');
-           option_elem.value = element.definition_id;
-           option_elem.textContent = element.call_name + ', ' + element.program_name + ', from ' + element.start_formation_name;
-           select_elem.appendChild(option_elem);
-         }); 
-      }      
-   });
-}
+         console.log('SaveFormation success');
+          }
+      });
+   }
+
+   function clicketyClick() {
+      console.log('clicketyClick');
+   }
+   function newFormation() {
+      const url = `/newFormation`;
+      console.log(url);
+   }
+ 
 
 </script>
 

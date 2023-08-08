@@ -123,6 +123,7 @@ class CallsController extends BaseController {
       return $startEndFormation;
    }
    public function saveCall(Request $request) {
+      dd('svaeCall');
       $callName = $request->call_name_1;
       $callId = $request->call_id_1;
       if ($callId > 0) {
@@ -180,9 +181,9 @@ class CallsController extends BaseController {
    }
    
    public function saveFormation(Request $request) {
-      Utility::Logg('CallsController', 'saveFormation called');
-      $formationName= $request->formation_name_1;
-      $formationId= $request->formation_id_1;
+      $formationName= $request->formationName;
+      $formationId= $request->formationId;
+      Utility::Logg('CallsController', 'saveFormation called, formationName='.$formationName);
       $formation= Formation::find($formationId);
       $formation->name=$formationName;
       DB::beginTransaction();
@@ -263,7 +264,6 @@ class CallsController extends BaseController {
       $callId = $definition->call_id;
       $callName = SdCall::find($callId)->name;
       $mode = 'edit';
-//      Utility::Logg('CallsController', 'method showEditCall, callName=' . $callName . ', mode='.$mode);
       $returnHTML = view('calls.editCall',
               compact('mode', 'definition', 'user', 'names', 'callName', 'callId', 'programList', 'formationList', 'fragmentList'))->render();
       return response()->json(array(
@@ -286,7 +286,7 @@ class CallsController extends BaseController {
 //      $formationList = SdCallsUtility::GetFormationList();
       $names = $this->names();
       $mode = 'edit';
-      Utility::Logg('CallsController', 'method showEditFormation, formationId=' . $formationId . ', mode='.$mode);
+//      Utility::Logg('CallsController', 'method showEditFormation, formationId=' . $formationId . ', mode='.$mode);
       $returnHTML = view('calls.editFormation',
               compact('mode', 'user', 'names','formationId', 'formationName'))->render();
       return response()->json(array(

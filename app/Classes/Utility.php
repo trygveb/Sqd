@@ -30,12 +30,12 @@ class Utility {
 
    public static function startLogg() {
       if (env('APP_APPEND_LOG')) {
-         Storage::append(self::logFile(), '');
+         //Storage::append(self::logFile(), '');
       } else {
          // Truncate log file
          Storage::put(self::logFile(), '');
       }
-      self::Logg('startLogg', 'start logging');
+      //self::Logg('startLogg', 'start logging');
       return true;
    }
 
