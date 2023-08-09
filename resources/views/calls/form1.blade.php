@@ -28,7 +28,8 @@
 <script>
 window.onload = function() {
 //   GetVoiceList();
-   GetCallList();
+   GetCallList
+//   console.log('definitionId= '+{{$user->definition_id}});
     selectElement('definition_id', {{$user->definition_id}});
 //   $("#show_voice").removeAttr("checked");
    $('#show_voice').prop('checked', false);

@@ -14,10 +14,11 @@
             @csrf
             @if ($mode=='edit')
                <x-call-name mode="edit" callName="{{$callName}}" callId="{{$callId}}" definitionId="{{$definition->id}}"/>
+               <x-program-select mode="{{$mode}}" programId="{{$programId}}" />
             @else
                <x-call-name mode="new" callName="" callId="" definitionId=""/>
+               <x-program-select mode="{{$mode}}" program_id="" />
             @endif
-               <x-program-select mode="{{$mode}}" />
    @include('includes.startFormation')
    @include('includes.endFormation')
    @include('includes.fragments')

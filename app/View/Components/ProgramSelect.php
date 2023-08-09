@@ -9,14 +9,16 @@ class ProgramSelect extends Component {
 
    public $mode;
    public $user;
+   public $programId;
    public $programList;
 
    /**
     * Create a new component instance
     * @param type $subApp         (sqd.se, sdCalls, schedule)
     */
-   public function __construct($mode) {
+   public function __construct($mode, $programId) {
       $this->mode = $mode;
+      $this->programId = $programId;
       $this->programList = SdCallsUtility::GetProgramList();
       $this->user = User::find(auth()->id());
    }

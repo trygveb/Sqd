@@ -282,13 +282,13 @@ class CallsController extends BaseController {
       //$calls = SdCallsUtility::GetCallNames();
       $callId = $definition->call_id;
       $callName = SdCall::find($callId)->name;
-      $program_id=$definition->program_id;
+      $programId=$definition->program_id;
       $start_formation_id= $startEndFormation->start_formation_id;
       $end_formation_id=$startEndFormation->end_formation_id;
       $mode = 'edit';
       $fragments = json_encode($definitionFragments);
       return view('calls.editCall',
-              compact('mode', 'definition', 'user', 'names', 'callName', 'callId', 'program_id', 'start_formation_id', 'end_formation_id', 'fragments', 'programList', 'formationList', 'fragmentList'));
+              compact('mode', 'definition', 'user', 'names', 'callName', 'callId', 'programId', 'start_formation_id', 'end_formation_id', 'fragments', 'programList', 'formationList', 'fragmentList'));
 //      return response()->json(array(
 //                  'success' => true,
 //                  'html' => $returnHTML,
