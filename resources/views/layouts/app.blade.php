@@ -57,29 +57,7 @@
       document.getElementById('minus_button_id_' + (seqNo+1)).style.display='block';
    }
 
-   function SaveFormation() {
-   $.ajaxSetup({
-      headers: {
-         'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-      }
-   });
-
-   var formData = {
-    _token: '<?php echo csrf_token() ?>',
-     formationName: document.getElementById('formation_name_1').value,
-     formationId: document.getElementById('formation_id_1').value
-     };
-
-   $.ajax({
-      type:'POST',
-      url:'/saveFormation',
-      data:formData,
-      success:function(data) {
-         console.log('SaveFormation success');
-          }
-      });
-   }
-
+  
    function clicketyClick() {
       console.log('clicketyClick');
    }

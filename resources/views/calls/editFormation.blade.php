@@ -7,19 +7,19 @@
          <fieldset>
 @include('includes.reportError') 
             @if ($mode=='edit')
-            <legend>Edit formation name</legend
+            <legend>Edit formation name</legend>
             @else
-            <legend>New formation</legend
+            <legend>New formation</legend>
             @endif
             
-            <form method="POST" action="{{route('calls.saveFormation')}}" >
+            <form method="POST" action="" >
             @csrf
             @if ($mode=='edit')
                <x-formation-name mode="edit" formationName="{{$formationName}}" formationId="{{$formationId}}" />
             @else
                <x-formation-name mode="new" formationName="" formationId="" />
             @endif
-               
+               <button class="btn btn-primary"  onclick="SaveFormation1();" > Test</button>
                <x-submit-button onclickFunction="SaveFormation()" submitText="{{__('Save')}} {{__('formation name')}}" cancelText="{{ __('Cancel')}}" cancelUrl="{{route('calls.form1')}}" />
                
             </form>  

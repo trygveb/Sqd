@@ -29,9 +29,16 @@
 window.onload = function() {
 //   GetVoiceList();
    GetCallList();
+    selectElement('definition_id', {{$user->definition_id}});
 //   $("#show_voice").removeAttr("checked");
    $('#show_voice').prop('checked', false);
 };
+function definition_id_changed() {
+   id = document.getElementById("definition_id").value;
+   const href='/editDefinition/'+id;
+   console.log('definition_id_changed, href='+href);
+   document.getElementById('showEditDefinitionLink').href=href;
+}
 function showVoice() {
    if ($('#fieldset_voice').css('display')==='none') {
       $('#fieldset_voice').show();
@@ -233,6 +240,7 @@ function GetCallList() {
            option_elem.textContent = element.call_name + ', ' + element.program_name + ', from ' + element.start_formation_name;
            select_elem.appendChild(option_elem);
          }); 
+         selectElement('definition_id', 0);
       }      
    });
 }
@@ -265,6 +273,39 @@ function newCall() {
 	});
    
 }
+  function SaveFormation1() {
+ 
+
+   var formData = {
+     formationName: document.getElementById('formation_name_1').value,
+     formationId: document.getElementById('formation_id_1').value
+     };
+     console.log(formData);
+}
+ function SaveFormation() {
+   $.ajaxSetup({
+      headers: {
+         'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+      }
+   });
+
+   var formData = {
+    _token: '<?php echo csrf_token() ?>',
+     formationName: document.getElementById('formation_name_1').value,
+     formationId: document.getElementById('formation_id_1').value
+     };
+
+   $.ajax({
+      type:'POST',
+      url:'/saveFormation1',
+      data:formData,
+      success:function(data) {
+         console.log('SaveFormation success');
+         $('body').html(response.html);
+      }
+   });
+}
+
 function selectElement(id, valueToSelect) {    
    let element = document.getElementById(id);
    element.value = valueToSelect;

@@ -85,11 +85,12 @@ Route::group(// Comment out this when running tests
                  Route::post('/createMp3File', [CallsController::class, 'createMp3File'])->name('createMp3File');   
                  Route::post('/calls/save', [CallsController::class, 'save'])->name('saveSettings');   
                  
-                 Route::name('editCall')->get('/editCall/{definition_id}', [CallsController::class, 'showEditCall']);
+                 Route::name('showEditDefinition')->get('/editDefinition/{definition_id}', [CallsController::class, 'showEditDefinition']);
                  Route::name('editFormation')->get('/editFormation/{formation_id}', [CallsController::class, 'showEditFormation']);
-                 Route::name('newCall')->get('/newCall', [CallsController::class, 'showNewCall']);
+                 Route::name('showNewCall')->get('/newCall', [CallsController::class, 'showNewCall']);
                  Route::name('saveCall')->post('/saveCall', [CallsController::class, 'saveCall']);
                  Route::name('saveFormation')->post('/saveFormation', [CallsController::class, 'saveFormation']);
+                 Route::name('saveFormation1')->get('/saveFormation1', [CallsController::class, 'saveFormation1']);
                  });
            });
 // Schedule routes ///////////////////////////////////////////////////////////////

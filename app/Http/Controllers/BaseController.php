@@ -48,7 +48,7 @@ class BaseController extends Controller {
       $names['application'] = $application;
       // Config::set('names', $names);
       session(['names' => $names]);
-      Utility::Logg('BaseController->setNames()', sprintf('names=%s', print_r($names, true)));
+//      Utility::Logg('BaseController->setNames()', sprintf('names=%s', print_r($names, true)));
       return $names;
    }
 
