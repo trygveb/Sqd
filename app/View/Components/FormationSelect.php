@@ -9,15 +9,17 @@ class FormationSelect extends Component {
 
    public $mode;
    public $user;
+   public $definitionId;  // Used to navigate back to definition edit view
    public $formationId;
    public $formationList;
    public $startEnd;
    public $selectName;
 
 
-   public function __construct($mode, $formationId, $startEnd) {
+   public function __construct($mode, $formationId, $startEnd, $definitionId=0) {
       $this->mode = $mode;
       $this->formationId = $formationId;
+      $this->definitionId = $definitionId;
       $this->startEnd = $startEnd;
       if ($startEnd ==="Start") {
          $this->selectName= 'start_formation_id';

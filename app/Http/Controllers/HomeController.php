@@ -26,7 +26,6 @@ class HomeController extends BaseController {
     */
    public function callsHome() {
       $this->setNames('calls');
-//      Utility::Logg('HomeController', sprintf('callsHome called names=%s', print_r($this->names(), true)));
       return view('calls.welcome')->with('names', $this->names());
    }
 
@@ -35,7 +34,6 @@ class HomeController extends BaseController {
     * @return view
     */
    public function home() {
-      Utility::Logg('HomeController', 'home called');      
       $this->setNames('');
       return view('welcome')->with('names', $this->names());
    }

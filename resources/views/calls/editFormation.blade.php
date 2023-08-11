@@ -12,15 +12,15 @@
             <legend>New formation</legend>
             @endif
             
-            <form method="POST" action="" >
+            <form method="POST" action="{{ route('calls.saveFormation')}}" >
             @csrf
             @if ($mode=='edit')
                <x-formation-name mode="edit" formationName="{{$formationName}}" formationId="{{$formationId}}" />
             @else
                <x-formation-name mode="new" formationName="" formationId="" />
             @endif
-               <button class="btn btn-primary"  onclick="SaveFormation1();" > Test</button>
-               <x-submit-button onclickFunction="SaveFormation()" submitText="{{__('Save')}} {{__('formation name')}}" cancelText="{{ __('Cancel')}}" cancelUrl="{{route('calls.form1')}}" />
+               <x-submit-button submitText="{{__('Save')}} {{__('formation name')}}" cancelText="{{ __('Cancel')}}"
+                                cancelUrl="{{route('calls.showEditDefinition', ['definition_id' => $definitionId])}}" />
                
             </form>  
          </fieldset>

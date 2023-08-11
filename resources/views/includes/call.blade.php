@@ -5,12 +5,8 @@
          <label for="definition_id">Call:</label>
         
          @if ($user->isCallsAdministrator())
-          <!--<button style="float: right;"  onclick="newCall()">New definition</button>-->
            <a href="{{ route('calls.showNewCall') }}" style="float: right;">New definition</a>
            <a id="showEditDefinitionLink" href="/editDefinition/{{$user->definition_id}}" style="float: right;margin-right:10px;">Edit definition</a>
-           
-           <!--class="btn btn-primary"-->
-<!--          <button style="float: right;" onclick="editCall()" >Edit definition</button>-->
          @endif
          <select onchange="definition_id_changed()" class="form-control" name="definition_id" id="definition_id" >
              @foreach($vCallDefs as $vCallDef)

@@ -40,23 +40,6 @@
       alert('Clicked');
    }
 
-   function minusClicked(seqNo) {
-      console.log('minusClicked '+seqNo);
-      var fragmentElement= document.getElementById('fragment_id_' + seqNo);
-      fragmentElement.value=0;
-      document.getElementById('div_id_' + (seqNo)).style.display='none';
-      document.getElementById('plus_button_id_' + (seqNo-1)).style.display='block';
-      document.getElementById('minus_button_id_' + (seqNo-1)).style.display='block';
-   }
-   function plusClicked(seqNo) {
-      console.log('plusClicked '+seqNo);
-      document.getElementById('div_id_' + (seqNo+1)).style.display='block';
-      document.getElementById('plus_button_id_' + (seqNo)).style.display='none';
-      document.getElementById('minus_button_id_' + (seqNo)).style.display='none';
-      document.getElementById('plus_button_id_' + (seqNo+1)).style.display='block';
-      document.getElementById('minus_button_id_' + (seqNo+1)).style.display='block';
-   }
-
   
    function clicketyClick() {
       console.log('clicketyClick');
