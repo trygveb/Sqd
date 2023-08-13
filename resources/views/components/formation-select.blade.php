@@ -1,8 +1,10 @@
 <div class="form-group"  >
    <label for="start_formation_id">{{$startEnd}} formation(s):</label>
-   <a href="{{ route('calls.showNewFormation') }}" style="float: right;">New formation</a>
+   
+   @if ($mode=='edit')
    <a id="showEditFormationLink" href="{{route('calls.showEditFormation', ['formation_id' =>$formationId, 'definition_id' => $definitionId])}}"
       style="float: right;margin-right:10px;">Edit formation</a>
+   @endif
    <select class="form-control" name="{{$selectName}}" id="{{$selectName}}">
        @foreach($formationList as $key => $formation)
        @if ($mode=='edit')

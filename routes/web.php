@@ -78,7 +78,7 @@ Route::group(// Comment out this when running tests
               Route::name('home')->get('/callsHome', [HomeController::class, 'callsHome']);
               Route::middleware(['verified'])->group(function () {
                  // Show application welcome view  
-                 Route::name('form1')->get('/form1', [CallsController::class, 'showForm1']);
+                 Route::name('showForm1')->get('/form1', [CallsController::class, 'showForm1']);
                  Route::post('/getCallList', [CallsController::class, 'getCallList'])->name('getCallList');   
                  Route::post('/getCallText', [CallsController::class, 'getCallText'])->name('getCallText');   
                  Route::post('/getVoiceList', [CallsController::class, 'getVoiceList'])->name('getVoiceList');   
@@ -89,6 +89,7 @@ Route::group(// Comment out this when running tests
                  Route::name('showEditFormation')->get('/editFormation/{formation_id}/{definition_id?}', [CallsController::class, 'showEditFormation']);
                  Route::name('showNewCall')->get('/newCall', [CallsController::class, 'showNewCall']);
                  Route::name('showNewFormation')->get('/newFormation', [CallsController::class, 'showNewFormation']);
+                 Route::name('showNewFragment')->get('/newFragment', [CallsController::class, 'showNewFragment']);
                  Route::name('saveCall')->post('/saveCall', [CallsController::class, 'saveCall']);
                  Route::name('saveFormation')->post('/saveFormation', [CallsController::class, 'saveFormation']);
                  Route::name('saveFormation1')->get('/saveFormation1', [CallsController::class, 'saveFormation1']);

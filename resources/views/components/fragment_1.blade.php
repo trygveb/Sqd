@@ -8,16 +8,10 @@
    <label for="{{$checkbox1Name}}">Secondary</label>
       <button id="{{$plusButtonName}}" style="float:right;display:{{ $seqNo == $count ? 'block' : 'none' }}" onclick="plusClicked({{$seqNo}});return false;">+</button>
       <button id="{{$minusButtonName}}" style="float:right;display:{{ $seqNo == $count ? 'block' : 'none' }}" onclick="minusClicked({{$seqNo}});return false;">-</button>
-   <a href="{{ route('calls.showNewFormation') }}" style="float: right;">Edit fragment</a>
+   @if ($mode=='edit')
    <select class="form-control" name="{{$selectName}}" id="{{$selectName}}" >
-      <option value="0">
-      </option>
        @foreach($fragmentList as $key => $fragmentText)
-       @if ($mode=='edit')
-         <option value="{{ $key }}" {{ $fragmentId == $key ? 'selected' : '' }}>
-       @else
-         <option value="{{ $key }}">
-       @endif
+       <option value="{{ $key }}" {{ $fragmentId == $key ? 'selected' : '' }}>
        @if ($fragmentTypeId==2)
           ( {{ $fragmentText }} )
        @else
@@ -25,7 +19,14 @@
        @endif
        </option>
        @endforeach
-         
    </select>
+   @else
+   <input type="text" list="fragments" maxlength=120 size=45  name="fragment_text" id="fragment_text">
+   <datalist id="fragments">
+        @foreach($fragmentList as $key => $fragmentText)
+       <option value="{{ $fragmentText }}">
+       @endforeach
+   </datalist>
+   @endif
 
 </div>

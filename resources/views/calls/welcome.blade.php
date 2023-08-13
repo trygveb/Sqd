@@ -25,7 +25,7 @@
                 <div class="card-body">
                     SdCalls is an application under development.<br>
    @auth
-      <a href="{{route('calls.form1')}}">{{__('Goto Form 1')}}!</a>
+      <a href="{{route('calls.showForm1')}}">{{__('Goto Form 1')}}!</a>
    @endauth
                 </div>
          </div>

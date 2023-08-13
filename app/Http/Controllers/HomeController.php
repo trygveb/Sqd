@@ -25,6 +25,7 @@ class HomeController extends BaseController {
     * @return view
     */
    public function callsHome() {
+//      dd('home 1');
       $this->setNames('calls');
       return view('calls.welcome')->with('names', $this->names());
    }
@@ -34,6 +35,7 @@ class HomeController extends BaseController {
     * @return view
     */
    public function home() {
+//      dd('home 2');
       $this->setNames('');
       return view('welcome')->with('names', $this->names());
    }
