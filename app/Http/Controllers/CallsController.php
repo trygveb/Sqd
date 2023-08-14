@@ -192,14 +192,21 @@ class CallsController extends BaseController {
    public function saveFormation(Request $request) {
       $formationName = $request->formation_name;
       $formationId = $request->formation_id;
-      $formation = Formation::find($formationId);
-      $formation->name = $formationName;
-      Utility::Logg('CallsController', 'saveFormation called, formationName=' . $formationName . ', formationId=' . $formationId);
-//      $names = $this->names();
-//      $user = User::find(auth()->id());
       DB::beginTransaction();
       try {
-         $formation->save();
+         if ($formationId == 0) {
+            $formation = Formation::create([
+                        'name' => $formationName,
+            ]);
+         } else {
+            $formation = Formation::find($formationId);
+            $formation->name = $formationName;
+            $formation->save();
+         }
+//      Utility::Logg('CallsController', 'saveFormation called, formationName=' . $formationName . ', formationId=' . $formationId);
+//      $names = $this->names();
+//      $user = User::find(auth()->id());
+
       } catch (\Illuminate\Database\QueryException $ex) {
          DB::rollback();
          Utility::Logg('CallsController', 'Database error=' . $ex->getMessage());
@@ -330,15 +337,16 @@ class CallsController extends BaseController {
               compact('mode', 'user', 'names', 'programList', 'formationList', 'fragmentList'));
    }
 
-   public function showNewFormation() {
+   public function showNewFormation($definitionId = 0) {
 //      Utility::Logg('CallsController', 'method showNewFormation called');
 //      dd('CallsController', 'method showNewFormation called');
       if (Auth::check()) {
          $user = User::find(auth()->id());
       }
       $names = $this->names();
-
-      return view('calls.newFormation', compact( 'user', 'names'));
+      $mode = 'new';
+      return view('calls.editFormation', compact('mode', 'user', 'names', 'definitionId'));
+//      return view('calls.newFormation', compact( 'user', 'names'));
    }
 
    public function showNewFragment() {

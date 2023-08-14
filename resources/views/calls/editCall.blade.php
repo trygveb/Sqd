@@ -64,7 +64,7 @@
             @endif
             <p style="margin-left: auto; margin-right: auto;display:table;" >
                <a href="{{ route('calls.showNewFragment') }}" class="btn btn-secondary" >New fragment</a>
-               <a href="{{ route('calls.showNewFormation') }}" class="btn btn-secondary" >New formation</a>
+               <a href="{{ route('calls.showNewFormation', ['definition_id' => $definition->id])}}" class="btn btn-secondary" >New formation</a>
             </p>
                <br>
                <x-submit-button submitText="{{__('Save')}} {{__('definition')}}" cancelText="{{ __('Cancel')}}" cancelUrl="{{route('calls.showForm1')}}" />

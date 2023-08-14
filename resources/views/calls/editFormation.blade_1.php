@@ -16,13 +16,11 @@
             @csrf
             @if ($mode=='edit')
                <x-formation-name mode="edit" formationName="{{$formationName}}" formationId="{{$formationId}}" />
-               <x-submit-button submitText="{{__('Save')}} {{__('formation name')}}" cancelText="{{ __('Cancel')}}"
-                                cancelUrl="{{route('calls.showEditDefinition', ['definition_id' => $definitionId])}}" />
             @else
                <x-formation-name mode="new" formationName="" formationId="" />
+            @endif
                <x-submit-button submitText="{{__('Save')}} {{__('formation name')}}" cancelText="{{ __('Cancel')}}"
                                 cancelUrl="{{route('calls.showEditDefinition', ['definition_id' => $definitionId])}}" />
-            @endif
                
             </form>  
          </fieldset>
