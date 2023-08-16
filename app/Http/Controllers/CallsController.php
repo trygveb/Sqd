@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Calls\Definition;
 use App\Models\Calls\DefinitionFragment;
 use App\Models\Calls\Formation;
+use App\Models\Calls\Fragment;
 use App\Models\Calls\SdCall;
 use App\Models\Calls\StartEndFormation;
 use App\Classes\SdCallsUtility;
@@ -180,15 +181,6 @@ class CallsController extends BaseController {
       return redirect()->back()->with('success', 'Call  saved successfully.');
    }
 
-   public function saveFormation1(Request $request) {
-      dd('Här');
-      $returnHTML = view('calls.test')->render();
-      return response()->json(array(
-                  'success' => true,
-                  'html' => $returnHTML
-      ));
-   }
-
    public function saveFormation(Request $request) {
       $formationName = $request->formation_name;
       $formationId = $request->formation_id;
@@ -203,9 +195,6 @@ class CallsController extends BaseController {
             $formation->name = $formationName;
             $formation->save();
          }
-//      Utility::Logg('CallsController', 'saveFormation called, formationName=' . $formationName . ', formationId=' . $formationId);
-//      $names = $this->names();
-//      $user = User::find(auth()->id());
 
       } catch (\Illuminate\Database\QueryException $ex) {
          DB::rollback();
@@ -215,13 +204,32 @@ class CallsController extends BaseController {
       DB::commit();
       Utility::Logg('CallsController', 'saveFormation  formationName=' . $formationName . ', formationId=' . $formationId);
       return redirect()->back()->with('success', 'Formation name saved.');
-//       $returnHTML = view('calls.editFormation',
-//              compact('mode', 'user', 'names',  'formationName', 'formationId'))->render();
-//      Utility::Logg('CallsController', 'saveFormation, returnHTML created');
-//      return response()->json(array(
-//                  'success' => true,
-//                  'html' => $returnHTML
-//      ));
+
+   }
+   public function saveFragment(Request $request) {
+      $fragmentName = $request->formation_name;
+      $fragmentId = $request->formation_id;
+      DB::beginTransaction();
+      try {
+         if ($fragmentId == 0) {
+            $fragment = Fragment::create([
+                        'name' => $fragmentName,
+            ]);
+         } else {
+            $fragment = Fragment::find($fragmentId);
+            $fragment->name = $fragmentName;
+            $fragment->save();
+         }
+
+      } catch (\Illuminate\Database\QueryException $ex) {
+         DB::rollback();
+         Utility::Logg('CallsController', 'Database error=' . $ex->getMessage());
+         return redirect()->back()->with('error', 'A database error occurred, please contact support.');
+      }
+      DB::commit();
+      Utility::Logg('CallsController', 'saveFragment  fragmentName=' . $fragmentName . ', fragmentId=' . $fragmentId);
+      return redirect()->back()->with('success', 'Fragment name saved.');
+
    }
 
    public function saveUser(Request $request) {
@@ -319,6 +327,18 @@ class CallsController extends BaseController {
 //      Utility::Logg('CallsController', 'method showEditFormation, formationId=' . $formationId . ', mode='.$mode);
       return view('calls.editFormation',
               compact('mode', 'user', 'names', 'formationId', 'formationName', 'definitionId'));
+   }
+   public function showEditFragment($fragmentId, $definitionId) {
+      if (Auth::check()) {
+         $user = User::find(auth()->id());
+      }
+      $fragment = Fragment::find($fragmentId);
+      $fragmentText = $fragment->text;
+      $names = $this->names();
+      $mode = 'edit';
+//      Utility::Logg('CallsController', 'method showEditFormation, formationId=' . $formationId . ', mode='.$mode);
+      return view('calls.editFragment',
+              compact('mode', 'user', 'names', 'definitionId', 'fragmentId', 'fragmentText'));
    }
 
    public function showNewCall() {

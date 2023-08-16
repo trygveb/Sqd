@@ -16,6 +16,7 @@ class Fragment extends Component
    public $selectName;
    public $fragmentList;
    public $fragmentId;
+   public $definitionId;  // Needed for cancel button
    public $fragmentTypeId;
    public $visible;
    
@@ -23,7 +24,7 @@ class Fragment extends Component
     * Create a new component instance
     * @param type $subApp         (sqd.se, sdCalls, schedule)
     */
-    public function __construct($mode, $seqNo, $count, $fragmentList, $visible, $fragmentTypeId, $fragmentId=0)
+    public function __construct($mode, $seqNo, $count, $fragmentList, $visible, $fragmentTypeId, $definitionId=0, $fragmentId=0)
     {
         $this->mode= $mode;
         $this->seqNo= $seqNo;
@@ -31,6 +32,7 @@ class Fragment extends Component
         $this->visible= $visible;
         $this->fragmentList= $fragmentList;
         $this->fragmentId= $fragmentId;
+        $this->definitionId= $definitionId;
         $this->fragmentTypeId= $fragmentTypeId;
         $this->plusButtonName= sprintf('plus_button_id_%d', $seqNo);
         $this->minusButtonName= sprintf('minus_button_id_%d', $seqNo);

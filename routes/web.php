@@ -86,13 +86,18 @@ Route::group(// Comment out this when running tests
                  Route::post('/calls/save', [CallsController::class, 'save'])->name('saveSettings');   
                  
                  Route::name('showEditDefinition')->get('/editDefinition/{definition_id}', [CallsController::class, 'showEditDefinition']);
+
                  Route::name('showEditFormation')->get('/editFormation/{formation_id}/{definition_id?}', [CallsController::class, 'showEditFormation']);
-                 Route::name('showNewCall')->get('/newCall', [CallsController::class, 'showNewCall']);
                  Route::name('showNewFormation')->get('/newFormation/{definition_id?}', [CallsController::class, 'showNewFormation']);
+
+                 Route::name('showNewCall')->get('/newCall', [CallsController::class, 'showNewCall']);
+                 
+                 Route::name('showEditFragment')->get('/editFragment/{fragmentId}/{definitionId}', [CallsController::class, 'showEditFragment']);
                  Route::name('showNewFragment')->get('/newFragment', [CallsController::class, 'showNewFragment']);
+                 
                  Route::name('saveCall')->post('/saveCall', [CallsController::class, 'saveCall']);
+                 Route::name('saveFragment')->post('/saveFragment', [CallsController::class, 'saveFragment']);
                  Route::name('saveFormation')->post('/saveFormation', [CallsController::class, 'saveFormation']);
-                 Route::name('saveFormation1')->get('/saveFormation1', [CallsController::class, 'saveFormation1']);
                  });
            });
 // Schedule routes ///////////////////////////////////////////////////////////////

@@ -24,6 +24,7 @@
                            seqNo="{{$definitionFragment['seq_no']}}"
                            fragmentTypeId="{{$definitionFragment['fragment_type_id']}}"
                            fragmentId="{{$definitionFragment['fragment_id']}}"
+                           definitionId="{{$definition->id}}"
                            :fragmentList=$fragmentList
                            :visible=true
                />
@@ -33,6 +34,7 @@
                            mode="{{$mode}}"
                            seqNo="{{$seqNo}}"
                            fragmentId="0"
+                           definitionId="{{$definition->id}}"
                            fragmentTypeId="1"
                            :fragmentList=$fragmentList
                            :visible=false
@@ -47,6 +49,7 @@
                            mode="{{$mode}}"
                            seqNo="1"
                            fragmentId="0"
+                           definitionId="{{$definition->id}}"
                            fragmentTypeId="1"
                            :fragmentList=$fragmentList
                            :visible=true
@@ -56,6 +59,7 @@
                            mode="{{$mode}}"
                            seqNo="{{$seqNo}}"
                            fragmentId="0"
+                           definitionId="{{$definition->id}}"
                            fragmentTypeId="1"
                            :fragmentList=$fragmentList
                            :visible=false

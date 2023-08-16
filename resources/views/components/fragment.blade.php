@@ -3,12 +3,13 @@
 @else
 <div id="{{$divName}}" class="form-group"  style="display: none;">
 @endif
-   <label for="{{$selectName}}">Call text fragment {{$seqNo}}:</label>
+   <label for="{{$selectName}}">Call text fragment {{$seqNo}} {{$fragmentId}}:</label>
    <input type="checkbox" id="{{$checkbox1Name}}" name="{{$checkbox1Name}}" style="margin-left:20px;" {{ $fragmentTypeId == 2 ? 'checked' : '' }}>
    <label for="{{$checkbox1Name}}">Secondary</label>
       <button id="{{$plusButtonName}}" style="float:right;display:{{ $seqNo == $count ? 'block' : 'none' }}" onclick="plusClicked({{$seqNo}});return false;">+</button>
       <button id="{{$minusButtonName}}" style="float:right;display:{{ $seqNo == $count ? 'block' : 'none' }}" onclick="minusClicked({{$seqNo}});return false;">-</button>
-   <a href="{{ route('calls.showNewFormation') }}" style="float: right;">Edit fragment</a>
+   <a href="{{ route('calls.showEditFragment', ['fragmentId' => $fragmentId, 'definitionId' => $definitionId]) }}" style="float: right;">Edit fragment</a>
+   
    <select class="form-control" name="{{$selectName}}" id="{{$selectName}}" >
       <option value="0">
       </option>
