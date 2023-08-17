@@ -7,9 +7,9 @@
          <fieldset>
 @include('includes.reportError') 
             @if ($mode=='edit')
-            <legend>Edit fragment text</legend>
+            <legend>Edit fragment text {{$definitionId}}</legend>
             @else
-            <legend>New fragment</legend>
+            <legend>New fragment {{$definitionId}}</legend>
             @endif
             
             <form method="POST" action="{{ route('calls.saveFragment')}}" >
@@ -19,7 +19,7 @@
                <x-submit-button submitText="{{__('Save')}} {{__('fragment text')}}" cancelText="{{ __('Cancel')}}"
                                 cancelUrl="{{route('calls.showEditDefinition', ['definition_id' => $definitionId])}}" />
             @else
-               <x-fragment-text mode="new" fragmentName="" fragmentId="" />
+               <x-fragment-text mode="new" fragmentText="" fragmentId="" />
                <x-submit-button submitText="{{__('Save')}} {{__('fragment text')}}" cancelText="{{ __('Cancel')}}"
                                 cancelUrl="{{route('calls.showEditDefinition', ['definition_id' => $definitionId])}}" />
                

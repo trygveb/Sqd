@@ -4,7 +4,7 @@
    <input type="text" maxlength=120 size=40 name="formation_name" id="formation_name" required value="{{$formationName}}">
    <input type="hidden"  name="formation_id" id="formation_id" required value="{{$formationId}}">
    @else
-   <input type="hidden"  name="formation_id" id="formation_id" required value="0">
+   <input type="text"  name="formation_id" id="formation_id" required value="0">
    <input type="text" list="formations" maxlength=120 size=45  name="formation_name" id="formation_name">
    <datalist id="formations">
         @foreach($formationList as $key => $formationName)
