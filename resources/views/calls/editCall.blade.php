@@ -14,32 +14,32 @@
             <form method="POST" action="{{ route('calls.saveCall')}}" >
             @csrf
             @if ($mode=='edit')
-               <x-call-name mode="edit" callName="{{$callName}}" callId="{{$callId}}" definitionId="{{$definition->id}}"/>
+               <x-call-name mode="edit" callName="{{$callName}}" callId="{{$callId}}" definitionId="{{$definitionId}}"/>
                <x-program-select mode="{{$mode}}" programId="{{$programId}}" />
-               <x-formation-select  mode="{{$mode}}" startEnd="Start" definitionId="{{$definition->id}}" formationId="{{$startFormationId}}" />
-               <x-formation-select  mode="{{$mode}}" startEnd="End" definitionId="{{$definition->id}}" formationId="{{$endFormationId}}" />
-            @foreach($definitionFragments as $definitionFragment)
+               <x-formation-select  mode="{{$mode}}" startEnd="Start" definitionId="{{$definitionId}}" formationId="{{$startFormationId}}" />
+               <x-formation-select  mode="{{$mode}}" startEnd="End" definitionId="{{$definitionId}}" formationId="{{$endFormationId}}" />
+               @foreach($definitionFragments as $definitionFragment)
                <x-fragment count="{{count($definitionFragments)}}"
                            mode="{{$mode}}"
                            seqNo="{{$definitionFragment['seq_no']}}"
                            fragmentTypeId="{{$definitionFragment['fragment_type_id']}}"
                            fragmentId="{{$definitionFragment['fragment_id']}}"
-                           definitionId="{{$definition->id}}"
+                           definitionId="{{$definitionId}}"
                            :fragmentList=$fragmentList
                            :visible=true
                />
-            @endforeach
-            @for ($seqNo = count($definitionFragments)+1; $seqNo <=6 ; $seqNo++)
+               @endforeach
+               @for ($seqNo = count($definitionFragments)+1; $seqNo <=6 ; $seqNo++)
                <x-fragment count="{{count($definitionFragments)}}"
                            mode="{{$mode}}"
                            seqNo="{{$seqNo}}"
                            fragmentId="0"
-                           definitionId="{{$definition->id}}"
+                           definitionId="{{$definitionId}}"
                            fragmentTypeId="1"
                            :fragmentList=$fragmentList
                            :visible=false
                />
-            @endfor
+               @endfor
             @else
                <x-call-name mode="new" callName="" callId="" definitionId=""/>
                <x-program-select mode="{{$mode}}" program_id="" />
@@ -49,26 +49,26 @@
                            mode="{{$mode}}"
                            seqNo="1"
                            fragmentId="0"
-                           definitionId="{{$definition->id}}"
+                           definitionId="0"
                            fragmentTypeId="1"
                            :fragmentList=$fragmentList
                            :visible=true
                 />
-            @for ($seqNo = 2; $seqNo <=6 ; $seqNo++)
+               @for ($seqNo = 2; $seqNo <=6 ; $seqNo++)
                <x-fragment count="1"
                            mode="{{$mode}}"
                            seqNo="{{$seqNo}}"
                            fragmentId="0"
-                           definitionId="{{$definition->id}}"
+                           definitionId="0"
                            fragmentTypeId="1"
                            :fragmentList=$fragmentList
                            :visible=false
                />
-            @endfor
+               @endfor
             @endif
             <p style="margin-left: auto; margin-right: auto;display:table;" >
-               <a href="{{ route('calls.showNewFragment',['definition_id' => $definition->id]) }}" class="btn btn-secondary" >New fragment</a>
-               <a href="{{ route('calls.showNewFormation', ['definition_id' => $definition->id]) }}" class="btn btn-secondary" >New formation</a>
+               <a href="{{ route('calls.showNewFragment',['definition_id' => $definitionId]) }}" class="btn btn-secondary" >New fragment</a>
+               <a href="{{ route('calls.showNewFormation', ['definition_id' => $definitionId]) }}" class="btn btn-secondary" >New formation</a>
             </p>
                <br>
                <x-submit-button submitText="{{__('Save')}} {{__('definition')}}" cancelText="{{ __('Cancel')}}" cancelUrl="{{route('calls.showForm1')}}" />

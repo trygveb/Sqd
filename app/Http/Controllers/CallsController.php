@@ -183,7 +183,6 @@ class CallsController extends BaseController {
               compact('mode', 'user', 'names', 'definitionId', 'fragmentId', 'fragmentText'));
    }
    public function showNewFragment($definitionId = 0) {
-//      Utility::Logg('CallsController', 'method showNewFragment called');
       if (Auth::check()) {
          $user = User::find(auth()->id());
       }
@@ -271,6 +270,18 @@ class CallsController extends BaseController {
               ->sortBy('seq_no')
               ->values()
               ->toArray();
+      if (count($definitionFragments)===0) {
+         $definitionFragment = new DefinitionFragment();
+         $definitionFragment->definition_id=$definitionId;
+         $definitionFragment->fragment_id=52;
+         $definitionFragment->fragment_type_id=1;
+         $definitionFragment->seq_no= 1;
+         $definitionFragment->save();
+         $definitionFragments = DefinitionFragment::where('definition_id', $definitionId)
+              ->get()
+              ->values()
+              ->toArray();
+      }
 //      Utility::Logg('CallsController', 'definitionFragments fetched, definitionFragments=' . print_r($definitionFragments, true));
       $formationList = SdCallsUtility::GetFormationList();
       $names = $this->names();
@@ -285,7 +296,7 @@ class CallsController extends BaseController {
       $mode = 'edit';
       //$fragments = json_encode($definitionFragments);
       return view('calls.editCall',
-              compact('mode', 'definition', 'user', 'names', 'callName', 'callId', 'programId', 'startFormationId', 'endFormationId', 'definitionFragments', 'programList', 'formationList', 'fragmentList'));
+              compact('mode', 'definitionId', 'user', 'names', 'callName', 'callId', 'programId', 'startFormationId', 'endFormationId', 'definitionFragments', 'programList', 'formationList', 'fragmentList'));
 //      return response()->json(array(
 //                  'success' => true,
 //                  'html' => $returnHTML,
@@ -305,11 +316,11 @@ class CallsController extends BaseController {
       $names = $this->names();
       $fragmentList = SdCallsUtility::GetFragmentList();
       $programList = SdCallsUtility::GetProgramList();
-
+      $definitionId=0;
       $mode = 'new';
 //      Utility::Logg('CallsController', 'method showNewCall called, creating returnHTML');
       return view('calls.editCall',
-              compact('mode', 'user', 'names', 'programList', 'formationList', 'fragmentList'));
+              compact('mode','definitionId', 'user', 'names', 'programList', 'formationList', 'fragmentList'));
    }
    public function saveCall(Request $request) {
 //      dd('saveCall');
