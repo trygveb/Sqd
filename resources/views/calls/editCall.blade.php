@@ -24,12 +24,13 @@
                            seqNo="{{$definitionFragment['seq_no']}}"
                            fragmentTypeId="{{$definitionFragment['fragment_type_id']}}"
                            fragmentId="{{$definitionFragment['fragment_id']}}"
+                           separator="{{$definitionFragment['fragment_separator']}}"
                            definitionId="{{$definitionId}}"
                            :fragmentList=$fragmentList
                            :visible=true
                />
                @endforeach
-               @for ($seqNo = count($definitionFragments)+1; $seqNo <=6 ; $seqNo++)
+               @for ($seqNo = count($definitionFragments)+1; $seqNo <=12 ; $seqNo++)
                <x-fragment count="{{count($definitionFragments)}}"
                            mode="{{$mode}}"
                            seqNo="{{$seqNo}}"
@@ -54,7 +55,7 @@
                            :fragmentList=$fragmentList
                            :visible=true
                 />
-               @for ($seqNo = 2; $seqNo <=6 ; $seqNo++)
+               @for ($seqNo = 2; $seqNo <=12 ; $seqNo++)
                <x-fragment count="1"
                            mode="{{$mode}}"
                            seqNo="{{$seqNo}}"

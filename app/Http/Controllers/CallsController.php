@@ -129,7 +129,9 @@ class CallsController extends BaseController {
    
    private function getDefinitionFragment($request, $definitionId, $seqNo) {
       $selectName = sprintf('fragment_id_%d', $seqNo);
+      $selectSeparatorName = sprintf('separator_id_%d', $seqNo);
       $fragmentId = $request->$selectName;
+      $separator = $request->$selectSeparatorName;
       $checkbox1Name = sprintf('checkbox1_id_%d', $seqNo);
       $secondary = $request->$checkbox1Name;
       $definitionFragment = new DefinitionFragment();
@@ -139,7 +141,8 @@ class CallsController extends BaseController {
          $definitionFragment->definition_id = $definitionId;
          $definitionFragment->fragment_id = $fragmentId;
          $definitionFragment->seq_no = $seqNo;
-//               Utility::Logg('CallsController', 'method saveCall,insert DefinitionFragment: '.print_r($definitionFragment, true));
+         $definitionFragment->fragment_separator=$separator;
+               Utility::Logg('CallsController', 'method saveCall,insert DefinitionFragment, fragmentSeparator= '.$definitionFragment->fragment_separator);
       }
       if ($secondary == 'on') {
          $definitionFragment->fragment_type_id = 2;
@@ -360,14 +363,14 @@ class CallsController extends BaseController {
          $definition->start_end_formation_id = $startEndFormation->id;
          $definition->save();
          $fragments = $definition->fragments;
-//          Utility::Logg('CallsController', 'method saveCall, fragments count='.$fragments->count());
+          Utility::Logg('CallsController', 'method saveCall, fragments count='.$fragments->count());
          foreach ($fragments as $fragment) {
             DefinitionFragment::destroy($fragment->pivot->id);
          }
-         for ($seqNo = 1; $seqNo <= 6; $seqNo++) {
+         for ($seqNo = 1; $seqNo <= 12; $seqNo++) {
             $definitionFragment = $this->getDefinitionFragment($request, $definitionId, $seqNo);
             if ($definitionFragment->seq_no > 0) {
-//               Utility::Logg('CallsController', 'method saveCall, save definitionFragment '.$seqNo);
+               Utility::Logg('CallsController', 'method saveCall, save definitionFragment '.$seqNo);
                $definitionFragment->save();
             }
          }

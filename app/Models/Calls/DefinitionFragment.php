@@ -36,7 +36,8 @@ class DefinitionFragment extends Model
 	protected $fillable = [
 		'definition_id',
 		'fragment_id',
-		'seq_no'
+		'seq_no',
+      'fragment_separator'
 	];
 
 	public function fragment()

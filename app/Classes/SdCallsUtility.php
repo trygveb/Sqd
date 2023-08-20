@@ -51,6 +51,7 @@ class SdCallsUtility {
          } else {
             $txt .= ' ' . $fragment->text;
          }
+         $txt .= $definitionFragment->fragment_separator;
       }
       Utility::Logg('CreateTexts->createCallText, txt=', $txt);
 

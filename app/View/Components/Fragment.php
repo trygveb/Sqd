@@ -9,11 +9,16 @@ class Fragment extends Component
    public $mode;
    public $count;
    public $seqNo;
+   
+   // Html element names
    public $plusButtonName;
    public $minusButtonName;
    public $checkbox1Name;
    public $divName;
    public $selectName;
+   public $selectSeparatorName;
+   
+   public $separator;
    public $fragmentList;
    public $fragmentId;
    public $definitionId;  // Needed for cancel button
@@ -24,7 +29,7 @@ class Fragment extends Component
     * Create a new component instance
     * @param type $subApp         (sqd.se, sdCalls, schedule)
     */
-    public function __construct($mode, $seqNo, $count, $fragmentList, $visible, $fragmentTypeId, $definitionId=0, $fragmentId=0)
+    public function __construct($mode, $seqNo, $count, $fragmentList, $visible, $fragmentTypeId, $definitionId=0, $fragmentId=0, $separator='.')
     {
         $this->mode= $mode;
         $this->seqNo= $seqNo;
@@ -39,6 +44,8 @@ class Fragment extends Component
         $this->checkbox1Name= sprintf('checkbox1_id_%d', $seqNo);
         $this->divName= sprintf('div_id_%d', $seqNo);
         $this->selectName= sprintf('fragment_id_%d', $seqNo);
+        $this->selectSeparatorName= sprintf('separator_id_%d', $seqNo);
+        $this->separator= $separator;
     }
 
     /**
