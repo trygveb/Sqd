@@ -289,6 +289,8 @@ class CallsController extends BaseController {
       $formationList = SdCallsUtility::GetFormationList();
       $names = $this->names();
       $fragmentList = SdCallsUtility::GetFragmentList();
+      $pausesList = SdCallsUtility::GetPausesNames();
+//      dd('pausesList='.print_r($pausesList, true));
       $programList = SdCallsUtility::GetProgramList();
       //$calls = SdCallsUtility::GetCallNames();
       $callId = $definition->call_id;
@@ -299,7 +301,7 @@ class CallsController extends BaseController {
       $mode = 'edit';
       //$fragments = json_encode($definitionFragments);
       return view('calls.editCall',
-              compact('mode', 'definitionId', 'user', 'names', 'callName', 'callId', 'programId', 'startFormationId', 'endFormationId', 'definitionFragments', 'programList', 'formationList', 'fragmentList'));
+              compact('mode', 'definitionId', 'user', 'names', 'callName', 'callId', 'programId', 'startFormationId', 'endFormationId', 'definitionFragments', 'programList', 'formationList', 'pausesList', 'fragmentList'));
 //      return response()->json(array(
 //                  'success' => true,
 //                  'html' => $returnHTML,

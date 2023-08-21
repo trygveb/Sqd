@@ -24,8 +24,9 @@
                            seqNo="{{$definitionFragment['seq_no']}}"
                            fragmentTypeId="{{$definitionFragment['fragment_type_id']}}"
                            fragmentId="{{$definitionFragment['fragment_id']}}"
-                           separator="{{$definitionFragment['fragment_separator']}}"
+                           pauseId="{{$definitionFragment['pause_id']}}"
                            definitionId="{{$definitionId}}"
+                           :pausesList=$pausesList
                            :fragmentList=$fragmentList
                            :visible=true
                />
@@ -38,6 +39,7 @@
                            definitionId="{{$definitionId}}"
                            fragmentTypeId="1"
                            :fragmentList=$fragmentList
+                           :pausesList=$pausesList
                            :visible=false
                />
                @endfor
@@ -53,6 +55,7 @@
                            definitionId="0"
                            fragmentTypeId="1"
                            :fragmentList=$fragmentList
+                           :pausesList=$pausesList
                            :visible=true
                 />
                @for ($seqNo = 2; $seqNo <=12 ; $seqNo++)
@@ -63,6 +66,7 @@
                            definitionId="0"
                            fragmentTypeId="1"
                            :fragmentList=$fragmentList
+                           :pausesList=$pausesList
                            :visible=false
                />
                @endfor

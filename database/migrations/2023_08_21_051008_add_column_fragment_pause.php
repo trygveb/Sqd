@@ -15,12 +15,17 @@ return new class extends Migration {
    public function up(): void {
       $myConnection = Connections::calls_connection();
       Schema::connection($myConnection)->table('definition_fragments', function (Blueprint $table) {
-         $table->char('fragment_separator',1)
-                 ->default('.')
-                 ->nullable()
+         $table->unsignedBigInteger('pause_id')
+                 ->default(1)
                  ->after('fragment_type_id');
       });
-     
+      Schema::connection($myConnection)->table('definition_fragments', function (Blueprint $table) {
+         $table->foreign(['pause_id'], 'pauses_FK')
+                 ->references(['id'])
+                 ->on('calls.pauses')
+                 ->onUpdate('CASCADE')
+                 ->onDelete('CASCADE');
+      });
    }
 
    /**
@@ -29,7 +34,8 @@ return new class extends Migration {
    public function down(): void {
       $myConnection = Connections::calls_connection();
       Schema::connection($myConnection)->table('definition_fragments', function (Blueprint $table) {
-         $table->dropColumn('fragment_separator');
+         $table->dropForeign('pauses_FK');
+         $table->dropColumn('pause_id');
       });
    }
 };

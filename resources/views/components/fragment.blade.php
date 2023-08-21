@@ -7,12 +7,17 @@
    <label for="{{$checkbox1Name}}">Secondary</label>
    <input type="checkbox" id="{{$checkbox1Name}}" name="{{$checkbox1Name}}" style="margin-left:2px;" {{ $fragmentTypeId == 2 ? 'checked' : '' }}>
    
-   <label for="{{$selectSeparatorName}}" style="margin-left:10px;" >Separator:</label>
-   <select name="{{$selectSeparatorName}}" id="{{$selectSeparatorName}}" >
-      <option value="." {{ $separator == '.' ? 'selected' : '' }}>Point</option>
-      <option value=";" {{ $separator == ';' ? 'selected' : '' }}>Semikolon</option>
-      <option value="," {{ $separator == ',' ? 'selected' : '' }}>Komma</option>
-      <option value=" " {{ $separator == ' ' ? 'selected' : '' }}>None</option>
+   <label for="{{$selectPauseName}}" style="margin-left:10px;" >Separator:</label>
+   <select name="{{$selectPauseName}}" id="{{$selectPauseName}}" >
+   @foreach($pausesList as $key => $pauseName)
+       @if ($mode=='edit')
+         <option value="{{ $key }}" {{ $pauseId == $key ? 'selected' : '' }}>
+       @else
+         <option value="{{ $key }}">
+       @endif
+      {{ $pauseName }}
+       </option>
+       @endforeach
    </select>
    
    

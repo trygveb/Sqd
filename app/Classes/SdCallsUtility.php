@@ -8,6 +8,7 @@ use App\Models\Calls\Formation;
 use App\Models\Calls\Fragment;
 use App\Models\Calls\Program;
 use App\Models\Calls\VCallDef;
+use App\Models\Calls\Pause;
 use App\Models\Calls\SdCall;
 use Google\Cloud\TextToSpeech\V1\TextToSpeechClient;
 use Google\Cloud\TextToSpeech\V1\VoiceSelectionParams;
@@ -189,6 +190,10 @@ class SdCallsUtility {
 
    public static function GetLanguageList() {
       $list = ['en-US', 'en-AU', 'en-GB'];
+      return $list;
+   }
+   public static function GetPausesNames() {
+      $list = Pause::orderBy('name')->get()->pluck('name','id' );
       return $list;
    }
 
