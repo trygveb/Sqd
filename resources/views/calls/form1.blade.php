@@ -124,6 +124,7 @@ function getCallText(ssml=false) {
       data:formData,
       success:function(data) {
          $("#callText").html(data.callText);
+         console.log(data.callText);
          $("#startFormation").html('From: '+data.from);
          if (data.endsIn.startsWith('Usually')) {
             $("#endFormation").html(data.endsIn);

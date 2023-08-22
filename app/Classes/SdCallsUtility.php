@@ -53,7 +53,7 @@ class SdCallsUtility {
             $txt .= ' ' . $fragment->text;
          }
          if ($ssml) {
-             $txt .= sprintf('<break time="%dms"/>', Pause::find($definitionFragment->pause_id)->time);
+             $txt .= sprintf('&lt;break time="%dms"/>', Pause::find($definitionFragment->pause_id)->time);
          } else {
             $txt .= Pause::find($definitionFragment->pause_id)->symbol;
          }
@@ -140,7 +140,7 @@ class SdCallsUtility {
    }
 
    public static function createSsmlText($definition, $includeStartFormation, $includeEndFormation, $repeats, $includeFormations) {
-      $txt = '<speak> ';
+      $txt = '&lt;speak> ';
       $txtFrom = '';
       $txtEndsIn = '';
       $startEndFormation = $definition->start_end_formation;
@@ -166,7 +166,7 @@ class SdCallsUtility {
          }
          //$txt .=';';
       }
-      $txt = $txt . ' </speak>';
+      $txt = $txt . ' &lt;/speak>';
       Utility::Logg('CreateTexts->createSsmlText, txt=', $txt);
 
       return $txt;

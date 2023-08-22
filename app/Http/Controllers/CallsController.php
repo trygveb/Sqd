@@ -97,7 +97,8 @@ class CallsController extends BaseController {
       $path = '';
       Utility::Logg('CallsController->getCallText ssml=', $request->ssml);
       Utility::Logg('CallsController->getCallText repeats=', $request->repeats);
-      if ($request->ssml === 'true') {
+      if ($request->ssml == true) {
+         Utility::Logg('CallsController->getCallText ssml=', 'TRUE');
          $callText = SdCallsUtility::createSsmlText($definition,
                          $request->include_start_formation === 'true',
                          $request->include_end_formation === 'true',
@@ -108,6 +109,8 @@ class CallsController extends BaseController {
       } else {
          $callText = SdCallsUtility::createCallText($definition);
       }
+
+      Utility::Logg('CallsController->getCallText calltext==', $callText);
 
       $this->saveUser($request);
       $from = '';
