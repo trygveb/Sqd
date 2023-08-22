@@ -126,12 +126,12 @@ class CallsController extends BaseController {
       return response()->json(array('callText' => $callText, 'from' => $from, 'endsIn' => $endsIn, 'path' => $path), 200);
    }
 
-   
    private function getDefinitionFragment($request, $definitionId, $seqNo) {
       $selectName = sprintf('fragment_id_%d', $seqNo);
-      $selectSeparatorName = sprintf('separator_id_%d', $seqNo);
+      //$selectSeparatorName = sprintf('pause_id_%d', $seqNo);
+      $selectPauseName = \App\View\Components\Fragment::getSelectPauseName($seqNo);
       $fragmentId = $request->$selectName;
-      $separator = $request->$selectSeparatorName;
+      $pauseId = $request->$selectPauseName;
       $checkbox1Name = sprintf('checkbox1_id_%d', $seqNo);
       $secondary = $request->$checkbox1Name;
       $definitionFragment = new DefinitionFragment();
@@ -141,14 +141,15 @@ class CallsController extends BaseController {
          $definitionFragment->definition_id = $definitionId;
          $definitionFragment->fragment_id = $fragmentId;
          $definitionFragment->seq_no = $seqNo;
-         $definitionFragment->fragment_separator=$separator;
-               Utility::Logg('CallsController', 'method saveCall,insert DefinitionFragment, fragmentSeparator= '.$definitionFragment->fragment_separator);
+         $definitionFragment->pause_id = $pauseId;
+//         Utility::Logg('CallsController', 'method saveCall,insert DefinitionFragment, pause_id= ' . $definitionFragment->pause_id);
       }
       if ($secondary == 'on') {
          $definitionFragment->fragment_type_id = 2;
       }
       return $definitionFragment;
    }
+
    public function saveFragment(Request $request) {
       $fragmentText = $request->fragment_text;
       $fragmentId = $request->fragment_id;
@@ -163,7 +164,6 @@ class CallsController extends BaseController {
             $fragment->text = $fragmentText;
             $fragment->save();
          }
-
       } catch (\Illuminate\Database\QueryException $ex) {
          DB::rollback();
          Utility::Logg('CallsController', 'Database error=' . $ex->getMessage());
@@ -171,9 +171,9 @@ class CallsController extends BaseController {
       }
       DB::commit();
       return redirect()->back()->with('success', 'Fragment text saved.');
-
    }
-   public function showEditFragment($fragmentId, $definitionId=0) {
+
+   public function showEditFragment($fragmentId, $definitionId = 0) {
       if (Auth::check()) {
          $user = User::find(auth()->id());
       }
@@ -185,6 +185,7 @@ class CallsController extends BaseController {
       return view('calls.editFragment',
               compact('mode', 'user', 'names', 'definitionId', 'fragmentId', 'fragmentText'));
    }
+
    public function showNewFragment($definitionId = 0) {
       if (Auth::check()) {
          $user = User::find(auth()->id());
@@ -192,7 +193,7 @@ class CallsController extends BaseController {
       $names = $this->names();
       $mode = 'new';
       return view('calls.editFragment', compact('mode', 'user', 'names', 'definitionId'));
-   }   
+   }
 
    private function getStartEndFormation($startFormationId, $endFormationId) {
       // Try to find existing StartEndFormation
@@ -211,6 +212,7 @@ class CallsController extends BaseController {
               ->first();
       return $startEndFormation;
    }
+
    public function saveFormation(Request $request) {
       $formationName = $request->formation_name;
       $formationId = $request->formation_id;
@@ -225,7 +227,6 @@ class CallsController extends BaseController {
             $formation->name = $formationName;
             $formation->save();
          }
-
       } catch (\Illuminate\Database\QueryException $ex) {
          DB::rollback();
          Utility::Logg('CallsController', 'Database error=' . $ex->getMessage());
@@ -234,9 +235,9 @@ class CallsController extends BaseController {
       DB::commit();
       Utility::Logg('CallsController', 'saveFormation  formationName=' . $formationName . ', formationId=' . $formationId);
       return redirect()->back()->with('success', 'Formation name saved.');
-
    }
-   public function showEditFormation($formationId, $definitionId=0) {
+
+   public function showEditFormation($formationId, $definitionId = 0) {
       if (Auth::check()) {
          $user = User::find(auth()->id());
       }
@@ -247,6 +248,7 @@ class CallsController extends BaseController {
       return view('calls.editFormation',
               compact('mode', 'user', 'names', 'formationId', 'formationName', 'definitionId'));
    }
+
    public function showNewFormation($definitionId = 0) {
       if (Auth::check()) {
          $user = User::find(auth()->id());
@@ -255,7 +257,6 @@ class CallsController extends BaseController {
       $mode = 'new';
       return view('calls.editFormation', compact('mode', 'user', 'names', 'definitionId'));
    }
-
 
    /**
     * 
@@ -273,17 +274,17 @@ class CallsController extends BaseController {
               ->sortBy('seq_no')
               ->values()
               ->toArray();
-      if (count($definitionFragments)===0) {
+      if (count($definitionFragments) === 0) {
          $definitionFragment = new DefinitionFragment();
-         $definitionFragment->definition_id=$definitionId;
-         $definitionFragment->fragment_id=52;
-         $definitionFragment->fragment_type_id=1;
-         $definitionFragment->seq_no= 1;
+         $definitionFragment->definition_id = $definitionId;
+         $definitionFragment->fragment_id = 52;
+         $definitionFragment->fragment_type_id = 1;
+         $definitionFragment->seq_no = 1;
          $definitionFragment->save();
          $definitionFragments = DefinitionFragment::where('definition_id', $definitionId)
-              ->get()
-              ->values()
-              ->toArray();
+                 ->get()
+                 ->values()
+                 ->toArray();
       }
 //      Utility::Logg('CallsController', 'definitionFragments fetched, definitionFragments=' . print_r($definitionFragments, true));
       $formationList = SdCallsUtility::GetFormationList();
@@ -312,6 +313,7 @@ class CallsController extends BaseController {
 //                  'fragments' => json_encode($definitionFragments)
 //      ));
    }
+
    public function showNewCall() {
       Utility::Logg('CallsController', 'method showNewCall called');
       if (Auth::check()) {
@@ -321,12 +323,13 @@ class CallsController extends BaseController {
       $names = $this->names();
       $fragmentList = SdCallsUtility::GetFragmentList();
       $programList = SdCallsUtility::GetProgramList();
-      $definitionId=0;
+      $definitionId = 0;
       $mode = 'new';
 //      Utility::Logg('CallsController', 'method showNewCall called, creating returnHTML');
       return view('calls.editCall',
-              compact('mode','definitionId', 'user', 'names', 'programList', 'formationList', 'fragmentList'));
+              compact('mode', 'definitionId', 'user', 'names', 'programList', 'formationList', 'fragmentList'));
    }
+
    public function saveCall(Request $request) {
 //      dd('saveCall');
       $callName = $request->call_name_1;
@@ -365,14 +368,14 @@ class CallsController extends BaseController {
          $definition->start_end_formation_id = $startEndFormation->id;
          $definition->save();
          $fragments = $definition->fragments;
-          Utility::Logg('CallsController', 'method saveCall, fragments count='.$fragments->count());
+//         Utility::Logg('CallsController', 'method saveCall, fragments count=' . $fragments->count());
          foreach ($fragments as $fragment) {
             DefinitionFragment::destroy($fragment->pivot->id);
          }
          for ($seqNo = 1; $seqNo <= 12; $seqNo++) {
             $definitionFragment = $this->getDefinitionFragment($request, $definitionId, $seqNo);
             if ($definitionFragment->seq_no > 0) {
-               Utility::Logg('CallsController', 'method saveCall, save definitionFragment '.$seqNo);
+//               Utility::Logg('CallsController', 'method saveCall, save definitionFragment ' . $seqNo);
                $definitionFragment->save();
             }
          }
@@ -384,7 +387,5 @@ class CallsController extends BaseController {
       DB::commit();
       return redirect()->back()->with('success', 'Call  saved successfully.');
    }
-
-
 
 }

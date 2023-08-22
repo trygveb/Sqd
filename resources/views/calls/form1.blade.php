@@ -125,7 +125,11 @@ function getCallText(ssml=false) {
       success:function(data) {
          $("#callText").html(data.callText);
          $("#startFormation").html('From: '+data.from);
-         $("#endFormation").html('Ends in: '+data.endsIn);
+         if (data.endsIn.startsWith('Usually')) {
+            $("#endFormation").html(data.endsIn);
+         } else {
+            $("#endFormation").html('Ends in: '+data.endsIn);
+         }
          $("#path").html(data.path);
       }
    });

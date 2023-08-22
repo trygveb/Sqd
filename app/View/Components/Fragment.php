@@ -26,6 +26,9 @@ class Fragment extends Component
    public $fragmentTypeId;
    public $visible;
    
+    public static function getSelectPauseName($seqNo) {
+       return sprintf('separator_id_%d', $seqNo);
+    }
    /**
     * Create a new component instance
     * @param type $subApp         (sqd.se, sdCalls, schedule)
@@ -45,7 +48,7 @@ class Fragment extends Component
         $this->checkbox1Name= sprintf('checkbox1_id_%d', $seqNo);
         $this->divName= sprintf('div_id_%d', $seqNo);
         $this->selectName= sprintf('fragment_id_%d', $seqNo);
-        $this->selectPauseName= sprintf('separator_id_%d', $seqNo);
+        $this->selectPauseName= self::getSelectPauseName($seqNo);
         $this->pausesList= $pausesList;
         $this->pauseId= $pauseId;
     }

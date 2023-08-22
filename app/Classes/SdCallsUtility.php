@@ -30,7 +30,7 @@ class SdCallsUtility {
       return str_replace($x, $y, $txt);
    }
 
-   public static function createCallText(Definition $definition) {
+   public static function createCallText(Definition $definition,$ssml= false) {
       $txt = '';
 
       $definitionFragments = DefinitionFragment::where('definition_id', $definition->id)
@@ -52,10 +52,16 @@ class SdCallsUtility {
          } else {
             $txt .= ' ' . $fragment->text;
          }
-         $txt .= $definitionFragment->fragment_separator;
+         if ($ssml) {
+             $txt .= sprintf('<break time="%dms"/>', Pause::find($definitionFragment->pause_id)->time);
+         } else {
+            $txt .= Pause::find($definitionFragment->pause_id)->symbol;
+         }
       }
       Utility::Logg('CreateTexts->createCallText, txt=', $txt);
-
+      if (!$ssml) {
+         $txt .= '.';
+      }
       return $txt;
    }
 
@@ -142,9 +148,13 @@ class SdCallsUtility {
          $txtFrom = 'from ' . $startEndFormation->startFormation->name;
       }
       if ($includeEndFormation && !is_null($startEndFormation->endFormation)) {
-         $txtEndsIn = 'ends in ' . $startEndFormation->endFormation->name;
+         if (str_starts_with($startEndFormation->endFormation->name,'Usually')) {
+            $txtEndsIn = $startEndFormation->endFormation->name;
+         } else {
+            $txtEndsIn = 'ends in ' . $startEndFormation->endFormation->name;
+         }
       }
-      $txtCall = self::createCallText($definition);
+      $txtCall = self::createCallText($definition, true);
       for ($n = 0; $n < $repeats + 1; $n++) {
          $txt .= $definition->sd_call->name . '; ';
          if ($includeStartFormation && ($n == 0 || $includeFormations)) {
@@ -193,7 +203,7 @@ class SdCallsUtility {
       return $list;
    }
    public static function GetPausesNames() {
-      $list = Pause::orderBy('name')->get()->pluck('name','id' );
+      $list = Pause::orderBy('time')->get()->pluck('name','id' );
       return $list;
    }
 
