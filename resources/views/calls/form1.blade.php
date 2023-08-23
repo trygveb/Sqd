@@ -49,7 +49,7 @@ function showVoice() {
 }
 function createMp3Text() {
       $('#mp3Row').show();
-      getCallText(true);
+      getCallText(1);
 }
 function createMp3File() {
    console.log('createMp3File');
@@ -73,7 +73,7 @@ function createMp3File() {
    });
 }
    
-function createFormData(ssml=false) {
+function createFormData(ssml=0) {
    var formData = {
          _token: '<?php echo csrf_token() ?>',
          definition_id: $('#definition_id').find(":selected").val(),
@@ -111,7 +111,7 @@ function createFormData(ssml=false) {
    	});
       
    }
-function getCallText(ssml=false) {
+function getCallText(ssml=0) {
    $.ajaxSetup({
       headers: {
          'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')

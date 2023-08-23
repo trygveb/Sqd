@@ -30,7 +30,7 @@ class SdCallsUtility {
       return str_replace($x, $y, $txt);
    }
 
-   public static function createCallText(Definition $definition,$ssml= false) {
+   public static function createCallText(Definition $definition,$ssml= 0) {
       $txt = '';
 
       $definitionFragments = DefinitionFragment::where('definition_id', $definition->id)
@@ -52,14 +52,14 @@ class SdCallsUtility {
          } else {
             $txt .= ' ' . $fragment->text;
          }
-         if ($ssml) {
-             $txt .= sprintf('&lt;break time="%dms"/>', Pause::find($definitionFragment->pause_id)->time);
+         if ($ssml > 0) {
+             $txt .= sprintf('<break time="%dms"/>', Pause::find($definitionFragment->pause_id)->time);
          } else {
             $txt .= Pause::find($definitionFragment->pause_id)->symbol;
          }
       }
       Utility::Logg('CreateTexts->createCallText, txt=', $txt);
-      if (!$ssml) {
+      if ($ssml==0) {
          $txt .= '.';
       }
       return $txt;
@@ -140,7 +140,7 @@ class SdCallsUtility {
    }
 
    public static function createSsmlText($definition, $includeStartFormation, $includeEndFormation, $repeats, $includeFormations) {
-      $txt = '&lt;speak> ';
+      $txt = '<speak> ';
       $txtFrom = '';
       $txtEndsIn = '';
       $startEndFormation = $definition->start_end_formation;
@@ -154,19 +154,24 @@ class SdCallsUtility {
             $txtEndsIn = 'ends in ' . $startEndFormation->endFormation->name;
          }
       }
-      $txtCall = self::createCallText($definition, true);
+      $txtCall = self::createCallText($definition, 1);
       for ($n = 0; $n < $repeats + 1; $n++) {
-         $txt .= $definition->sd_call->name . '; ';
+        // $txt .= $definition->sd_call->name . '; ';
+         $txt .= sprintf('%s<break time="%dms"/>',$definition->sd_call->name , 200);
          if ($includeStartFormation && ($n == 0 || $includeFormations)) {
-            $txt .= $txtFrom . ';';
+//            $txt .= $txtFrom . ';';
+              $txt .= sprintf('%s<break time="%dms"/>',$txtFrom , 200);
+
          }
-         $txt .= $txtCall . ';';
+         //$txt .= $txtCall . ';';
+         $txt .= sprintf('%s<break time="%dms"/>',$txtCall , 200);
          if ($includeEndFormation && ($n == 0 || $includeFormations)) {
-            $txt .= $txtEndsIn . ';';
+            //$txt .= $txtEndsIn . ';';
+            $txt .= sprintf('%s<break time="%dms"/>',$txtEndsIn , 200);
          }
          //$txt .=';';
       }
-      $txt = $txt . ' &lt;/speak>';
+      $txt = $txt . ' </speak>';
       Utility::Logg('CreateTexts->createSsmlText, txt=', $txt);
 
       return $txt;
