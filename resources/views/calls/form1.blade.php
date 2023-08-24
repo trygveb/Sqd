@@ -123,8 +123,7 @@ function getCallText(ssml=0) {
       url:'/getCallText',
       data:formData,
       success:function(data) {
-         $("#callText").html(data.callText);
-         console.log(data.callText);
+         $("#callText").html(htmlEntities(data.callText));
          $("#startFormation").html('From: '+data.from);
          if (data.endsIn.startsWith('Usually')) {
             $("#endFormation").html(data.endsIn);
@@ -249,6 +248,10 @@ function GetCallList() {
          selectElement('definition_id', 0);
       }      
    });
+}
+
+function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 function newCall() {

@@ -74,8 +74,17 @@ class CallsController extends BaseController {
    }
 
    public function createMp3File(Request $request) {
-      Utility::Logg('CallsController->createMp3File', 'Called');
-      $callText = $request->callText;
+      
+//      $callText = $request->callText;
+      $definitionId = $request->definition_id;
+      $definition = Definition::find($definitionId);
+      $callText = SdCallsUtility::createSsmlText($definition,
+                      $request->include_start_formation === 'true',
+                      $request->include_end_formation === 'true',
+                      intval($request->repeats),
+                      $request->include_formations_in_repeats === 'true'
+      );
+Utility::Logg('CallsController->createMp3File, text=', $callText);
       //$path = $request->path;
       $voiceParams = [
           "languageCode" => $request->language,
@@ -125,7 +134,7 @@ class CallsController extends BaseController {
       }
 //      $createMp3FileAction= new CreateMp3FileAction();
 //      $createMp3FileAction->execute($definitionId, $callText[1]);
-      return response()->json(array('callText' => htmlentities($callText), 'from' => $from, 'endsIn' => $endsIn, 'path' => $path), 200);
+      return response()->json(array('callText' => $callText, 'from' => $from, 'endsIn' => $endsIn, 'path' => $path), 200);
    }
 
    private function getDefinitionFragment($request, $definitionId, $seqNo) {

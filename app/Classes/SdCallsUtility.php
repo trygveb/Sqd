@@ -53,7 +53,7 @@ class SdCallsUtility {
             $txt .= ' ' . $fragment->text;
          }
          if ($ssml > 0) {
-             $txt .= sprintf('<break time="%dms"/>', Pause::find($definitionFragment->pause_id)->time);
+             $txt .= sprintf('<break time="%dms" />', Pause::find($definitionFragment->pause_id)->time);
          } else {
             $txt .= Pause::find($definitionFragment->pause_id)->symbol;
          }
@@ -72,7 +72,7 @@ class SdCallsUtility {
     */
    public static function createMp3File($fileName, $txt, $voiceParams) {
 //      try {
-      Utility::Logg('SdCallsUtility->createMp3File', 'Called');
+      Utility::Logg('SdCallsUtility->createMp3File called with text:', $txt);
       $textToSpeechClient = new TextToSpeechClient();
 
       $input = new SynthesisInput();
@@ -156,18 +156,18 @@ class SdCallsUtility {
       }
       $txtCall = self::createCallText($definition, 1);
       for ($n = 0; $n < $repeats + 1; $n++) {
-        // $txt .= $definition->sd_call->name . '; ';
-         $txt .= sprintf('%s<break time="%dms"/>',$definition->sd_call->name , 200);
+        $pause= Pause::where('name','Medium')->first()->time;
+         $txt .= sprintf('%s<break time="%dms" />',$definition->sd_call->name , $pause);
          if ($includeStartFormation && ($n == 0 || $includeFormations)) {
 //            $txt .= $txtFrom . ';';
-              $txt .= sprintf('%s<break time="%dms"/>',$txtFrom , 200);
+              $txt .= sprintf('%s<break time="%dms" />',$txtFrom , $pause);
 
          }
          //$txt .= $txtCall . ';';
-         $txt .= sprintf('%s<break time="%dms"/>',$txtCall , 200);
+         $txt .= sprintf('%s<break time="%dms" />',$txtCall , $pause);
          if ($includeEndFormation && ($n == 0 || $includeFormations)) {
             //$txt .= $txtEndsIn . ';';
-            $txt .= sprintf('%s<break time="%dms"/>',$txtEndsIn , 200);
+            $txt .= sprintf('%s<break time="%dms" />',$txtEndsIn , $pause);
          }
          //$txt .=';';
       }
