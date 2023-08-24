@@ -22,7 +22,7 @@ return new class extends Migration {
       Schema::connection($myConnection)->table('definition_fragments', function (Blueprint $table) {
          $table->foreign(['pause_id'], 'pauses_FK')
                  ->references(['id'])
-                 ->on('calls.pauses')
+                 ->on('calls_test.pauses')
                  ->onUpdate('CASCADE')
                  ->onDelete('CASCADE');
       });
