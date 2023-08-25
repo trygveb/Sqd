@@ -217,6 +217,11 @@ function editCall() {
 	});
    
 }
+function programIdChanged(sel) {
+   console.log('programIdChanged');
+    $("#new-call-href").attr('href', "/newCall/"+sel.options[sel.selectedIndex].value);
+   GetCallList();
+}
 function GetCallList() {
    $("#definition_id").empty();
    $.ajaxSetup({

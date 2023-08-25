@@ -43,38 +43,14 @@
                            :visible=false
                />
                @endfor
-            @else
-               <x-call-name mode="new" callName="" callId="" definitionId=""/>
-               <x-program-select mode="{{$mode}}" program_id="" />
-               <x-formation-select  mode="{{$mode}}" definitionId="" startEnd="Start" formationId="" />
-               <x-formation-select  mode="{{$mode}}" definitionId="" startEnd="End" formationId="" />
-               <x-fragment count=1
-                           mode="{{$mode}}"
-                           seqNo="1"
-                           fragmentId="0"
-                           definitionId="0"
-                           fragmentTypeId="1"
-                           :fragmentList=$fragmentList
-                           :pausesList=$pausesList
-                           :visible=true
-                />
-               @for ($seqNo = 2; $seqNo <=12 ; $seqNo++)
-               <x-fragment count="1"
-                           mode="{{$mode}}"
-                           seqNo="{{$seqNo}}"
-                           fragmentId="0"
-                           definitionId="0"
-                           fragmentTypeId="1"
-                           :fragmentList=$fragmentList
-                           :pausesList=$pausesList
-                           :visible=false
-               />
-               @endfor
-            @endif
             <p style="margin-left: auto; margin-right: auto;display:table;" >
                <a href="{{ route('calls.showNewFragment',['definition_id' => $definitionId]) }}" class="btn btn-secondary" >New fragment</a>
                <a href="{{ route('calls.showNewFormation', ['definition_id' => $definitionId]) }}" class="btn btn-secondary" >New formation</a>
             </p>
+            @else
+               <x-call-name mode="new" callName="" callId="" definitionId=""/>
+               <x-program-select mode="{{$mode}}" programId="{{$programId}}" />
+            @endif
                <br>
                <x-submit-button submitText="{{__('Save')}} {{__('definition')}}" cancelText="{{ __('Cancel')}}" cancelUrl="{{route('calls.showForm1')}}" />
                

@@ -74,7 +74,7 @@ class CallsController extends BaseController {
    }
 
    public function createMp3File(Request $request) {
-      
+
 //      $callText = $request->callText;
       $definitionId = $request->definition_id;
       $definition = Definition::find($definitionId);
@@ -324,7 +324,7 @@ class CallsController extends BaseController {
 //      ));
    }
 
-   public function showNewCall() {
+   public function showNewCall($programId) {
       Utility::Logg('CallsController', 'method showNewCall called');
       if (Auth::check()) {
          $user = User::find(auth()->id());
@@ -339,25 +339,25 @@ class CallsController extends BaseController {
       $mode = 'new';
 //      Utility::Logg('CallsController', 'method showNewCall called, creating returnHTML');
       return view('calls.editCall',
-              compact('mode', 'definitionId', 'user', 'names', 'programList', 'formationList', 'fragmentList', 'pausesList'));
+              compact('mode', 'definitionId', 'programId', 'user', 'names', 'programList', 'formationList', 'fragmentList', 'pausesList'));
    }
 
    public function saveCall(Request $request) {
 //      dd('saveCall');
       $callName = $request->call_name_1;
       $callId = $request->call_id_1;
+      $programId = $request->program_id;
       if ($callId > 0) {
          $definitionId = $request->definition_id;  // Edit
+         $startFormationId = $request->start_formation_id;
+//      Utility::Logg('CallsController', 'method saveCall startFormation id=' . $startFormationId);
+         $endFormationId = $request->end_formation_id;
+//      Utility::Logg('CallsController', 'method saveCall endFormation id=' . $endFormationId);
       } else {
          $definitionId = 0;  //new call defintion
       }
 //      Utility::Logg('CallsController', 'method saveCall call id=' . $callId . ', call name=' . $callName);
-      $programId = $request->program_id;
 //      Utility::Logg('CallsController', 'method saveCall program id='.$programId);
-      $startFormationId = $request->start_formation_id;
-//      Utility::Logg('CallsController', 'method saveCall startFormation id=' . $startFormationId);
-      $endFormationId = $request->end_formation_id;
-//      Utility::Logg('CallsController', 'method saveCall endFormation id=' . $endFormationId);
       DB::beginTransaction();
       try {
          if ($callId > 0) {
@@ -368,6 +368,7 @@ class CallsController extends BaseController {
             $sdCall = SdCall::firstOrCreate([
                         'name' => $callName
             ]);
+            return redirect()->back()->with('success', 'Call  saved successfully.');
          }
          if ($definitionId > 0) {
             $definition = Definition::find($definitionId);
@@ -376,6 +377,7 @@ class CallsController extends BaseController {
          }
          $definition->program_id = $programId;
          $definition->call_id = $sdCall->id;
+         
          $startEndFormation = $this->getStartEndFormation($startFormationId, $endFormationId);
          $definition->start_end_formation_id = $startEndFormation->id;
          $definition->save();
@@ -397,7 +399,7 @@ class CallsController extends BaseController {
          return redirect()->back()->with('error', 'A database error occurred, please contact support.');
       }
       DB::commit();
-      return redirect()->back()->with('success', 'Call  saved successfully.');
+      return redirect()->back()->with('success', 'Definition  saved successfully.');
    }
 
 }

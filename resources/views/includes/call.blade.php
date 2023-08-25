@@ -5,12 +5,12 @@
          <label for="definition_id">Call:</label>
         
          @if ($user->isCallsAdministrator())
-           <a href="{{ route('calls.showNewCall') }}" style="float: right;">New definition</a>
+           <a href="/newCall/1" id="new-call-href" name="new-call-href" style="float: right;">New call</a>
            <a id="showEditDefinitionLink" href="/editDefinition/{{$user->definition_id}}" style="float: right;margin-right:10px;">Edit definition</a>
          @endif
          <select onchange="definition_id_changed()" class="form-control" name="definition_id" id="definition_id" >
              @foreach($vCallDefs as $vCallDef)
-             <option value="{{ $vCallDef->definition_id }}" {{ old('call', $user->call) == $vCallDef->definition_id ? 'selected' : '' }}>
+             <option value="{{ $vCallDef->definition_id }}" >
                  {{ $vCallDef->call_name }} from {{ $vCallDef->start_formation_name }}
              </option>
              @endforeach

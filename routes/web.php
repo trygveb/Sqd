@@ -86,7 +86,7 @@ Route::group(// Comment out this when running tests
 
                  Route::post('/calls/save', [CallsController::class, 'save'])->name('saveSettings');   
                  Route::name('showEditDefinition')->get('/editDefinition/{definition_id}', [CallsController::class, 'showEditDefinition']);
-                 Route::name('showNewCall')->get('/newCall', [CallsController::class, 'showNewCall']);
+                 Route::name('showNewCall')->get('/newCall/{program_id}', [CallsController::class, 'showNewCall']);
                  Route::name('saveCall')->post('/saveCall', [CallsController::class, 'saveCall']);
 
                  Route::name('showEditFormation')->get('/editFormation/{formation_id}/{definition_id?}', [CallsController::class, 'showEditFormation']);

@@ -5,7 +5,7 @@
        @if ($mode=='edit')
        <option value="{{ $key }}" {{ $programId == $key ? 'selected' : '' }}>
        @else
-       <option value="{{ $key }}">
+       <option value="{{ $key }}" {{ $programId == $key ? 'selected' : '' }}>
        @endif
            {{ $program }}
        </option>
