@@ -84,7 +84,6 @@ class CallsController extends BaseController {
                       intval($request->repeats),
                       $request->include_formations_in_repeats === 'true'
       );
-Utility::Logg('CallsController->createMp3File, text=', $callText);
       //$path = $request->path;
       $voiceParams = [
           "languageCode" => $request->language,
@@ -93,7 +92,7 @@ Utility::Logg('CallsController->createMp3File, text=', $callText);
       ];
       // Utility::Logg('CallsController->createMp3File', print_r($voiceParams, true));
       $fileName = $request->path;
-      Utility::Logg('CallsController->createMp3File', 'fileName=' . $fileName);
+//      Utility::Logg('CallsController->createMp3File', 'fileName=' . $fileName);
 
       $path = SdCallsUtility::createMp3File($fileName, $callText, $voiceParams);
 
@@ -104,8 +103,8 @@ Utility::Logg('CallsController->createMp3File, text=', $callText);
       $definitionId = $request->definition_id;
       $definition = Definition::find($definitionId);
       $path = '';
-      Utility::Logg('CallsController->getCallText ssml=', $request->ssml);
-      Utility::Logg('CallsController->getCallText repeats=', $request->repeats);
+//      Utility::Logg('CallsController->getCallText ssml=', $request->ssml);
+//      Utility::Logg('CallsController->getCallText repeats=', $request->repeats);
       if ($request->ssml > 0) {
          $callText = SdCallsUtility::createSsmlText($definition,
                          $request->include_start_formation === 'true',
@@ -118,7 +117,7 @@ Utility::Logg('CallsController->createMp3File, text=', $callText);
          $callText = SdCallsUtility::createCallText($definition, 0);
       }
 
-      Utility::Logg('CallsController->getCallText calltext==', $callText);
+//      Utility::Logg('CallsController->getCallText calltext==', $callText);
 
       $this->saveUser($request);
       $from = '';
@@ -244,7 +243,7 @@ Utility::Logg('CallsController->createMp3File, text=', $callText);
          return redirect()->back()->with('error', 'A database error occurred, please contact support.');
       }
       DB::commit();
-      Utility::Logg('CallsController', 'saveFormation  formationName=' . $formationName . ', formationId=' . $formationId);
+//      Utility::Logg('CallsController', 'saveFormation  formationName=' . $formationName . ', formationId=' . $formationId);
       return redirect()->back()->with('success', 'Formation name saved.');
    }
 
@@ -334,11 +333,13 @@ Utility::Logg('CallsController->createMp3File, text=', $callText);
       $names = $this->names();
       $fragmentList = SdCallsUtility::GetFragmentList();
       $programList = SdCallsUtility::GetProgramList();
+      $pausesList = SdCallsUtility::GetPausesNames();
+
       $definitionId = 0;
       $mode = 'new';
 //      Utility::Logg('CallsController', 'method showNewCall called, creating returnHTML');
       return view('calls.editCall',
-              compact('mode', 'definitionId', 'user', 'names', 'programList', 'formationList', 'fragmentList'));
+              compact('mode', 'definitionId', 'user', 'names', 'programList', 'formationList', 'fragmentList', 'pausesList'));
    }
 
    public function saveCall(Request $request) {
@@ -350,13 +351,13 @@ Utility::Logg('CallsController->createMp3File, text=', $callText);
       } else {
          $definitionId = 0;  //new call defintion
       }
-      Utility::Logg('CallsController', 'method saveCall call id=' . $callId . ', call name=' . $callName);
+//      Utility::Logg('CallsController', 'method saveCall call id=' . $callId . ', call name=' . $callName);
       $programId = $request->program_id;
 //      Utility::Logg('CallsController', 'method saveCall program id='.$programId);
       $startFormationId = $request->start_formation_id;
-      Utility::Logg('CallsController', 'method saveCall startFormation id=' . $startFormationId);
+//      Utility::Logg('CallsController', 'method saveCall startFormation id=' . $startFormationId);
       $endFormationId = $request->end_formation_id;
-      Utility::Logg('CallsController', 'method saveCall endFormation id=' . $endFormationId);
+//      Utility::Logg('CallsController', 'method saveCall endFormation id=' . $endFormationId);
       DB::beginTransaction();
       try {
          if ($callId > 0) {

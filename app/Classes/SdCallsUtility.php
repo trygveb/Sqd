@@ -58,7 +58,7 @@ class SdCallsUtility {
             $txt .= Pause::find($definitionFragment->pause_id)->symbol;
          }
       }
-      Utility::Logg('CreateTexts->createCallText, txt=', $txt);
+//      Utility::Logg('CreateTexts->createCallText, txt=', $txt);
       if ($ssml==0) {
          $txt .= '.';
       }
@@ -72,7 +72,7 @@ class SdCallsUtility {
     */
    public static function createMp3File($fileName, $txt, $voiceParams) {
 //      try {
-      Utility::Logg('SdCallsUtility->createMp3File called with text:', $txt);
+//      Utility::Logg('SdCallsUtility->createMp3File called with text:', $txt);
       $textToSpeechClient = new TextToSpeechClient();
 
       $input = new SynthesisInput();
@@ -98,20 +98,20 @@ class SdCallsUtility {
 
 // mklink /D ".\public\storage\" "D:\Development\VagrantCode\Calls\storage\app\public\"         
 
-      Utility::logg('SdCallsUtility->createMp3File', 'fileName=' . $fileName);
+//      Utility::logg('SdCallsUtility->createMp3File', 'fileName=' . $fileName);
       Storage::disk('public')->put($fileName, $resultData);
       $path = self::createPathName($fileName);
-      Utility::logg('SdCallsUtility->createMp3File', 'asset=' . asset($path));
+//      Utility::logg('SdCallsUtility->createMp3File', 'asset=' . asset($path));
       return asset($path);
    }
 
    public static function createPathName($fileName) {
       if (env('APP_ENV') == 'local') {
          $cmd = sprintf('cp /home/vagrant/sqd/storage/app/public/%s /home/vagrant/sqd/public/test', $fileName);
-         Utility::logg('SdCallsUtility->createPathName', $cmd);
+//         Utility::logg('SdCallsUtility->createPathName', $cmd);
          $result = Process::run($cmd)->throw();
          ;
-         Utility::logg('SdCallsUtility->createPathName', $result->output());
+//         Utility::logg('SdCallsUtility->createPathName', $result->output());
          $path = sprintf('test/%s', $fileName);
       } else {
          $path = sprintf('storage/%s', $fileName);
@@ -133,7 +133,7 @@ class SdCallsUtility {
       $tag .= $request->repeats;
       $fileName = str_replace(' ', '_', sprintf('%s from %s %s',
                               $definition->sd_call->name, $definition->start_end_formation->startFormation->name, $tag)) . '.mp3';
-      Utility::Logg('SdCallsUtility->createPathName, fileName=', $fileName);
+//      Utility::Logg('SdCallsUtility->createPathName, fileName=', $fileName);
 //      $path = asset(sprintf('%s.mp3', $fileName));
 //      Utility::Logg('SdCallsUtility->createPathName, path not used=', $path);
       return $fileName;
@@ -172,7 +172,7 @@ class SdCallsUtility {
          //$txt .=';';
       }
       $txt = $txt . ' </speak>';
-      Utility::Logg('CreateTexts->createSsmlText, txt=', $txt);
+//      Utility::Logg('CreateTexts->createSsmlText, txt=', $txt);
 
       return $txt;
    }
