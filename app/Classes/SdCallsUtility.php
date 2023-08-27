@@ -132,7 +132,7 @@ class SdCallsUtility {
       }
       $tag .= $request->repeats;
       $fileName = str_replace(' ', '_', sprintf('%s from %s %s',
-                              $definition->sd_call->name, $definition->start_end_formation->startFormation->name, $tag)) . '.mp3';
+                              $definition->sd_call->name, $definition->startFormation->name, $tag)) . '.mp3';
 //      Utility::Logg('SdCallsUtility->createPathName, fileName=', $fileName);
 //      $path = asset(sprintf('%s.mp3', $fileName));
 //      Utility::Logg('SdCallsUtility->createPathName, path not used=', $path);
@@ -143,15 +143,14 @@ class SdCallsUtility {
       $txt = '<speak> ';
       $txtFrom = '';
       $txtEndsIn = '';
-      $startEndFormation = $definition->start_end_formation;
-      if ($includeStartFormation && !is_null($startEndFormation->startFormation)) {
-         $txtFrom = 'from ' . $startEndFormation->startFormation->name;
+      if ($includeStartFormation && !is_null($definition->startFormation)) {
+         $txtFrom = 'from ' . $definition->startFormation->name;
       }
-      if ($includeEndFormation && !is_null($startEndFormation->endFormation)) {
-         if (str_starts_with($startEndFormation->endFormation->name,'Usually')) {
-            $txtEndsIn = $startEndFormation->endFormation->name;
+      if ($includeEndFormation && !is_null($definition->endFormation)) {
+         if (str_starts_with($definition->endFormation->name,'Usually')) {
+            $txtEndsIn = $definition->endFormation->name;
          } else {
-            $txtEndsIn = 'ends in ' . $startEndFormation->endFormation->name;
+            $txtEndsIn = 'ends in ' . $definition->endFormation->name;
          }
       }
       $txtCall = self::createCallText($definition, 1);
@@ -207,6 +206,7 @@ class SdCallsUtility {
       $list = ['en-US', 'en-AU', 'en-GB'];
       return $list;
    }
+
    public static function GetPausesNames() {
       $list = Pause::orderBy('time')->get()->pluck('name','id' );
       return $list;
