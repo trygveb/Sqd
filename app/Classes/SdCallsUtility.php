@@ -111,11 +111,12 @@ class SdCallsUtility {
 //         Utility::logg('SdCallsUtility->createPathName', $cmd);
          $result = Process::run($cmd)->throw();
          ;
-//         Utility::logg('SdCallsUtility->createPathName', $result->output());
          $path = sprintf('test/%s', $fileName);
       } else {
          $path = sprintf('storage/%s', $fileName);
       }
+      Utility::logg('SdCallsUtility->createPathName, path=', $path);
+
       return $path;
    }
 
