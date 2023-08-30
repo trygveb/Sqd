@@ -38,8 +38,10 @@ class CallsController extends BaseController {
       $user->include_formations_in_repeats = $request->input('include_formations_in_repeats') == 'true' ? 1 : 0;
       try {
          $user->save();
-      } catch (Exception $e) {
-         Utility::Logg('saveUser Exception=', $e->getMessage());
+      } catch (\Illuminate\Database\QueryException $ex) {
+         Utility::Logg('saveUser user=', print_r($user, true));
+         Utility::Logg('saveUser Exception=', $ex->getMessage());
+         return redirect()->back()->with('error', 'Settings not saved. See sdCalls.log-');
       }
 
       return redirect()->back()->with('success', 'Settings saved successfully.');
