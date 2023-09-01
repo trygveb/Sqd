@@ -116,6 +116,7 @@ class CallsController extends BaseController {
       return response()->json(array('path' => asset($path)), 200);
    }
 
+   // Used by ajax call
    public function getCallText(Request $request) {
       $definitionId = $request->definition_id;
       $definition = Definition::find($definitionId);

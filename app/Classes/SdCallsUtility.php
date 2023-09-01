@@ -115,7 +115,7 @@ class SdCallsUtility {
       } else {
          $path = sprintf('storage/%s', $fileName);
       }
-      Utility::logg('SdCallsUtility->createPathName, path=', $path);
+//      Utility::logg('SdCallsUtility->createPathName, path=', $path);
 
       return $path;
    }
@@ -131,9 +131,17 @@ class SdCallsUtility {
       if ($request->include_formations_in_repeats === 'true') {
          $tag .= 'i';
       }
-      $tag .= $request->repeats;
-      $fileName = str_replace(' ', '_', sprintf('%s from %s %s',
-                              $definition->sd_call->name, $definition->startFormation->name, $tag)) . '.mp3';
+      $tag .= '_'.$request->repeats.'_'.$request->speaking_rate;
+      $startFormation= $definition->startFormation->name;
+      
+      $pos= strpos($startFormation, ',', 1);      
+      if ($pos === false) {
+         
+      } else {
+         $startFormation= substr($startFormation,0,$pos) . ' etc';
+      }
+      $fileName = str_replace(' ', '_', sprintf('%s %s from %s %s',
+                              $definition->program->name, $definition->sd_call->name, $startFormation, $tag)) . '.mp3';
 //      Utility::Logg('SdCallsUtility->createPathName, fileName=', $fileName);
 //      $path = asset(sprintf('%s.mp3', $fileName));
 //      Utility::Logg('SdCallsUtility->createPathName, path not used=', $path);
