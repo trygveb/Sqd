@@ -63,6 +63,22 @@ class CallsController extends BaseController {
       $names = $this->names();
       return view('calls.form1', compact('user', 'names', 'languageList', 'voiceTypeList', 'programList', 'vCallDefs', 'maxRepeats'));
    }
+   
+      public function showCallList() {
+//      Utility::Logg('CallsController', 'method showCallList called');
+      $path= SdCallsUtility::createPathName('*.mp3');
+      $mp3Files = glob($path);
+      foreach ($mp3Files as $mp3File) {
+         Utility::Logg('CallsController file= ', $mp3File);
+      }
+      if (Auth::check()) {
+         $user = User::find(auth()->id());
+      } else {
+         
+      }
+      $names = $this->names();
+      return view('calls.listCalls', compact('user', 'names', 'mp3Files'));
+   }
 
    public function getVoiceList(Request $request) {
       $voiceNames = SdCallsUtility::GetVoiceList($request->language, $request->voice_gender, $request->voice_type);

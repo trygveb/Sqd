@@ -26,6 +26,8 @@
                     SdCalls is an application under development.<br>
    @auth
       <a href="{{route('calls.showForm1')}}">{{__('Goto Form 1')}}!</a>
+      <br>
+      <a href="{{route('calls.showCallList')}}">{{__('Show call list')}}!</a>
    @endauth
                 </div>
          </div>
