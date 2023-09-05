@@ -174,7 +174,7 @@ class CallsController extends BaseController {
    }
 
    public function saveFragment(Request $request) {
-      $fragmentText = $request->fragment_text;
+      $fragmentText = ucfirst(strtolower($request->fragment_text));
       $fragmentId = $request->fragment_id;
       DB::beginTransaction();
       try {
