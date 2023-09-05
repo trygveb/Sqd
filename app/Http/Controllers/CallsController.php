@@ -39,7 +39,6 @@ class CallsController extends BaseController {
       try {
          $user->save();
       } catch (\Illuminate\Database\QueryException $ex) {
-         Utility::Logg('saveUser user=', print_r($user, true));
          Utility::Logg('saveUser Exception=', $ex->getMessage());
          return redirect()->back()->with('error', 'Settings not saved. See sdCalls.log-');
       }

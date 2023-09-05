@@ -17,7 +17,7 @@
          </select>
         
      </div>
-
+<div style="display:none;" id="div_call_text">
      <br>
       <p id="startFormation" style="height:50px;background-color: #333;">
        <br><br>
@@ -27,9 +27,11 @@
        <br><br>
       <p id="endFormation" style="height:50px;background-color: #333;">
       </p>
-
+</div>
       <p id="file_name"></p>
       <button class="btn btn-primary" onClick="getCallText()">Get Call text</button>
-
+      <input style="float: right; margin-top:0.3em;" type="checkbox" name="show_call_text" id="show_call_text" 
+             onClick="showCallText()">
+      <label style="float:right;margin-right:10px;" class="form-check-label" for="show_call_text">Show call text</label>
 </fieldset>
 

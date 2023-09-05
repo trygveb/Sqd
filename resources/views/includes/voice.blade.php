@@ -74,7 +74,7 @@
 
                     <div class="form-group">
                         <label for="volume_gain">Volume Gain:</label>
-                        <input type="number" class="form-control" name="volume_gain" min="-96.0" max="10.0" step="0.1" value="{{ old('volume_gain', $user->volume_gain_db) }}">
+                        <input readonly type="number" class="form-control" name="volume_gain" min="-96.0" max="10.0" step="0.1" value="{{ old('volume_gain', $user->volume_gain_db) }}">
                     </div>
 
         </td>

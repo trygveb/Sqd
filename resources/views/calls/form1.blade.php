@@ -7,9 +7,8 @@
             <!--<form method="GET" action="">-->
                  @csrf
                 <fieldset>
- @include('includes.reportError')             
+ @include('includes.reportError') 
  @include('includes.call')                   
-
                <div class="form-group form-check">
                   <input type="checkbox" class="form-check-input" name="show_voice" id="show_voice" 
                          onClick="showVoice()">
@@ -45,6 +44,13 @@ function showVoice() {
       $('#fieldset_voice').show();
    } else {
       $('#fieldset_voice').hide();
+   }
+}
+function showCallText() {
+   if ($('#div_call_text').css('display')==='none') {
+      $('#div_call_text').show();
+   } else {
+      $('#div_call_text').hide();
    }
 }
 function createMp3Text() {
@@ -320,6 +326,7 @@ function newCall() {
       }
    });
 }
+
 
 function selectElement(id, valueToSelect) {    
    let element = document.getElementById(id);
