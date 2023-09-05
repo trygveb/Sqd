@@ -53,7 +53,7 @@ class SdCallsUtility {
             $txt .= ' ' . $fragment->text;
          }
          if ($ssml > 0) {
-             $txt .= sprintf('<break time="%dms" />', Pause::find($definitionFragment->pause_id)->time);
+             $txt .= self::pauseText(Pause::find($definitionFragment->pause_id)->time);
          } else {
             $txt .= Pause::find($definitionFragment->pause_id)->symbol;
          }
@@ -153,35 +153,36 @@ class SdCallsUtility {
          $txtFrom = 'from ' . $definition->startFormation->name;
       }
       if ($includeEndFormation && !is_null($definition->endFormation)) {
-         if (str_starts_with($definition->endFormation->name,'Usually')) {
-            $txtEndsIn = $definition->endFormation->name;
-         } else {
+         $pos1 = strpos($definition->endFormation->name, "end in");
+         $pos2 = strpos($definition->endFormation->name, "ends in");
+         if ($pos1===false && $pos2===false) {
             $txtEndsIn = 'ends in ' . $definition->endFormation->name;
+         } else {
+            $txtEndsIn = $definition->endFormation->name;
          }
       }
       $txtCall = self::createCallText($definition, 1);
       for ($n = 0; $n < $repeats + 1; $n++) {
-        $pause= Pause::where('name','Medium')->first()->time;
-         $txt .= sprintf('%s<break time="%dms" />',$definition->sd_call->name , $pause);
+        $pause= self::pauseText(Pause::where('name','Medium')->first()->time);
+         $txt .= sprintf('%s%s',$definition->sd_call->name , $pause);
          if ($includeStartFormation && ($n == 0 || $includeFormations)) {
-//            $txt .= $txtFrom . ';';
-              $txt .= sprintf('%s<break time="%dms" />',$txtFrom , $pause);
+              $txt .= sprintf('%s%s',$txtFrom , $pause);
 
          }
-         //$txt .= $txtCall . ';';
-         $txt .= sprintf('%s<break time="%dms" />',$txtCall , $pause);
+         $txt .= sprintf('%s%s',$txtCall , $pause);
          if ($includeEndFormation && ($n == 0 || $includeFormations)) {
-            //$txt .= $txtEndsIn . ';';
-            $txt .= sprintf('%s<break time="%dms" />',$txtEndsIn , $pause);
+            $txt .= sprintf('%s%s',$txtEndsIn , $pause);
          }
-         //$txt .=';';
       }
       $txt = $txt . ' </speak>';
 //      Utility::Logg('CreateTexts->createSsmlText, txt=', $txt);
-
       return $txt;
    }
-
+   private static function pauseText($pause) {
+       $txt= sprintf('<break time="%dms"/>', $pause);
+       return $txt;
+   }
+   
    public static function GetCalls($programId) {
       if ($programId == 0) {
          $vCallDefs = VCallDef::all();
