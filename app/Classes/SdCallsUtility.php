@@ -146,7 +146,8 @@ class SdCallsUtility {
    }
 
    public static function createSsmlText($definition, $includeStartFormation, $includeEndFormation, $repeats, $includeFormations) {
-      $txt = '<speak> ';
+//      $txt = '<speak> ';
+      $txt='';
       $txtFrom = '';
       $txtEndsIn = '';
       if ($includeStartFormation && !is_null($definition->startFormation)) {
@@ -174,10 +175,41 @@ class SdCallsUtility {
             $txt .= sprintf('%s%s',$txtEndsIn , $pause);
          }
       }
-      $txt = $txt . ' </speak>';
-//      Utility::Logg('CreateTexts->createSsmlText, txt=', $txt);
+      Utility::Logg('CreateTexts->createSsmlText, txt=', $txt);
+      $txt = '<speak> '. self::fixText($txt). ' </speak>';
+      Utility::Logg('CreateTexts->createSsmlText, txt=', $txt);
       return $txt;
    }
+
+public static function fixText($txt)
+        {
+
+            $txt = str_replace("  ", " ",$txt);
+            $txt = str_replace(" 1/4 In (turn 1/4 in", " (turn 1/4 in",$txt);
+            $txt = str_replace(" in ", " inn ",$txt);
+            $txt = str_replace(" In ", " inn ",$txt);
+            $txt = str_replace(" inside ", " inn-side ",$txt);
+            $txt = str_replace("&", "and",$txt);
+            $txt = str_replace("(s)", "s",$txt);
+            $txt = str_replace("|", " or ",$txt);
+            $txt = str_replace("1/4", "1 quarter",$txt);
+            $txt = str_replace("3/4", "3 quarters",$txt);
+            $txt = str_replace("inward", "inn-ward",$txt);
+            $txt = str_replace("L - H", "Left-Hand",$txt);
+            $txt = str_replace("L-H", "Left-Hand",$txt);
+            $txt = str_replace("Promenade", "Promenaid",$txt);
+            $txt = str_replace("R - H", "Right-Hand",$txt);
+            $txt = str_replace("R-H", "Right-Hand",$txt);
+            $txt = str_replace("Thar", "Dhar",$txt);
+            $txt = str_replace("\"\"Z\"\"", ",C,",$txt);
+            //$txt = addPauses($txt);
+
+
+            return $txt;
+        }
+
+
+
    private static function pauseText($pause) {
        $txt= sprintf('<break time="%dms"/>', $pause);
        return $txt;
