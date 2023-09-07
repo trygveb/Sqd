@@ -71,8 +71,6 @@ function createMp3File() {
       url:'/createMp3File',
       data:formData,
       success:function(data) {
-         console.log('path='+data.path);
-         //$("#player").attr('src', data.path+ "?" + new Date().getTime());
          $("#player").attr('src', data.path);
          $("#player").css("pointer-events", "auto");
       }

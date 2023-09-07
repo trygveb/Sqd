@@ -185,6 +185,7 @@ public static function fixText($txt)
         {
 
             $txt = str_ireplace("  ", " ",$txt);
+            $txt = str_ireplace(" x ", " by ",$txt);
             $txt = str_ireplace(" 1/4 In (turn 1/4 in", " (turn 1/4 in",$txt);
             $txt = str_ireplace(" in ", " inn ",$txt);
             $txt = str_ireplace(" In ", " inn ",$txt);
