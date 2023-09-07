@@ -30,7 +30,7 @@ class SdCallsUtility {
       return str_replace($x, $y, $txt);
    }
 
-   public static function createCallText(Definition $definition,$ssml= 0) {
+   public static function createCallText(Definition $definition, $ssml = 0) {
       $txt = '';
 
       $definitionFragments = DefinitionFragment::where('definition_id', $definition->id)
@@ -53,13 +53,13 @@ class SdCallsUtility {
             $txt .= ' ' . $fragment->text;
          }
          if ($ssml > 0) {
-             $txt .= self::pauseText(Pause::find($definitionFragment->pause_id)->time);
+            $txt .= self::pauseText(Pause::find($definitionFragment->pause_id)->time);
          } else {
             $txt .= Pause::find($definitionFragment->pause_id)->symbol;
          }
       }
 //      Utility::Logg('CreateTexts->createCallText, txt=', $txt);
-      if ($ssml==0) {
+      if ($ssml == 0) {
          $txt .= '.';
       }
       return $txt;
@@ -97,7 +97,6 @@ class SdCallsUtility {
       $textToSpeechClient->close();
 
 // mklink /D ".\public\storage\" "D:\Development\VagrantCode\Calls\storage\app\public\"         
-
 //      Utility::logg('SdCallsUtility->createMp3File', 'fileName=' . $fileName);
       Storage::disk('public')->put($fileName, $resultData);
       $path = self::createPathName($fileName);
@@ -131,14 +130,15 @@ class SdCallsUtility {
       if ($request->include_formations_in_repeats === 'true') {
          $tag .= 'i';
       }
-      $voiceId= 1;
-      $tag .= '_'.$request->repeats.'_'.$request->speaking_rate.'_'.$voiceId;
-      $startFormation= $definition->startFormation->name;
-      
-      $pos= strpos($startFormation, ',', 1);      
+      $voiceId = 1;
+      $tag .= '_' . $request->repeats . '_' . $request->speaking_rate . '_' . $voiceId;
+      $startFormation = $definition->startFormation->name;
+
+      $pos = strpos($startFormation, ',', 1);
       if ($pos === false) {
+         
       } else {
-         $startFormation= substr($startFormation,0,$pos) . ' etc';
+         $startFormation = substr($startFormation, 0, $pos) . ' etc';
       }
       $fileName = str_replace(' ', '_', sprintf('%s %s from %s %s',
                               $definition->program->name, $definition->sd_call->name, $startFormation, $tag)) . '.mp3';
@@ -147,7 +147,7 @@ class SdCallsUtility {
 
    public static function createSsmlText($definition, $includeStartFormation, $includeEndFormation, $repeats, $includeFormations) {
 //      $txt = '<speak> ';
-      $txt='';
+      $txt = '';
       $txtFrom = '';
       $txtEndsIn = '';
       if ($includeStartFormation && !is_null($definition->startFormation)) {
@@ -156,7 +156,7 @@ class SdCallsUtility {
       if ($includeEndFormation && !is_null($definition->endFormation)) {
          $pos1 = strpos($definition->endFormation->name, "end in");
          $pos2 = strpos($definition->endFormation->name, "ends in");
-         if ($pos1===false && $pos2===false) {
+         if ($pos1 === false && $pos2 === false) {
             $txtEndsIn = 'ends in ' . $definition->endFormation->name;
          } else {
             $txtEndsIn = $definition->endFormation->name;
@@ -164,58 +164,52 @@ class SdCallsUtility {
       }
       $txtCall = self::createCallText($definition, 1);
       for ($n = 0; $n < $repeats + 1; $n++) {
-        $pause= self::pauseText(Pause::where('name','Medium')->first()->time);
-         $txt .= sprintf('%s%s',$definition->sd_call->name , $pause);
+         $pause = self::pauseText(Pause::where('name', 'Medium')->first()->time);
+         $txt .= sprintf('%s%s', $definition->sd_call->name, $pause);
          if ($includeStartFormation && ($n == 0 || $includeFormations)) {
-              $txt .= sprintf('%s%s',$txtFrom , $pause);
-
+            $txt .= sprintf('%s%s', $txtFrom, $pause);
          }
-         $txt .= sprintf('%s%s',$txtCall , $pause);
+         $txt .= sprintf('%s%s', $txtCall, $pause);
          if ($includeEndFormation && ($n == 0 || $includeFormations)) {
-            $txt .= sprintf('%s%s',$txtEndsIn , $pause);
+            $txt .= sprintf('%s%s', $txtEndsIn, $pause);
          }
       }
       Utility::Logg('CreateTexts->createSsmlText, txt=', $txt);
-      $txt = '<speak> '. self::fixText($txt). ' </speak>';
+      $txt = '<speak> ' . self::fixText($txt) . ' </speak>';
       Utility::Logg('CreateTexts->createSsmlText, txt=', $txt);
       return $txt;
    }
 
-public static function fixText($txt)
-        {
+   public static function fixText($txt) {
 
-            $txt = str_ireplace("  ", " ",$txt);
-            $txt = str_ireplace(" x ", " by ",$txt);
-            $txt = str_ireplace(" 1/4 In (turn 1/4 in", " (turn 1/4 in",$txt);
-            $txt = str_ireplace(" in ", " inn ",$txt);
-            $txt = str_ireplace(" In ", " inn ",$txt);
-            $txt = str_ireplace(" inside ", " inn-side ",$txt);
-            $txt = str_ireplace("&", "and",$txt);
-            $txt = str_ireplace("(s)", "s",$txt);
-            $txt = str_ireplace("|", " or ",$txt);
-            $txt = str_ireplace("1/4", "1 quarter",$txt);
-            $txt = str_ireplace("3/4", "3 quarters",$txt);
-            $txt = str_ireplace("inward", "inn-ward",$txt);
-            $txt = str_ireplace("L - H", "Left-Hand",$txt);
-            $txt = str_ireplace("L-H", "Left-Hand",$txt);
-            $txt = str_ireplace("Promenade", "Promenaid",$txt);
-            $txt = str_ireplace("R - H", "Right-Hand",$txt);
-            $txt = str_ireplace("R-H", "Right-Hand",$txt);
-            $txt = str_ireplace("Thar", "Dhar",$txt);
-            $txt = str_ireplace("\"\"Z\"\"", ",C,",$txt);
-            //$txt = addPauses($txt);
+      $txt = str_ireplace("  ", " ", $txt);
+      $txt = str_ireplace(" x ", " by ", $txt);
+      $txt = str_ireplace(" 1/4 ", " quarter ", $txt);
+      $txt = str_ireplace(" in ", " inn ", $txt);
+      $txt = str_ireplace(" In ", " inn ", $txt);
+      $txt = str_ireplace(" inside ", " inn-side ", $txt);
+      $txt = str_ireplace("&", "and", $txt);
+      $txt = str_ireplace("(s)", "s", $txt);
+      $txt = str_ireplace("|", " or ", $txt);
+      $txt = str_ireplace("inward", "inn-ward", $txt);
+      $txt = str_ireplace("L - H", "Left-Hand", $txt);
+      $txt = str_ireplace("L-H", "Left-Hand", $txt);
+      $txt = str_ireplace("Promenade", "Promenaid", $txt);
+      $txt = str_ireplace("R - H", "Right-Hand", $txt);
+      $txt = str_ireplace("R-H", "Right-Hand", $txt);
+      $txt = str_ireplace("Thar", "Dhar", $txt);
+      $txt = str_ireplace("\"\"Z\"\"", ",C,", $txt);
+      //$txt = addPauses($txt);
 
 
-            return $txt;
-        }
-
-
+      return $txt;
+   }
 
    private static function pauseText($pause) {
-       $txt= sprintf('<break time="%dms"/>', $pause);
-       return $txt;
+      $txt = sprintf('<break time="%dms"/>', $pause);
+      return $txt;
    }
-   
+
    public static function GetCalls($programId) {
       if ($programId == 0) {
          $vCallDefs = VCallDef::all();
@@ -227,7 +221,7 @@ public static function fixText($txt)
 
    public static function GetCallNames() {
 //      $list = SdCall::all()->orderBy('name')->pluck('name', 'id');
-      $list = SdCall::orderBy('name')->get()->pluck('name','id' );
+      $list = SdCall::orderBy('name')->get()->pluck('name', 'id');
       return $list;
    }
 
@@ -237,8 +231,8 @@ public static function fixText($txt)
    }
 
    public static function GetFragmentList() {
-     // $list = Fragment::all()->pluck('text', 'id')->unique();
-      $list = Fragment::orderBy('text')->get()->pluck('text','id' );
+      // $list = Fragment::all()->pluck('text', 'id')->unique();
+      $list = Fragment::orderBy('text')->get()->pluck('text', 'id');
       return $list;
    }
 
@@ -248,7 +242,7 @@ public static function fixText($txt)
    }
 
    public static function GetPausesNames() {
-      $list = Pause::orderBy('time')->get()->pluck('name','id' );
+      $list = Pause::orderBy('time')->get()->pluck('name', 'id');
       return $list;
    }
 
