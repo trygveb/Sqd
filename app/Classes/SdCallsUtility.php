@@ -184,24 +184,24 @@ class SdCallsUtility {
 public static function fixText($txt)
         {
 
-            $txt = str_replace("  ", " ",$txt);
-            $txt = str_replace(" 1/4 In (turn 1/4 in", " (turn 1/4 in",$txt);
-            $txt = str_replace(" in ", " inn ",$txt);
-            $txt = str_replace(" In ", " inn ",$txt);
-            $txt = str_replace(" inside ", " inn-side ",$txt);
-            $txt = str_replace("&", "and",$txt);
-            $txt = str_replace("(s)", "s",$txt);
-            $txt = str_replace("|", " or ",$txt);
-            $txt = str_replace("1/4", "1 quarter",$txt);
-            $txt = str_replace("3/4", "3 quarters",$txt);
-            $txt = str_replace("inward", "inn-ward",$txt);
-            $txt = str_replace("L - H", "Left-Hand",$txt);
-            $txt = str_replace("L-H", "Left-Hand",$txt);
-            $txt = str_replace("Promenade", "Promenaid",$txt);
-            $txt = str_replace("R - H", "Right-Hand",$txt);
-            $txt = str_replace("R-H", "Right-Hand",$txt);
-            $txt = str_replace("Thar", "Dhar",$txt);
-            $txt = str_replace("\"\"Z\"\"", ",C,",$txt);
+            $txt = str_ireplace("  ", " ",$txt);
+            $txt = str_ireplace(" 1/4 In (turn 1/4 in", " (turn 1/4 in",$txt);
+            $txt = str_ireplace(" in ", " inn ",$txt);
+            $txt = str_ireplace(" In ", " inn ",$txt);
+            $txt = str_ireplace(" inside ", " inn-side ",$txt);
+            $txt = str_ireplace("&", "and",$txt);
+            $txt = str_ireplace("(s)", "s",$txt);
+            $txt = str_ireplace("|", " or ",$txt);
+            $txt = str_ireplace("1/4", "1 quarter",$txt);
+            $txt = str_ireplace("3/4", "3 quarters",$txt);
+            $txt = str_ireplace("inward", "inn-ward",$txt);
+            $txt = str_ireplace("L - H", "Left-Hand",$txt);
+            $txt = str_ireplace("L-H", "Left-Hand",$txt);
+            $txt = str_ireplace("Promenade", "Promenaid",$txt);
+            $txt = str_ireplace("R - H", "Right-Hand",$txt);
+            $txt = str_ireplace("R-H", "Right-Hand",$txt);
+            $txt = str_ireplace("Thar", "Dhar",$txt);
+            $txt = str_ireplace("\"\"Z\"\"", ",C,",$txt);
             //$txt = addPauses($txt);
 
 
